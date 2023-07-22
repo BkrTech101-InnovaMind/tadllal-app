@@ -11,29 +11,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  userImage(),
-                  const SizedBox(width: 15),
-                  notificationsIcon(true)
-                ],
-              ),
-              filterMenu()
-            ],
-          )
-        ],
-      ),
+    return ListView(
+      children: [
+        header(),
+      ],
     );
   }
 }
 
-// Users profile image widget
+// Home page head widget
+Widget header() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        children: [
+          userImage(),
+          const SizedBox(width: 15),
+          notificationsIcon(true)
+        ],
+      ),
+      filterMenu()
+    ],
+  );
+}
+
+// User image widget
 Widget userImage() {
   return Container(
     padding: const EdgeInsets.all(5),

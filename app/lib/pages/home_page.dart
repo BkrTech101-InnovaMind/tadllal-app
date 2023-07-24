@@ -13,31 +13,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        header(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                buildUserImage(),
+                const SizedBox(width: 15),
+                buildNotificationsIcon(true)
+              ],
+            ),
+            buildFilterMenu()
+          ],
+        ),
+        buildService(),
       ],
     );
   }
 }
 
-// Home page head widget
-Widget header() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        children: [
-          userImage(),
-          const SizedBox(width: 15),
-          notificationsIcon(true)
-        ],
-      ),
-      filterMenu()
-    ],
-  );
-}
-
 // User image widget
-Widget userImage() {
+Widget buildUserImage() {
   return Container(
     padding: const EdgeInsets.all(5),
     decoration: BoxDecoration(
@@ -54,7 +50,7 @@ Widget userImage() {
 }
 
 // Notifications icon widget
-Widget notificationsIcon(bool hasNotification) {
+Widget buildNotificationsIcon(bool hasNotification) {
   return Stack(
     children: [
       Container(
@@ -90,7 +86,7 @@ Widget notificationsIcon(bool hasNotification) {
 }
 
 // Filter menu widget
-Widget filterMenu() {
+Widget buildFilterMenu() {
   return Container(
     padding: const EdgeInsets.all(5),
     decoration: BoxDecoration(
@@ -107,12 +103,115 @@ Widget filterMenu() {
           const SizedBox(width: 10),
           SvgPicture.asset('assets/icons/filter-icon.svg'),
           const SizedBox(width: 10),
-          const Text('فلترة المعروضات'),
+          const Text('Filter Displayed'),
           const SizedBox(width: 10),
         ],
       ),
       items: const [],
       onChanged: (value) {},
     ),
+  );
+}
+
+// service Widget
+Widget buildService() {
+  final serviceData = [
+    {
+      'image': 'assets/images/resources.png',
+      'title': 'موارد بناء وتوريدات',
+      'subtitle': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
+    },
+    {
+      'image': 'assets/images/services.png',
+      'title': 'خدمات إنشائية \n وصيانة',
+      'subtitle': 'خدمات تصميم وتنفيذ',
+    },
+  ];
+
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TextButton(
+            onPressed: () {},
+            child: const Text(
+              "رؤية الكل",
+              style: TextStyle(color: Color(0xFF234F68)),
+            ),
+          ),
+          const Text(
+            "خدمات إنشائية وتوريدات",
+            style: TextStyle(
+              color: Color(0xFF234F68),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: serviceData.map((data) {
+          return Stack(
+            children: [
+              ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.3),
+                  BlendMode.srcATop,
+                ),
+                child: Image.asset(data['image'] ?? "", width: 190),
+              ),
+              Positioned(
+                right: 18,
+                top: 10,
+                child: Column(
+                  children: [
+                    Text(
+                      textAlign: TextAlign.right,
+                      data['title'] ?? "",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      data['subtitle'] ?? "",
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(color: Colors.white, height: 1),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 5,
+                    ),
+                    backgroundColor: const Color(0xFF234F68),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: const Icon(
+                    Icons.arrow_back_sharp,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          );
+        }).toList(),
+      ),
+    ],
   );
 }

@@ -16,17 +16,18 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            buildFilterMenu(),
             Row(
               children: [
-                buildUserImage(),
+                buildNotificationsIcon(true),
                 const SizedBox(width: 15),
-                buildNotificationsIcon(true)
+                buildUserImage(),
               ],
             ),
-            buildFilterMenu()
           ],
         ),
         buildService(),
+        buildMostRequest(),
       ],
     );
   }
@@ -87,28 +88,31 @@ Widget buildNotificationsIcon(bool hasNotification) {
 
 // Filter menu widget
 Widget buildFilterMenu() {
-  return Container(
-    padding: const EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(25),
-      border: Border.all(color: const Color(0xFFDFDFDF), width: 2),
-    ),
-    child: DropdownButton(
-      underline: const SizedBox(),
-      icon: const Icon(
-        Icons.keyboard_arrow_down_outlined,
+  return Directionality(
+    textDirection: TextDirection.ltr,
+    child: Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: const Color(0xFFDFDFDF), width: 2),
       ),
-      hint: Row(
-        children: [
-          const SizedBox(width: 10),
-          SvgPicture.asset('assets/icons/filter-icon.svg'),
-          const SizedBox(width: 10),
-          const Text('Filter Displayed'),
-          const SizedBox(width: 10),
-        ],
+      child: DropdownButton(
+        underline: const SizedBox(),
+        icon: const Icon(
+          Icons.keyboard_arrow_down_outlined,
+        ),
+        hint: Row(
+          children: [
+            const SizedBox(width: 10),
+            SvgPicture.asset('assets/icons/filter-icon.svg'),
+            const SizedBox(width: 10),
+            const Text('فلترة المعروضات'),
+            const SizedBox(width: 10),
+          ],
+        ),
+        items: const [],
+        onChanged: (value) {},
       ),
-      items: const [],
-      onChanged: (value) {},
     ),
   );
 }
@@ -117,14 +121,14 @@ Widget buildFilterMenu() {
 Widget buildService() {
   final serviceData = [
     {
-      'image': 'assets/images/resources.png',
-      'title': 'موارد بناء وتوريدات',
-      'subtitle': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
-    },
-    {
       'image': 'assets/images/services.png',
       'title': 'خدمات إنشائية \n وصيانة',
       'subtitle': 'خدمات تصميم وتنفيذ',
+    },
+    {
+      'image': 'assets/images/resources.png',
+      'title': 'موارد بناء وتوريدات',
+      'subtitle': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
     },
   ];
 
@@ -133,18 +137,16 @@ Widget buildService() {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const Text(
+            "خدمات إنشائية وتوريدات",
+            style: TextStyle(
+                color: Color(0xFF234F68), fontWeight: FontWeight.w900),
+          ),
           TextButton(
             onPressed: () {},
             child: const Text(
               "رؤية الكل",
               style: TextStyle(color: Color(0xFF234F68)),
-            ),
-          ),
-          const Text(
-            "خدمات إنشائية وتوريدات",
-            style: TextStyle(
-              color: Color(0xFF234F68),
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],
@@ -167,7 +169,6 @@ Widget buildService() {
                 child: Column(
                   children: [
                     Text(
-                      textAlign: TextAlign.right,
                       data['title'] ?? "",
                       style: const TextStyle(
                         color: Colors.white,
@@ -178,7 +179,6 @@ Widget buildService() {
                     const SizedBox(height: 10),
                     Text(
                       data['subtitle'] ?? "",
-                      textAlign: TextAlign.right,
                       style: const TextStyle(color: Colors.white, height: 1),
                     ),
                   ],
@@ -202,7 +202,7 @@ Widget buildService() {
                   ),
                   onPressed: () {},
                   child: const Icon(
-                    Icons.arrow_back_sharp,
+                    Icons.arrow_forward_sharp,
                     size: 30,
                     color: Colors.white,
                   ),
@@ -211,6 +211,70 @@ Widget buildService() {
             ],
           );
         }).toList(),
+      ),
+    ],
+  );
+}
+
+// Most Requested widget
+Widget buildMostRequest() {
+  final List titles = [
+    "ديكورات",
+    "تصاميم هندسيه",
+    "مقاولات",
+    "حديد",
+    "أسمنت",
+  ];
+  final List images = [
+    "assets/request/decor.png",
+    "assets/request/engineering-designs.png",
+    "assets/request/construction.png",
+    "assets/request/iron.png",
+    "assets/request/cement.png",
+  ];
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TextButton(
+            onPressed: () {},
+            child: const Text(
+              "رؤية الكل",
+              style: TextStyle(
+                  color: Color(0xFF234F68), fontWeight: FontWeight.w900),
+            ),
+          ),
+          const Text(
+            "الأكثر طلباً",
+            style: TextStyle(
+              color: Color(0xFF234F68),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 96,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: titles.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Column(
+                  children: [
+                    Image.asset(images[index]),
+                    Text(
+                      titles[index],
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 15),
+              ],
+            );
+          },
+        ),
       ),
     ],
   );

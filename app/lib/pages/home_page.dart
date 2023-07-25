@@ -53,37 +53,43 @@ Widget buildUserImage() {
 
 // Notifications icon widget
 Widget buildNotificationsIcon(bool hasNotification) {
-  return Stack(
-    children: [
-      Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFF8bc83f), width: 2),
+  return TextButton(
+    style: TextButton.styleFrom(
+      shape: const CircleBorder(),
+    ),
+    onPressed: () {},
+    child: Stack(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFF8bc83f), width: 2),
+          ),
+          child: const Icon(
+            Icons.notifications_none_sharp,
+            size: 28,
+          ),
         ),
-        child: const Icon(
-          Icons.notifications_none_sharp,
-          size: 28,
-        ),
-      ),
-      if (hasNotification)
-        Positioned(
-          right: 10,
-          top: 10,
-          child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(5),
+        if (hasNotification)
+          Positioned(
+            right: 10,
+            top: 10,
             child: Container(
-              width: 10,
-              height: 10,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFFFD5F4A),
+              color: Colors.white,
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFFD5F4A),
+                ),
               ),
             ),
-          ),
-        )
-    ],
+          )
+      ],
+    ),
   );
 }
 
@@ -155,61 +161,71 @@ Widget buildService() {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: serviceData.map((data) {
-          return Stack(
-            children: [
-              ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.3),
-                  BlendMode.srcATop,
+          return TextButton(
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(5),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(25),
                 ),
-                child: Image.asset(data['image'] ?? "", width: 190),
               ),
-              Positioned(
-                right: 18,
-                top: 10,
-                child: Column(
-                  children: [
-                    Text(
-                      data['title'] ?? "",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        height: 1,
+            ),
+            child: Stack(
+              children: [
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.3),
+                    BlendMode.srcATop,
+                  ),
+                  child: Image.asset(data['image'] ?? "", width: 190),
+                ),
+                Positioned(
+                  right: 18,
+                  top: 10,
+                  child: Column(
+                    children: [
+                      Text(
+                        data['title'] ?? "",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          height: 1,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      data['subtitle'] ?? "",
-                      style: const TextStyle(color: Colors.white, height: 1),
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      Text(
+                        data['subtitle'] ?? "",
+                        style: const TextStyle(color: Colors.white, height: 1),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
-                      horizontal: 5,
+                      horizontal: 23,
                     ),
-                    backgroundColor: const Color(0xFF234F68),
-                    shape: const RoundedRectangleBorder(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                       ),
+                      color: Color(0xFF234F68),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward_sharp,
+                      size: 30,
+                      color: Colors.white,
                     ),
                   ),
-                  onPressed: () {},
-                  child: const Icon(
-                    Icons.arrow_forward_sharp,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           );
         }).toList(),
       ),
@@ -253,23 +269,27 @@ Widget buildMostRequest() {
         ],
       ),
       SizedBox(
-        height: 96,
+        height: 104,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: titles.length,
           itemBuilder: (context, index) {
-            return Row(
-              children: [
-                Column(
-                  children: [
-                    Image.asset(images[index]),
-                    Text(
-                      titles[index],
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 15),
-              ],
+            return Container(
+              margin: const EdgeInsets.only(left: 15),
+              child: Column(
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(4),
+                        shape: const CircleBorder()),
+                    child: Image.asset(images[index]),
+                  ),
+                  Text(
+                    titles[index],
+                  ),
+                ],
+              ),
             );
           },
         ),

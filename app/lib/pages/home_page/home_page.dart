@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
+import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
         buildMostRequest(),
         const LocationFilter(),
         const RealEstateFilter(),
-        buildRealEstate()
+        const RealEstates()
       ],
     );
   }
@@ -300,9 +301,4 @@ Widget buildMostRequest() {
       ),
     ],
   );
-}
-
-// Real estates widget
-Widget buildRealEstate() {
-  return Container();
 }

@@ -163,77 +163,84 @@ Widget buildService() {
           ),
         ],
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: serviceData.map((data) {
-          return TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
+      SizedBox(
+        height: 140,
+        child: ListView.builder(
+          itemExtent: 200,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: serviceData.length,
+          itemBuilder: (context, index) {
+            return Container(
               padding: const EdgeInsets.all(5),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                  bottomLeft: Radius.circular(25),
-                ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
               ),
-            ),
-            child: Stack(
-              children: [
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.3),
-                    BlendMode.srcATop,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.3),
+                        BlendMode.srcATop,
+                      ),
+                      child: Image.asset(
+                        serviceData[index]['image'] ?? "",
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                   ),
-                  child: Image.asset(data['image'] ?? "", width: 190),
-                ),
-                Positioned(
-                  right: 18,
-                  top: 10,
-                  child: Column(
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        data['title'] ?? "",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          height: 1,
+                      Container(
+                        margin: const EdgeInsets.only(top: 10, right: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              serviceData[index]['title'] ?? "",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                height: 1,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              serviceData[index]['subtitle'] ?? "",
+                              style: const TextStyle(
+                                  color: Colors.white, height: 1),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        data['subtitle'] ?? "",
-                        style: const TextStyle(color: Colors.white, height: 1),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 23,
+                        ),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                          ),
+                          color: Color(0xFF234F68),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward_sharp,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 23,
-                    ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                      ),
-                      color: Color(0xFF234F68),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_forward_sharp,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-        }).toList(),
-      ),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      )
     ],
   );
 }

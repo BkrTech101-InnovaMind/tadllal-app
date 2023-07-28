@@ -166,13 +166,14 @@ Widget buildService() {
       SizedBox(
         height: 140,
         child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           itemExtent: 200,
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: serviceData.length,
           itemBuilder: (context, index) {
             return Container(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
               ),

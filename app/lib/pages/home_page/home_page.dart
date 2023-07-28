@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
         buildMostRequest(),
         const LocationFilter(),
         const RealEstateFilter(),
+        const SizedBox(height: 20),
         const RealEstates()
       ],
     );

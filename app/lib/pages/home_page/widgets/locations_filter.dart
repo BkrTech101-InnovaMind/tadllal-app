@@ -37,6 +37,7 @@ class _LocationFilterState extends State<LocationFilter> {
             ),
           ],
         ),
+        const SizedBox(height: 10),
         SizedBox(
           height: 60,
           child: Directionality(

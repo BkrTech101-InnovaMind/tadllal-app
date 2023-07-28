@@ -19,17 +19,15 @@ class _RealEstateFilterState extends State<RealEstateFilter> {
       "أرض",
     ];
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "إستكشف العقارات",
-              style: TextStyle(
-                  color: Color(0xFF234F68), fontWeight: FontWeight.w900),
-            ),
-          ],
+        const SizedBox(height: 20),
+        const Text(
+          "إستكشف العقارات",
+          style:
+              TextStyle(color: Color(0xFF234F68), fontWeight: FontWeight.w900),
         ),
+        const SizedBox(height: 15),
         SizedBox(
           height: 60,
           child: Directionality(

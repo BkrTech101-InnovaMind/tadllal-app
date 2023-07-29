@@ -95,7 +95,16 @@ Widget buildBodyButtons() {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ),
-            const Text("أو"),
+            Row(
+              children: [
+                const Expanded(child: Divider(color: Colors.black45)),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: const Text("أو"),
+                ),
+                const Expanded(child: Divider(color: Colors.black45)),
+              ],
+            ),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                   backgroundColor: const Color(0xFF8BC83F),

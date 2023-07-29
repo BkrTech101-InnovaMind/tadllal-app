@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
+import 'package:tadllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -10,7 +12,7 @@ class AuthenticationPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildIntro(),
-        buildBody(),
+        buildBody(context),
       ],
     );
   }
@@ -46,7 +48,7 @@ Widget buildIntro() {
 }
 
 // Body widget
-Widget buildBody() {
+Widget buildBody(BuildContext context) {
   return Expanded(
     child: Container(
       margin: const EdgeInsets.only(top: 40),
@@ -66,7 +68,7 @@ Widget buildBody() {
               ],
             ),
           ),
-          buildBodyButtons(),
+          buildBodyButtons(context),
         ],
       ),
     ),
@@ -74,7 +76,7 @@ Widget buildBody() {
 }
 
 // Body Buttons widget
-Widget buildBodyButtons() {
+Widget buildBodyButtons(BuildContext context) {
   return Expanded(
     child: Center(
       child: Container(
@@ -90,7 +92,14 @@ Widget buildBodyButtons() {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   )),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const SignInPage(),
+                  ),
+                );
+              },
               child: const Text(
                 "تسجيل الدخول",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -114,7 +123,14 @@ Widget buildBodyButtons() {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   )),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const SignUpPage(),
+                  ),
+                );
+              },
               child: const Text(
                 "إنشاء حساب جديد",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -130,7 +131,9 @@ Widget buildBodyButtons() {
 // Share Button widget
 Widget buildShareButton() {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      Share.share("تدلل للخدمات العقارية, دليلك السريع للعقارات في اليمن");
+    },
     child: RichText(
       text: const TextSpan(
         text: "مشاركة التطبيق مع ",

@@ -6,15 +6,17 @@ class AuthenticationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildIntroImages(),
+        buildIntro(),
+        buildBody(),
       ],
     );
   }
 }
 
-// Intro images
-Widget buildIntroImages() {
+// Intro widget
+Widget buildIntro() {
   final images = [
     "assets/images/shape.png",
     "assets/images/shape2.png",
@@ -23,21 +25,114 @@ Widget buildIntroImages() {
   ];
   return GridView.builder(
     shrinkWrap: true,
-    gridDelegate:
-        const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      mainAxisSpacing: 8,
+      crossAxisSpacing: 8,
+    ),
     itemCount: images.length,
     itemBuilder: ((context, index) {
       return Container(
-        padding: const EdgeInsets.all(4),
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(images[index]),
-              fit: BoxFit.fill,
-            ),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(images[index]),
+            fit: BoxFit.fill,
           ),
         ),
       );
     }),
+  );
+}
+
+// Body widget
+Widget buildBody() {
+  return Expanded(
+    child: Container(
+      margin: const EdgeInsets.only(top: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: const TextSpan(
+              text: "مستعد لبدء ",
+              style: TextStyle(fontSize: 25, color: Colors.black),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "الإكتشاف",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: "؟", style: TextStyle(fontSize: 35))
+              ],
+            ),
+          ),
+          buildBodyButtons(),
+        ],
+      ),
+    ),
+  );
+}
+
+// Body Buttons widget
+Widget buildBodyButtons() {
+  return Expanded(
+    child: Center(
+      child: Container(
+        margin: const EdgeInsets.only(top: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8BC83F),
+                  foregroundColor: Colors.white,
+                  fixedSize: const Size(278, 63),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  )),
+              onPressed: () {},
+              child: const Text(
+                "تسجيل الدخول",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Text("أو"),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8BC83F),
+                  foregroundColor: Colors.white,
+                  fixedSize: const Size(278, 63),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  )),
+              onPressed: () {},
+              child: const Text(
+                "إنشاء حساب جديد",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ),
+            buildShareButton()
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+// Share Button widget
+Widget buildShareButton() {
+  return GestureDetector(
+    onTap: () {},
+    child: RichText(
+      text: const TextSpan(
+        text: "مشاركة التطبيق مع ",
+        style: TextStyle(color: Colors.black, fontSize: 20),
+        children: <TextSpan>[
+          TextSpan(
+            text: "صديق",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
+    ),
   );
 }

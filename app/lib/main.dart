@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/auth_page/auth_page.dart';
+import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 
 void main() {
   runApp(const TadllalApp());

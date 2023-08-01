@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -19,7 +20,11 @@ class _SignInFormState extends State<SignInForm> {
       child: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(color: Color(0xFFF5F4F8)),
+            margin: const EdgeInsets.only(bottom: 15),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5F4F8),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: TextFormField(
               keyboardType: TextInputType.phone,
               validator: (value) => value == null || value.isEmpty
@@ -28,12 +33,20 @@ class _SignInFormState extends State<SignInForm> {
               controller: _phoneController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.phone_iphone_outlined),
+                prefixIconColor: Colors.black,
+                border: UnderlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder:
+                    UnderlineInputBorder(borderSide: BorderSide.none),
+                contentPadding: EdgeInsets.symmetric(vertical: 25),
                 hintText: "رقم الهاتف",
               ),
             ),
           ),
           Container(
-            decoration: const BoxDecoration(color: Color(0xFFF5F4F8)),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5F4F8),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: TextFormField(
               obscureText: password,
               validator: (value) {
@@ -52,10 +65,16 @@ class _SignInFormState extends State<SignInForm> {
               controller: _passwordController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.lock_outlined),
+                prefixIconColor: Colors.black,
+                border: UnderlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder:
+                    UnderlineInputBorder(borderSide: BorderSide.none),
+                contentPadding: EdgeInsets.symmetric(vertical: 25),
                 hintText: "كلمة السر",
               ),
             ),
           ),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -70,11 +89,48 @@ class _SignInFormState extends State<SignInForm> {
                   style: TextStyle(
                     color: Color(0xFF1F4C6B),
                     fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: const Text(
+                  "هل نسيت كلمة السر؟",
+                  style: TextStyle(
+                    color: Color(0xFF1F4C6B),
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ],
-          )
+          ),
+          const SizedBox(height: 30),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              backgroundColor: const Color(0xFF8BC83F),
+              foregroundColor: Colors.white,
+              fixedSize: const Size(278, 63),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "تسجيل الدخول",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SvgPicture.asset("assets/icons/arrow_left.svg"),
+              ],
+            ),
+          ),
         ],
       ),
     );

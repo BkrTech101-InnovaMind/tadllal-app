@@ -13,6 +13,24 @@ class _SignInFormState extends State<SignInForm> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   bool password = true;
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void handleSubmit() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    String phoneNumber = _phoneController.text;
+    String password = _passwordController.text;
+    print("phoneNumber: $phoneNumber, password: $password");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -116,7 +134,9 @@ class _SignInFormState extends State<SignInForm> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              handleSubmit();
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

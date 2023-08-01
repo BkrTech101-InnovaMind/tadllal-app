@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 import 'package:tadllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
+import 'package:tadllal/pages/auth_pages/widgets/share_button.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -139,31 +139,9 @@ Widget buildBodyButtons(BuildContext context) {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ),
-            buildShareButton()
+            const ShareButton()
           ],
         ),
-      ),
-    ),
-  );
-}
-
-// Share Button widget
-Widget buildShareButton() {
-  return GestureDetector(
-    onTap: () {
-      Share.share(
-          "Enter the app URL from the store here to be shared when this button is clicked");
-    },
-    child: RichText(
-      text: const TextSpan(
-        text: "مشاركة التطبيق مع ",
-        style: TextStyle(color: Colors.black, fontSize: 20),
-        children: <TextSpan>[
-          TextSpan(
-            text: "صديق",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          )
-        ],
       ),
     ),
   );

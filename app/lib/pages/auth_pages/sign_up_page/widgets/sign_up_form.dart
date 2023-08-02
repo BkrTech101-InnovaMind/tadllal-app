@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/auth_pages/code_auth_page.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 
 class SignUpForm extends StatefulWidget {

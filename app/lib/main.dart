@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 
 void main() {
-  runApp(const TadllalApp());
+  runApp(const ProviderScope(child: TadllalApp()));
 }
 
 class TadllalApp extends StatelessWidget {

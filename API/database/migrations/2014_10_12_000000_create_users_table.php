@@ -19,8 +19,11 @@ return new class extends Migration {
             $table->enum('role', ['user', 'admin', 'marketer', 'company'])->default('user');
             $table->string('phone_number')->nullable();
             $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('registered_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('registered_by')->references('id')->on('users');
         });
     }
 

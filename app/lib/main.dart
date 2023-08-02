@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/home_page/home_page.dart';
+import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 
 void main() {
   runApp(const TadllalApp());
@@ -15,7 +15,7 @@ class TadllalApp extends StatelessWidget {
       home: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          body: SafeArea(child: HomePage()),
+          body: SafeArea(child: AuthenticationPage()),
         ),
       ),
     );

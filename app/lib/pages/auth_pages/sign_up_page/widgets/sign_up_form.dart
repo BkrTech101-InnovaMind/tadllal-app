@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page.dart';
+import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 
-class SignInForm extends StatefulWidget {
-  const SignInForm({super.key});
+class SignUpForm extends StatefulWidget {
+  const SignUpForm({super.key});
 
   @override
-  State<SignInForm> createState() => _SignInFormState();
+  State<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _SignInFormState extends State<SignInForm> {
+class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
+  final _userNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   bool password = true;
@@ -26,9 +28,17 @@ class _SignInFormState extends State<SignInForm> {
       return;
     }
 
+    String userName = _userNameController.text;
     String phoneNumber = _phoneController.text;
     String password = _passwordController.text;
-    print("phoneNumber: $phoneNumber, password: $password");
+    print(
+        "phoneNumber: $phoneNumber, password: $password, userName: $userName");
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const CodeAuthenticationPage(),
+      ),
+    );
   }
 
   @override
@@ -37,6 +47,29 @@ class _SignInFormState extends State<SignInForm> {
       key: _formKey,
       child: Column(
         children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5F4F8),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: TextFormField(
+              keyboardType: TextInputType.name,
+              validator: (value) => value == null || value.isEmpty
+                  ? "ألرجاء ادخل اسمك الثنائي على الاقل"
+                  : null,
+              controller: _userNameController,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.person_3_outlined),
+                prefixIconColor: Colors.black,
+                border: UnderlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder:
+                    UnderlineInputBorder(borderSide: BorderSide.none),
+                contentPadding: EdgeInsets.symmetric(vertical: 25),
+                hintText: "ألاسم الكامل",
+              ),
+            ),
+          ),
           Container(
             margin: const EdgeInsets.only(bottom: 15),
             decoration: BoxDecoration(
@@ -113,9 +146,16 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push<void>(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const SignInPage(),
+                    ),
+                  );
+                },
                 child: const Text(
-                  "هل نسيت كلمة السر؟",
+                  "لديك حساب بالفعل؟",
                   style: TextStyle(
                     color: Color(0xFF1F4C6B),
                     fontSize: 15,
@@ -138,18 +178,9 @@ class _SignInFormState extends State<SignInForm> {
             onPressed: () {
               handleSubmit();
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "تسجيل الدخول",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                SvgPicture.asset("assets/icons/arrow_left.svg"),
-              ],
+            child: const Text(
+              "إنشاء حساب",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ),
         ],

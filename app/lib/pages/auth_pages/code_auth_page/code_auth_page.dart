@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
 
 class CodeAuthenticationPage extends StatefulWidget {
   const CodeAuthenticationPage({super.key});
@@ -13,6 +14,7 @@ class CodeAuthenticationPage extends StatefulWidget {
 class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
   int countdownSeconds = 30;
   Timer? _timer;
+  String verificationCode = "";
 
   @override
   void initState() {
@@ -55,14 +57,55 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
         child: Scaffold(
           body: Container(
             margin: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.only(top: 15),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildBackButton(context),
-                buildIntroText(),
-                buildTimer(countdownSeconds),
-                buildResendButton(onResendPressed: resendCode)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      buildIntroText(),
+                      Container(
+                        alignment: AlignmentDirectional.center,
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: VerificationCode(
+                            autofocus: true,
+                            length: 4,
+                            keyboardType: TextInputType.number,
+                            fullBorder: true,
+                            fillColor: const Color(0xFFF5F4F8),
+                            margin: const EdgeInsets.all(10),
+                            itemSize: 60,
+                            underlineColor: const Color(0xFF234F68),
+                            textStyle:
+                                const TextStyle(color: Color(0xFF252B5C)),
+                            underlineUnfocusedColor: Colors.transparent,
+                            underlineWidth: 2,
+                            onCompleted: (String value) {
+                              setState(() {
+                                verificationCode = value;
+                              });
+                              print("verificationCode: $verificationCode");
+                            },
+                            onEditing: (value) {},
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          buildTimer(countdownSeconds),
+                          const SizedBox(height: 10),
+                          buildResendButton(onResendPressed: resendCode),
+                        ],
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),

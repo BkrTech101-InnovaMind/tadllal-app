@@ -23,7 +23,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             // password
-            'role' => fake()->randomElement(['user', 'admin', 'marketer', 'company']),
+            // 'role' => fake()->randomElement(['user', 'admin', 'marketer', 'company']),
+            'role' => fake()->randomElement(['admin']),
             'phone_number' => fake()->phoneNumber(),
             'avatar' => fake()->imageUrl(200, 200),
             // Generate a random image URL

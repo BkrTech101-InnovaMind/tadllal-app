@@ -16,13 +16,20 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        $user = Auth::user();
-        if ($user && $user->role !== 'admin') {
-            return $this->error('error', 'You are not authorized to access this section.', 403);
 
+    public function handle(Request $request, Closure $next)
+    {
+        if (!Auth::check()) {
+
+            return $this->error('error', 'You are not authenticated.', 401);
         }
+
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+
+            return $this->error('error', 'You are not authorized to access this section.', 403);
+        }
+
 
         return $next($request);
     }

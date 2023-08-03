@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
+use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -75,7 +76,12 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
         Route::get('/show', [FavoriteController::class, 'getUserFavorites']);
     });
 
-
+    Route::prefix('preferences')->group(function () {
+        //Add User Preference
+        Route::post('/add', [UserPreferenceController::class, 'store']);
+        Route::get('/show', [UserPreferenceController::class, 'getUserPreferences']);
+        Route::get('/delete/{id}', [UserPreferenceController::class, 'delete']);
+    });
 
 
 });

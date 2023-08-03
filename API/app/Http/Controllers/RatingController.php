@@ -6,9 +6,11 @@ use App\Models\Rating;
 use App\Models\RealEstate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\HttpResponses;
 
 class RatingController extends Controller
 {
+    use HttpResponses;
     public function rateRealEstate(Request $request)
     {
         $request->validate([
@@ -19,7 +21,7 @@ class RatingController extends Controller
         $user = Auth::user(); // Get the currently authenticated user
         $realEstate = RealEstate::find($request->id);
         if (!$user || !$realEstate) {
-            return response(['message' => 'User or real estate not found.'], 404);
+            return $this->error('Error', ['message' => 'User or real estate not found.'], 404);
         }
         $rating = $user->ratings()->where('real_estate_id', $realEstate->id)->first();
 
@@ -34,6 +36,9 @@ class RatingController extends Controller
         }
         $rating->save();
 
-        return response(['message' => 'The real estate has been rated successfully.'], 201);
+        return $this->success([
+            'message' => 'The real estate has been rated successfully.'
+        ]);
+
     }
 }

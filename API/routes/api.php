@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -62,5 +64,18 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
 
     Route::prefix('realEstate')->group(function () {
         Route::resource('/realty', RealEstateController::class);
+        // Rating
+        Route::post('/rate', [RatingController::class, 'rateRealEstate']);
     });
+
+    Route::prefix('favorites')->group(function () {
+        // Favorites
+        Route::post('/add', [FavoriteController::class, 'addToFavorites']);
+        Route::delete('/remove/{id}', [FavoriteController::class, 'removeFromFavorites']);
+        Route::get('/show', [FavoriteController::class, 'getUserFavorites']);
+    });
+
+
+
+
 });

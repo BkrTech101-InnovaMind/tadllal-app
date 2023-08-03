@@ -32,6 +32,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rating::class, 'user_id');
     }
+    public function preferences()
+    {
+        return $this->hasMany(UserPreference::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

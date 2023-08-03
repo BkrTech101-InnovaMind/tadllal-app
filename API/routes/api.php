@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RealEstateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,7 @@ Route::post('app/login', [AuthController::class, 'login']);
 Route::post('app/register', [AuthController::class, 'register']);
 
 //admin
-Route::post('dashboard/login', [AdminAuthController::class, 'login']);
+Route::post('admin/login', [AdminAuthController::class, 'login']);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -33,6 +35,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
     //admin test
     Route::get('/', function () {
         return "welcome Admin";
+    });
+
+    Route::prefix('realEstate')->group(function () {
+        Route::resource('/realty', AdminRealEstateController::class);
+        Route::post('/{id}/edit', [AdminRealEstateController::class, 'updateRealEstate']);
     });
 
     // Logout
@@ -53,4 +60,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
         Route::post('/register-other-user', [AuthController::class, 'registerNormalUser']);
     });
 
+    Route::prefix('realEstate')->group(function () {
+        Route::resource('/realty', RealEstateController::class);
+    });
 });

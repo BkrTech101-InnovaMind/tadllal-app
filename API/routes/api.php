@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
 use App\Http\Controllers\TypesController;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
 use App\Http\Controllers\Admin\TypesController as AdminTypesController;
-use App\Http\Controllers\Admin\LocationsController as AdminLocationsController;
+use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
     Route::prefix('locations')->group(function () {
         Route::resource('/location', AdminLocationsController::class);
     });
+
+    Route::prefix('orders')->group(function () {
+        Route::put('/approve/{orderId}', [AdminOrdersController::class, 'approveOrder']);
+        Route::get('/', [AdminOrdersController::class, 'getAllOrders']);
+        Route::get('/approved', [AdminOrdersController::class, 'getApprovedOrders']);
+        Route::get('/pending', [AdminOrdersController::class, 'getPendingOrders']);
+        Route::post('/delete/{orderId}', [AdminOrdersController::class, 'destroyOrder']);
+    });
     // Logout
     Route::post('/logout', [AdminAuthController::class, 'logout']);
 });
@@ -85,7 +94,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
         Route::delete('/remove/{id}', [FavoriteController::class, 'removeFromFavorites']);
         Route::get('/show', [FavoriteController::class, 'getUserFavorites']);
     });
-
+    Route::prefix('orders')->group(function () {
+        Route::post('/new/{id}', [OrdersController::class, 'submitOrder']);
+    });
     Route::prefix('preferences')->group(function () {
         //Add User Preference
         Route::post('/add', [UserPreferenceController::class, 'store']);

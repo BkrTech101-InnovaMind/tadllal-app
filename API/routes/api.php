@@ -4,12 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
+use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
+use App\Http\Controllers\Admin\TypesController as AdminTypesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
         Route::post('/{id}/edit', [AdminRealEstateController::class, 'updateRealEstate']);
     });
 
+    Route::prefix('types')->group(function () {
+        Route::resource('/types', AdminTypesController::class);
+    });
     // Logout
     Route::post('/logout', [AdminAuthController::class, 'logout']);
 });
@@ -82,6 +87,11 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
         Route::get('/show', [UserPreferenceController::class, 'getUserPreferences']);
         Route::get('/delete/{id}', [UserPreferenceController::class, 'delete']);
     });
+
+    Route::prefix('types')->group(function () {
+        Route::get('/', [TypesController::class, 'index']);
+    });
+
 
 
 });

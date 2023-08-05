@@ -28,11 +28,15 @@ class _SignUpFormState extends State<SignUpForm> {
       return;
     }
 
-    String userName = _userNameController.text;
-    String phoneNumber = _phoneController.text;
-    String password = _passwordController.text;
-    print(
-        "phoneNumber: $phoneNumber, password: $password, userName: $userName");
+    Map form = {
+      "userName": _userNameController.text,
+      "phoneNumber": _phoneController.text,
+      "password": _passwordController.text,
+      "device_name": "mobile",
+    };
+
+    print(form);
+
     Navigator.push<void>(
       context,
       MaterialPageRoute<void>(

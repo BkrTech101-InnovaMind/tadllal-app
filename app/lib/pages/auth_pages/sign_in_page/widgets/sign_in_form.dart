@@ -26,9 +26,13 @@ class _SignInFormState extends State<SignInForm> {
       return;
     }
 
-    String phoneNumber = _phoneController.text;
-    String password = _passwordController.text;
-    print("phoneNumber: $phoneNumber, password: $password");
+    Map form = {
+      "phoneNumber": _phoneController.text,
+      "password": _passwordController.text,
+      "device_name": "mobile",
+    };
+
+    print(form);
   }
 
   @override

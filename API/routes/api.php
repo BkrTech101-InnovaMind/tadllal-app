@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
 use App\Http\Controllers\TypesController;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
 use App\Http\Controllers\Admin\TypesController as AdminTypesController;
+use App\Http\Controllers\Admin\LocationsController as AdminLocationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +51,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
 
     Route::prefix('types')->group(function () {
         Route::resource('/types', AdminTypesController::class);
+    });
+    Route::prefix('locations')->group(function () {
+        Route::resource('/location', AdminLocationsController::class);
     });
     // Logout
     Route::post('/logout', [AdminAuthController::class, 'logout']);
@@ -90,6 +95,10 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
 
     Route::prefix('types')->group(function () {
         Route::get('/', [TypesController::class, 'index']);
+    });
+
+    Route::prefix('locations')->group(function () {
+        Route::get('/', [LocationsController::class, 'index']);
     });
 
 

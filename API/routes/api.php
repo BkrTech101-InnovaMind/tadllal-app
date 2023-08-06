@@ -86,6 +86,19 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
         Route::resource('/realty', RealEstateController::class);
         // Rating
         Route::post('/rate', [RatingController::class, 'rateRealEstate']);
+
+        Route::prefix('filters')->group(function () {
+            Route::get('/by-location/{locationId}', [RealEstateController::class, 'getByLocation']);
+            Route::get('/by-type/{typeId}', [RealEstateController::class, 'getByType']);
+            Route::get('/by-Preference', [RealEstateController::class, 'getByUserPreference']);
+            Route::get('/by-highest-rated', [RealEstateController::class, 'getHighestRated']);
+
+            Route::get('/by-State/available', [RealEstateController::class, 'getByStateAvailable']);
+            Route::get('/by-State/unavailable', [RealEstateController::class, 'getByStateUnavailable']);
+            Route::get('/by-kind/forSale', [RealEstateController::class, 'getByType2ForSale']);
+            Route::get('/by-kind/forRent', [RealEstateController::class, 'getByType2ForRent']);
+            Route::get('/search/{query}', [RealEstateController::class, 'search']);
+        });
     });
 
     Route::prefix('favorites')->group(function () {

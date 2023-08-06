@@ -37,4 +37,6 @@ class RealEstate extends Model
         return $this->hasMany(Rating::class, 'real_estate_id');
     }
 
+
+
 }

@@ -30,6 +30,7 @@ Widget buildIntro() {
     "assets/images/shape4.png",
   ];
   return GridView.builder(
+    physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,

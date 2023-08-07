@@ -11,7 +11,6 @@ const endpointUrl = 'http://10.0.2.2:8000/api/app';
 const signUpEndpoint = '/register';
 const signInEndpoint = '/login';
 const signOutEndpoint = '/logout';
-const userProfileEndpoint = '/user';
 
 // Initialize Dio instance for API requests
 class AuthProvider {

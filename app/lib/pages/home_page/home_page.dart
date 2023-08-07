@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
+import 'package:tadllal/pages/user_page/user_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 buildNotificationsIcon(true),
                 const SizedBox(width: 15),
-                buildUserImage(),
+                buildUserImage(context),
               ],
             ),
           ],
@@ -41,17 +42,30 @@ class _HomePageState extends State<HomePage> {
 }
 
 // User image widget
-Widget buildUserImage() {
-  return Container(
-    padding: const EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      border: Border.all(color: const Color(0xFFDFDFDF), width: 2),
+Widget buildUserImage(BuildContext context) {
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: const EdgeInsets.all(0),
     ),
-    child: const CircleAvatar(
-      radius: 28,
-      backgroundImage: AssetImage(
-        'assets/images/user.png',
+    onPressed: () {
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => const UserPage(),
+        ),
+      );
+    },
+    child: Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: const Color(0xFFDFDFDF), width: 2),
+      ),
+      child: const CircleAvatar(
+        radius: 28,
+        backgroundImage: AssetImage(
+          'assets/images/user.png',
+        ),
       ),
     ),
   );

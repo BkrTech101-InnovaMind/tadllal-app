@@ -8,14 +8,16 @@ class AuthenticationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildIntro(),
-          buildBody(context),
-        ],
+    return Scaffold(
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildIntro(),
+            buildBody(context),
+          ],
+        ),
       ),
     );
   }

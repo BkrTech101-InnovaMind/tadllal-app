@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // API endpoint URL
 const endpointUrl = 'http://10.0.2.2:8000/api/app';
@@ -62,3 +63,8 @@ class AuthProvider {
     return;
   }
 }
+
+final authProvider = FutureProvider<bool>((ref) async {
+  final token = await AuthProvider().getAccessToken();
+  return token != null;
+});

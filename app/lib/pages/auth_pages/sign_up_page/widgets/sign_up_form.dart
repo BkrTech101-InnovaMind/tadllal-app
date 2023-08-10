@@ -1,5 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
+import 'package:tadllal/methods/auth_provider.dart';
 import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -17,28 +18,61 @@ class _SignUpFormState extends State<SignUpForm> {
   bool password = true;
 
   @override
+  void initState() {
+    _phoneController.text = "zzzz@zzzz.tttt";
+    _passwordController.text = "@Abo77927";
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void handleSubmit() {
+  void handleSubmit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    String userName = _userNameController.text;
-    String phoneNumber = _phoneController.text;
-    String password = _passwordController.text;
-    print(
-        "phoneNumber: $phoneNumber, password: $password, userName: $userName");
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => const CodeAuthenticationPage(),
-      ),
-    );
+    final form = {
+      "name": _userNameController.text.toString(),
+      "email": _phoneController.text.toString(),
+      "password": _passwordController.text.toString(),
+      "password_confirmation": _passwordController.text.toString(),
+      "device_name": "mobile",
+    };
+
+    try {
+      AuthProvider authProvider = AuthProvider();
+      Response response = await authProvider.signUp(data: form);
+      if (response.data != null) {
+        final token = response.data['data']['token'];
+        await authProvider.saveAccessToken(token: token);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text("ألرجاء التأكد من رمز التحقق لمتابعة التسجيل")),
+        );
+      }
+
+      print(response.data.toString());
+    } catch (e) {
+      if (e is DioException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text("هذا الحساب مسجلُ مسبقاً, حاول بإستخدام حساب اَخر")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+            "يبدو أن هناك خطأ ما, تأكد من إتصالك بالانترنت وحاول مجدداً",
+          )),
+        );
+      }
+    }
   }
 
   @override
@@ -77,7 +111,7 @@ class _SignUpFormState extends State<SignUpForm> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.emailAddress,
               validator: (value) => value == null || value.isEmpty
                   ? "الرجاء ادخال رقم الهاتف"
                   : null,

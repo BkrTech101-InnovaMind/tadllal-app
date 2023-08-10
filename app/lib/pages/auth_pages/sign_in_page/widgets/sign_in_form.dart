@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tadllal/methods/auth_provider.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -15,20 +17,64 @@ class _SignInFormState extends State<SignInForm> {
   bool password = true;
 
   @override
+  void initState() {
+    _phoneController.text = "zzzz@zzzz.tttt";
+    _passwordController.text = "@Abo77927";
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void handleSubmit() {
+  void handleSubmit() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    String phoneNumber = _phoneController.text;
-    String password = _passwordController.text;
-    print("phoneNumber: $phoneNumber, password: $password");
+    final form = {
+      "email": _phoneController.text,
+      "password": _passwordController.text,
+      "device_name": "mobile",
+    };
+
+    try {
+      AuthProvider authProvider = AuthProvider();
+      Response response = await authProvider.signIn(data: form);
+      if (response.data != null) {
+        final token = response.data['data']['token'];
+        await authProvider.saveAccessToken(token: token);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("تم تسجيل الدخول بنجاح")),
+        );
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response!.data['message'] == 'Credentials do not match') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "يبدو ان إسم المستخدم او كلمة المرور غير صحيحة, حاول مجدداً"),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+              "يبدو أن هناك خطأ ما, تأكد من إتصالك بالانترنت وحاول مجدداً",
+            ),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "يبدو أن هناك خطأ ما, حاول مجدداً",
+          ),
+        ));
+      }
+    }
   }
 
   @override
@@ -44,7 +90,7 @@ class _SignInFormState extends State<SignInForm> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.emailAddress,
               validator: (value) => value == null || value.isEmpty
                   ? "الرجاء ادخال رقم الهاتف"
                   : null,

@@ -12,38 +12,74 @@ class RealEstates extends StatefulWidget {
 class _RealEstatesState extends State<RealEstates> {
   final List realEstates = [
     {
-      'image': 'assets/images/shape.png',
+      'images': [
+        'assets/images/shape.png',
+        'assets/images/shape2.png',
+        'assets/images/shape3.png',
+        'assets/images/shape4.png',
+      ],
+      "availability": "متاح",
       "state": "للإيجار",
       "location": "حدة,حي العفيفة",
       "price": "220",
+      "type": "أرض",
       "title": "شقة مفروشة للإيجار",
+      "description":
+          "شقة مفروشة للايجار في ارقى احياء صنعاء مجهزة باحدث وسائل الراحة الممكنه التي قد تحلم بها في حياتك ",
       "rating": "4.8",
       "isFavorite": false
     },
     {
-      'image': 'assets/images/shape2.png',
+      'images': [
+        'assets/images/shape.png',
+        'assets/images/shape2.png',
+        'assets/images/shape3.png',
+        'assets/images/shape4.png',
+      ],
+      "availability": "غير متاح",
       "state": "للبيع",
+      "type": "شقة",
       "location": "بيت بوس, حي الشباب",
       "price": "500,000",
       "title": "فيلا بتصميم حديث",
+      "description":
+          "شقة مفروشة للايجار في ارقى احياء صنعاء مجهزة باحدث وسائل الراحة الممكنه التي قد تحلم بها في حياتك ",
       "rating": "4.8",
       "isFavorite": false
     },
     {
-      'image': 'assets/images/shape3.png',
+      'images': [
+        'assets/images/shape.png',
+        'assets/images/shape2.png',
+        'assets/images/shape3.png',
+        'assets/images/shape4.png',
+      ],
+      "availability": "متاح",
       "state": "للإيجار",
+      "type": "عمارة",
       "location": "بيت بوس, حي الشباب",
       "price": "235",
       "title": "فيلا واسعة للإيجار",
+      "description":
+          "شقة مفروشة للايجار في ارقى احياء صنعاء مجهزة باحدث وسائل الراحة الممكنه التي قد تحلم بها في حياتك ",
       "rating": "4.8",
       "isFavorite": false
     },
     {
-      'image': 'assets/images/shape4.png',
+      'images': [
+        'assets/images/shape.png',
+        'assets/images/shape2.png',
+        'assets/images/shape3.png',
+        'assets/images/shape4.png',
+      ],
+      "availability": "غير متاح",
       "state": "للبيع",
+      "type": "فلة",
       "location": "حدة,شارع بيروت",
       "price": "56,000",
       "title": "شقة للبيع في برج حديث وفي موقع متميز",
+      "description":
+          "شقة مفروشة للايجار في ارقى احياء صنعاء مجهزة باحدث وسائل الراحة الممكنه التي قد تحلم بها في حياتك ",
       "rating": "4.8",
       "isFavorite": false
     },
@@ -85,7 +121,7 @@ class _RealEstatesState extends State<RealEstates> {
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(realEstates[index]['image']),
+                      image: AssetImage(realEstates[index]['images'][0]),
                       fit: BoxFit.fill,
                     ),
                   ),

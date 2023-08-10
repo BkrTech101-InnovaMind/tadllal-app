@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
-import 'package:tadllal/pages/user_page/user_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,14 +46,7 @@ Widget buildUserImage(BuildContext context) {
     style: TextButton.styleFrom(
       padding: const EdgeInsets.all(0),
     ),
-    onPressed: () {
-      Navigator.push<void>(
-        context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => const UserPage(),
-        ),
-      );
-    },
+    onPressed: () {},
     child: Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(

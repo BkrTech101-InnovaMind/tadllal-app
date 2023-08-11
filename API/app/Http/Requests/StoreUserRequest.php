@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -24,9 +25,9 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'email', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'role' => ['nullable', 'string', 'in:user,marketer,company'],
+            'role' => ['nullable', 'string', Rule::in(['user', 'marketer', 'company', 'admin'])],
             'phone' => ['nullable', 'string', 'max:20'],
             'avatar' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];

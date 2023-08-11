@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         return $this->success([
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
         ]);
     }
@@ -47,7 +48,7 @@ class AuthController extends Controller
         ]);
 
         return $this->success([
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $user->createToken('API Token of' . $user->name)->plainTextToken
         ]);
     }
@@ -57,9 +58,7 @@ class AuthController extends Controller
     {
         Auth::user()->currentAccessToken()->delete();
 
-        return $this->success([
-            'message' => 'You have successfully been logged out and your token has been deleted'
-        ]);
+        return $this->success([], 'You have successfully been logged out and your token has been deleted');
     }
 
 
@@ -93,9 +92,8 @@ class AuthController extends Controller
         $user->save();
 
         return $this->success([
-            'message' => 'User data updated successfully.',
-            'user' => $user,
-        ]);
+            'user' => new UserResource($user),
+        ], 'User data updated successfully.');
     }
 
     public function changePassword(Request $request)
@@ -152,8 +150,7 @@ class AuthController extends Controller
         ]);
 
         return $this->success([
-            'message' => 'New User account created successfully.',
-            'user' => $newUser,
-        ]);
+            'user' => new UserResource($newUser),
+        ], 'New User account created successfully.');
     }
 }

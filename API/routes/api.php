@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
@@ -63,6 +64,16 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
         Route::get('/approved', [AdminOrdersController::class, 'getApprovedOrders']);
         Route::get('/pending', [AdminOrdersController::class, 'getPendingOrders']);
         Route::post('/delete/{orderId}', [AdminOrdersController::class, 'destroyOrder']);
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserManagementController::class, 'viewUsers']);
+        Route::post('/{id}', [UserManagementController::class, 'show']);
+        Route::post('/add', [UserManagementController::class, 'store']);
+        Route::put('/edit/{id}', [UserManagementController::class, 'modifyUser']);
+        Route::put('/changeType/{id}', [UserManagementController::class, 'changeUserType']);
+        Route::delete('delete/{id}', [UserManagementController::class, 'deleteUser']);
+
     });
     // Logout
     Route::post('/logout', [AdminAuthController::class, 'logout']);

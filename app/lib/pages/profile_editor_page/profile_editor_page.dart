@@ -4,46 +4,64 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileEditorPage extends StatefulWidget {
-  const ProfileEditorPage({super.key});
+  final bool isProfileEditor;
+  const ProfileEditorPage({required this.isProfileEditor, super.key});
 
   @override
   State<ProfileEditorPage> createState() => _ProfileEditorState();
 }
 
 class _ProfileEditorState extends State<ProfileEditorPage> {
+  bool isProfileEditor = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   File? selectedImage;
-  String userImage = "";
+  String? userImage;
 
   void _pickImage(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
       setState(() {
         selectedImage = File(pickedImage.path);
+        userImage = selectedImage!.path;
       });
     }
   }
 
-  final List user = [
-    {
-      "avatar":
-          "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-      "user_name": "أبوبكر صديق",
-      "user_phone": "0123456789",
-      "user_email": "FgGQe@example.com",
-    }
-  ];
+  final Map<String, dynamic> user = {
+    "user": {
+      "id": "4",
+      "attributes": {
+        "name": "أبوبكر صديق",
+        "email": "zz78zz@zzz6z.tttt665604",
+        "role": "user",
+        "phone": "779 207 445",
+        "avatar": "https://i.pravatar.cc/300"
+      }
+    },
+  };
+
+  Map<String, dynamic> originalUserData = {};
 
   @override
   void initState() {
+    final userInfo = user['user']!['attributes'];
+    userNameController.text = userInfo['name'];
+    emailController.text = userInfo['email'];
+    if (userInfo['phone'] != null) {
+      phoneNumberController.text = userInfo['phone'];
+    }
+    userImage = userInfo['avatar'];
+    isProfileEditor = widget.isProfileEditor;
+    originalUserData = {
+      "name": userNameController.text,
+      "email": emailController.text,
+      "phone": phoneNumberController.text,
+      "avatar": userImage,
+    };
     super.initState();
-    userNameController.text = user[0]["user_name"];
-    emailController.text = user[0]["user_email"];
-    phoneNumberController.text = user[0]["user_phone"];
-    userImage = user[0]["avatar"];
   }
 
   @override
@@ -51,60 +69,102 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
     userNameController.dispose();
     emailController.dispose();
     phoneNumberController.dispose();
+    selectedImage = null;
+    userImage = "";
     super.dispose();
+  }
+
+  void handleSubmit() {
+    final editedForm = {
+      "name": userNameController.text,
+      "email": emailController.text,
+      "phone": phoneNumberController.text,
+      "avatar": userImage,
+    };
+
+    final changedFields = <String, dynamic>{};
+    editedForm.forEach(
+      (key, value) {
+        if (value != originalUserData[key]) {
+          changedFields[key] = value;
+        }
+      },
+    );
+
+    if (changedFields.isNotEmpty) {
+      print("Changed fields: $changedFields");
+    } else {
+      print("No changes to submit");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      children: [
-        buildTexts(),
-        buildCompleteProfileForm(),
-      ],
+    return Scaffold(
+      appBar: isProfileEditor
+          ? AppBar(
+              title: const Text("تعديل الملف الشخصي"),
+              backgroundColor: const Color(0xFF194706),
+            )
+          : null,
+      body: Container(
+        margin: isProfileEditor
+            ? const EdgeInsets.symmetric(horizontal: 18, vertical: 10)
+            : null,
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          children: [
+            buildTexts(isProfileEditor),
+            buildProfileForm(isProfileEditor),
+            buildSubmitButton(isProfileEditor),
+          ],
+        ),
+      ),
     );
   }
 
   // Text widget
-  Widget buildTexts() {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 260,
-          child: Text.rich(
-            TextSpan(
-              text: "أضف معلوماتك واجعل ",
-              style: TextStyle(fontSize: 25, color: Colors.black),
-              children: <TextSpan>[
-                TextSpan(
-                  text: "حسابك ",
-                  style: TextStyle(fontWeight: FontWeight.w900),
+  Widget buildTexts(isProfileEditor) {
+    return !isProfileEditor
+        ? const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 260,
+                child: Text.rich(
+                  TextSpan(
+                    text: "أضف معلوماتك واجعل ",
+                    style: TextStyle(fontSize: 25, color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "حسابك ",
+                        style: TextStyle(fontWeight: FontWeight.w900),
+                      ),
+                      TextSpan(text: "مكتملاً")
+                    ],
+                  ),
                 ),
-                TextSpan(text: "مكتملاً")
-              ],
-            ),
-          ),
-        ),
-        Text.rich(
-          TextSpan(
-            text: "يمكنك تعديل هذا لاحقاً في ",
-            style: TextStyle(fontSize: 16, color: Colors.black),
-            children: <TextSpan>[
-              TextSpan(
-                text: "إعدادات الحساب الشخصي",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: "يمكنك تعديل هذا لاحقاً في ",
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "إعدادات الحساب الشخصي",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               )
             ],
-          ),
-        )
-      ],
-    );
+          )
+        : Container();
   }
 
-  // Complete Profile Form widget
-  Widget buildCompleteProfileForm() {
+  // Profile Form widget
+  Widget buildProfileForm(isProfileEditor) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Form(
@@ -139,22 +199,27 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
             Container(
               margin: const EdgeInsets.only(bottom: 15),
               decoration: BoxDecoration(
-                color: const Color(0xFF234F68),
+                color: !isProfileEditor
+                    ? const Color(0xFF234F68)
+                    : const Color(0xFFF5F4F8),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                readOnly: true,
+                readOnly: !isProfileEditor,
                 controller: emailController,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.alternate_email_outlined),
-                  prefixIconColor: Colors.white,
-                  border: UnderlineInputBorder(borderSide: BorderSide.none),
+                style: TextStyle(
+                    color: !isProfileEditor ? Colors.white : Colors.black),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.alternate_email_outlined),
+                  prefixIconColor:
+                      !isProfileEditor ? Colors.white : Colors.black,
+                  border:
+                      const UnderlineInputBorder(borderSide: BorderSide.none),
                   focusedBorder:
-                      UnderlineInputBorder(borderSide: BorderSide.none),
-                  contentPadding: EdgeInsets.symmetric(vertical: 25),
-                  labelStyle: TextStyle(color: Colors.white),
+                      const UnderlineInputBorder(borderSide: BorderSide.none),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 25),
+                  labelStyle: const TextStyle(color: Colors.white),
                   hintText: "عنوان البريد الالكتروني",
                 ),
               ),
@@ -185,41 +250,63 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
     );
   }
 
+  // User Avatar widget
+  Widget buildUserAvatar() {
+    if (selectedImage == null) {
+      if (userImage == null) {
+        return const CircleAvatar(
+          radius: 60,
+          backgroundColor: Color(0xFFF5F4F8),
+          child: Icon(Icons.person, size: 70, color: Color(0xFFA1A5C1)),
+        );
+      } else {
+        return Column(
+          children: [
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: const Color(0xFFF5F4F8),
+              backgroundImage: NetworkImage(userImage!),
+            ),
+          ],
+        );
+      }
+    } else {
+      return CircleAvatar(
+        radius: 60,
+        backgroundImage: FileImage(File(selectedImage!.path)),
+      );
+    }
+  }
+
   // Profile Image widget
   Widget buildProfileImage() {
     return Stack(
       children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundImage: selectedImage == null
-              ? const NetworkImage(
-                  'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                )
-              : FileImage(File(selectedImage!.path)) as ImageProvider<Object>,
-        ),
+        buildUserAvatar(),
         Positioned(
-            bottom: 0,
-            right: 0,
-            child: InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: ((builder) => buildEditingSheet()),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: const Color(0xFF1F4C6B),
-                ),
-                child: const Icon(
-                  Icons.edit_outlined,
-                  color: Colors.white,
-                  size: 20,
-                ),
+          bottom: 0,
+          right: 0,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => buildEditingSheet()),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: const Color(0xFF1F4C6B),
               ),
-            ))
+              child: const Icon(
+                Icons.edit_outlined,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -257,6 +344,32 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
           ),
         ],
       ),
+    );
+  }
+
+  // Profile Editor Submit Button widget
+  Widget buildSubmitButton(isProfileEditor) {
+    return Container(
+      margin: const EdgeInsets.only(top: 30),
+      child: isProfileEditor
+          ? OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFF1F4C6B),
+                fixedSize: const Size(278, 63),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
+              ),
+              onPressed: () {
+                handleSubmit();
+              },
+              child: const Text(
+                "تعديل",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            )
+          : null,
     );
   }
 }

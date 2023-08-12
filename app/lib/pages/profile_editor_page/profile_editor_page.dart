@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CompleteProfilePage extends StatefulWidget {
-  const CompleteProfilePage({super.key});
+class ProfileEditorPage extends StatefulWidget {
+  const ProfileEditorPage({super.key});
 
   @override
-  State<CompleteProfilePage> createState() => _CompleteProfilePageState();
+  State<ProfileEditorPage> createState() => _ProfileEditorState();
 }
 
-class _CompleteProfilePageState extends State<CompleteProfilePage> {
+class _ProfileEditorState extends State<ProfileEditorPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();

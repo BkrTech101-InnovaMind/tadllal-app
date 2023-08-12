@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tadllal/main.dart';
+import 'package:tadllal/pages/profile_editor_page/profile_editor_page.dart';
 import 'package:tadllal/pages/success_sign_in_splash_screen/widgets/chose_fav_page.dart';
-import 'package:tadllal/pages/success_sign_in_splash_screen/widgets/complete_profile_page.dart';
 
 class SuccessSignInSplashScreen extends StatefulWidget {
   const SuccessSignInSplashScreen({super.key});
@@ -21,7 +21,7 @@ class _SuccessSignInScreenState extends State<SuccessSignInSplashScreen> {
     setState(() {
       _pages = [
         const ChoseFavPage(),
-        const CompleteProfilePage(),
+        const ProfileEditorPage(isProfileEditor: false),
       ];
     });
 

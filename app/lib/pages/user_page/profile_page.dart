@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/pages/profile_editor_page/profile_editor_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,15 +27,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   File? selectedImage;
   String userImage = "";
-
-  void _pickImage(ImageSource source) async {
-    final pickedImage = await ImagePicker().pickImage(source: source);
-    if (pickedImage != null) {
-      setState(() {
-        selectedImage = File(pickedImage.path);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +170,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileEditorPage(
+                    isProfileEditor: true,
+                  ),
+                ),
+              );
+            },
             child: const Text(
               "تعديل الملف الشخصي",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),

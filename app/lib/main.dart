@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tadllal/methods/auth_provider.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
-import 'package:tadllal/pages/home_page/home_page.dart';
+import 'package:tadllal/pages/navigation_page/navigation_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: TadllalApp()));
@@ -23,7 +23,7 @@ class TadllalApp extends HookConsumerWidget {
             child: authState.when(
               data: (isAuthenticated) {
                 return isAuthenticated
-                    ? const HomePage()
+                    ? const NavigationPage()
                     : const AuthenticationPage();
               },
               error: (error, stackTrace) =>

@@ -1,3 +1,4 @@
+import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,6 +20,38 @@ class _NavigationPageState extends ConsumerState<NavigationPage> {
     const HomePage(),
   ];
 
+  final List<FlashyTabBarItem> items = [
+    FlashyTabBarItem(
+      icon: SvgPicture.asset('assets/icons/home-icon.svg'),
+      title: const Text("الرئيسية"),
+    ),
+    FlashyTabBarItem(
+      icon: SvgPicture.asset('assets/icons/search-icon.svg'),
+      title: const Text("ألبحث"),
+    ),
+    FlashyTabBarItem(
+      icon: SvgPicture.asset(
+        'assets/icons/favorites-icon.svg',
+      ),
+      title: const Text("ألمفضلة"),
+    ),
+    FlashyTabBarItem(
+      icon: SvgPicture.asset('assets/icons/user-icon.svg'),
+      title: const Text("الحساب"),
+    ),
+  ];
+
+  void onItemSelected(int index) {
+    setState(() {
+      currentIndex = index;
+      pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
   int currentIndex = 0;
 
   @override
@@ -38,82 +71,18 @@ class _NavigationPageState extends ConsumerState<NavigationPage> {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-            pageController.animateToPage(
-              index,
-              duration: const Duration(seconds: 1),
-              curve: Curves.easeInOut,
-            );
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/home-icon.svg',
-            ),
-            activeIcon: Column(children: [
-              SvgPicture.asset(
-                'assets/icons/home-icon.svg',
-              ),
-              SvgPicture.asset(
-                'assets/icons/active-rout-icon.svg',
-              ),
-            ]),
-            label: 'الرئيسية',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/search-icon.svg',
-            ),
-            activeIcon: Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/search-icon.svg',
-                ),
-                SvgPicture.asset(
-                  'assets/icons/active-rout-icon.svg',
-                ),
-              ],
-            ),
-            label: 'البحث',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/favorites-icon.svg',
-            ),
-            label: 'المفضلة',
-            activeIcon: Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/favorites-icon.svg',
-                ),
-                SvgPicture.asset(
-                  'assets/icons/active-rout-icon.svg',
-                ),
-              ],
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/user-icon.svg',
-            ),
-            label: 'المستخدم',
-            activeIcon: Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/user-icon.svg',
-                ),
-                SvgPicture.asset(
-                  'assets/icons/active-rout-icon.svg',
-                ),
-              ],
-            ),
-          ),
-        ],
+      bottomNavigationBar: FlashyTabBar(
+        items: items,
+        onItemSelected: onItemSelected,
+        selectedIndex: currentIndex,
+        animationCurve: Curves.easeInOutBack,
+        animationDuration: const Duration(
+          milliseconds: 400,
+        ),
+        showElevation: true,
+        shadows: [BoxShadow(color: Colors.black.withOpacity(0.5))],
+        height: 55,
+        iconSize: 20,
       ),
     );
   }

@@ -21,7 +21,7 @@ class _SuccessSignInScreenState extends State<SuccessSignInSplashScreen> {
     setState(() {
       _pages = [
         const ChoseFavPage(),
-        const ProfileEditorPage(),
+        const ProfileEditorPage(isProfileEditor: false),
       ];
     });
 

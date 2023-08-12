@@ -70,6 +70,7 @@ class _ChoseFavPageState extends State<ChoseFavPage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
         buildTexts(),

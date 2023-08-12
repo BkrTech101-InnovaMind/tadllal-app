@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:tadllal/components/change_password_pop_up.dart';
 import 'package:tadllal/methods/auth_provider.dart';
 import 'package:tadllal/pages/add_user_page/add_user_page.dart';
 import 'package:tadllal/pages/profile_editor_page/profile_editor_page.dart';
@@ -227,7 +228,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   side: const BorderSide(color: Color(0xFFFF0011), width: 3),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ChangePasswordPopUp();
+                    },
+                  );
+                },
                 child: const Text(
                   "تعديل كلمة المرور",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

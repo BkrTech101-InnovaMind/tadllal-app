@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/pages/add_user_page/add_user_page.dart';
 import 'package:tadllal/pages/profile_editor_page/profile_editor_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
       "attributes": {
         "name": "أبوبكر صديق",
         "email": "zz78zz@zzz6z.tttt665604",
-        "role": "user",
+        "role": "marketer",
         "phone": null,
         "avatar": "https://i.pravatar.cc/300"
       }
@@ -31,14 +32,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final userInfo = user['user']!['attributes'];
+    String userRole = userInfo["role"];
+    print(userRole);
     return Container(
       margin: const EdgeInsets.only(top: 20),
       child: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
           buildUserAvatar(userInfo),
-          buildUserInfo(userInfo),
-          buildButtons(),
+          buildUserInfo(userInfo, userRole),
+          buildButtons(userRole),
         ],
       ),
     );
@@ -66,12 +69,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // User Info widget
-  Widget buildUserInfo(userInfo) {
-    String userRole = userInfo["role"];
-    if (userRole == "user") {
-      userRole = "مستخدم قياسي";
+  Widget buildUserInfo(userInfo, userRole) {
+    if (userRole == "company") {
+      userRole = "شركة";
+    } else if (userRole == "marketer") {
+      userRole = "مسوق";
     } else {
-      userRole = userRole;
+      userRole = "مستخدم قياسي";
     }
     return Column(
       children: [
@@ -156,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // Buttons widget
-  Widget buildButtons() {
+  Widget buildButtons(userRole) {
     return Column(
       children: [
         Container(
@@ -186,6 +190,29 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ),
+        if (userRole == "company" || userRole == "marketer")
+          const SizedBox(height: 30),
+        if (userRole == "company" || userRole == "marketer")
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFF1F4C6B),
+              fixedSize: const Size(278, 63),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddUserPage()),
+              );
+            },
+            child: const Text(
+              "إضافة مستخدم جديد",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+          ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: Row(
@@ -225,7 +252,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

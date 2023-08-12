@@ -26,6 +26,8 @@ class UserFactory extends Factory
             'role' => fake()->randomElement(['user', 'admin', 'marketer', 'company']),
             'phone_number' => fake()->phoneNumber(),
             'avatar' => fake()->imageUrl(200, 200),
+            'activated' => true,
+            'activation_code' => null,
             // Generate a random image URL
             'remember_token' => Str::random(10),
         ];

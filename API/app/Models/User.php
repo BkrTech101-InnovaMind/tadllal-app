@@ -25,9 +25,14 @@ class User extends Authenticatable
         'phone_number',
         'avatar',
         'registered_by',
+        'activated',
+        'activation_code',
 
     ];
-
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
     public function ratings()
     {
         return $this->hasMany(Rating::class, 'user_id');

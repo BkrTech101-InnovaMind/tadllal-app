@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rtypes extends Model
+class ConstructionService extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
         'image',
+        'description',
     ];
-
-    public function realEstates()
+    public function subServices()
     {
-        return $this->hasMany(RealEstate::class, 'type1_id');
+        return $this->hasMany(SubConstructionService::class, 'construction_service_id');
     }
+
 }

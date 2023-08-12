@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ConstructionService;
+use App\Models\RealEstateImage;
+use App\Models\SubConstructionService;
 use App\Models\User;
 use App\Models\Rlocations;
 use App\Models\Rtypes;
@@ -18,10 +21,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory(50)->create();
+        // User::factory(50)->create();
         // Rlocations::factory(50)->create();
         // Rtypes::factory(50)->create();
         // RealEstate::factory(50)->create();
         // Rating::factory(50)->create();
+        // RealEstateImage::factory(500)->create();
+        // ConstructionService::factory(50)->create();
+        // SubConstructionService::factory(50)->create();
     }
 }

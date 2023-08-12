@@ -5,20 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Orders extends Model
+class RealEstateImage extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'real_estate_id',
-        'message',
-        'status',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['real_estate_id', 'image'];
 
     public function realEstate()
     {

@@ -10,10 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('rtypes', function (Blueprint $table) {
+        Schema::create('sub_construction_services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image')->nullable();
+            $table->string('image');
+            $table->text('description');
+            $table->unsignedBigInteger('construction_service_id');
+            $table->foreign('construction_service_id')->references('id')->on('construction_services')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('rtypes');
+        Schema::dropIfExists('sub_construction_services');
     }
 };

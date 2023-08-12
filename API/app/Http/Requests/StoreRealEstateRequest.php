@@ -31,6 +31,7 @@ class StoreRealEstateRequest extends FormRequest
             'firstType' => ['required', 'integer'],
             'locationInfo' => ['required', 'string', 'max:255'],
             'secondType' => ['required', 'string', Rule::in(['for sale', 'for rent'])],
+            'images.*' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];
     }
 }

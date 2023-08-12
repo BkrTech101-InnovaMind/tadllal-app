@@ -2,23 +2,25 @@
 
 namespace Database\Factories;
 
+use App\Models\RealEstate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Rtypes>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RealEstateImage>
  */
-class RtypesFactory extends Factory
+class RealEstateImageFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-
     public function definition(): array
     {
+
+        $realEstate = RealEstate::inRandomOrder()->first();
         return [
-            'name' => $this->faker->unique()->word(),
+            'real_estate_id' => $realEstate->id,
             'image' => $this->faker->imageUrl(),
         ];
     }

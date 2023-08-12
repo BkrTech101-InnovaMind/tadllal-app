@@ -14,14 +14,32 @@ class RealEstateController extends Controller
     use HttpResponses;
 
     // Get all real estates
+    function WithIsFavority($realEstates)
+    {
+        $user = Auth::user();
+        $realEstatesWithFavorites = $realEstates->map(function ($realEstate) use ($user) {
+            $isFavorite = $user->favorites->contains('real_estate_id', $realEstate->id);
+            $realEstate->isFavorite = $isFavorite;
+            return $realEstate;
+        });
+        return RealEstateResource::collection($realEstatesWithFavorites);
+    }
     public function index()
     {
-        return RealEstateResource::collection(
-            RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->withCount('ratings') // Load the number of ratings
-                ->withAvg('ratings', 'rating') // Load the average rating
-                ->get()
-        );
+        // return RealEstateResource::collection(
+        //     RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
+        //         ->withCount('ratings') // Load the number of ratings
+        //         ->withAvg('ratings', 'rating') // Load the average rating
+        //         ->get()
+        // );
+
+
+        $realEstates = RealEstate::with(['locations:id,name', 'types:id,name', 'ratings', 'images'])
+            ->withCount('ratings') // Load the number of ratings
+            ->withAvg('ratings', 'rating') // Load the average rating
+            ->get();
+
+        return $this->WithIsFavority($realEstates);
     }
 
     /**
@@ -37,6 +55,13 @@ class RealEstateController extends Controller
             $realty->loadCount('ratings'); // Load the number of ratings
             $realty->loadAvg('ratings', 'rating'); // Load the average rating
 
+            $user = Auth::user();
+            $isFavorite = $user->favorites->contains('real_estate_id', $realty->id);
+            $realty->isFavorite = $isFavorite;
+            // Attach images' paths to the real estate data
+            $realty->images = $realty->images->pluck('image');
+
+
             // Return the real estates as a resource
             return new RealEstateResource($realty);
         }
@@ -45,21 +70,22 @@ class RealEstateController extends Controller
     // Get all real estates in the specified location 
     public function getByLocation($locationId)
     {
-        return RealEstateResource::collection(
-            RealEstate::where('location_id', $locationId)
-                ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->get()
-        );
+
+        $realEstates = RealEstate::where('location_id', $locationId)
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        return $this->WithIsFavority($realEstates);
     }
 
     // Get all real estates of the specified type
     public function getByType($typeId)
     {
-        return RealEstateResource::collection(
-            RealEstate::where('type1_id', $typeId)
-                ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->get()
-        );
+        $realEstates = RealEstate::where('type1_id', $typeId)
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        return $this->WithIsFavority($realEstates);
     }
 
     // Get all real estates that match the user's preferences in the top
@@ -72,29 +98,29 @@ class RealEstateController extends Controller
 
         // جلب العقارات بناءً على تفضيلات المستخدم (إذا كانت هناك تفضيلات)
         if (!empty($user_preferences)) {
-            $preferredRealEstates = RealEstateResource::collection(
-                RealEstate::whereIn('type1_id', $user_preferences)
-                    ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                    ->withCount('ratings') // تحميل عدد التقييمات
-                    ->withAvg('ratings', 'rating') // تحميل معدل التقييمات
-                    ->get()
-            );
-            $otherRealEstates = RealEstateResource::collection(
-                RealEstate::whereNotIn('type1_id', $user_preferences)
-                    ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                    ->withCount('ratings') // تحميل عدد التقييمات
-                    ->withAvg('ratings', 'rating') // تحميل معدل التقييمات
-                    ->get()
-            );
+            $preferredRealEstates = RealEstate::whereIn('type1_id', $user_preferences)
+                ->with(['locations:id,name', 'types:id,name', 'ratings'])
+                ->withCount('ratings') // تحميل عدد التقييمات
+                ->withAvg('ratings', 'rating') // تحميل معدل التقييمات
+                ->get();
+
+            $otherRealEstates = RealEstate::whereNotIn('type1_id', $user_preferences)
+                ->with(['locations:id,name', 'types:id,name', 'ratings'])
+                ->withCount('ratings') // تحميل عدد التقييمات
+                ->withAvg('ratings', 'rating') // تحميل معدل التقييمات
+                ->get();
 
             $real_estates = $preferredRealEstates->merge($otherRealEstates);
 
         } else {
             // إذا لم يكن لديه تفضيلات، فسيتم عرض جميع العقارات
-            $real_estates = RealEstate::all();
+            $real_estates = RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
+                ->withCount('ratings') // تحميل عدد التقييمات
+                ->withAvg('ratings', 'rating') // تحميل معدل التقييمات();
+                ->get();
         }
 
-        return response()->json(['real_estates' => $real_estates]);
+        return $this->WithIsFavority($real_estates);
     }
 
     public function getHighestRated()
@@ -110,52 +136,47 @@ class RealEstateController extends Controller
         // Take the top 10 real estates
         $realEstates = $realEstates->take(20);
 
-        // Convert the Collection object to a resource
-        $realEstatesResource = RealEstateResource::collection($realEstates);
-
-        // Return the top 10 real estates
-        return $realEstatesResource;
+        return $this->WithIsFavority($realEstates);
     }
 
 
     // Get all real estates that are available
     public function getByStateAvailable()
     {
-        return RealEstateResource::collection(
-            RealEstate::where('state', 'available')
-                ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->get()
-        );
+        $realEstates = RealEstate::where('state', 'available')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        return $this->WithIsFavority($realEstates);
     }
 
     // Get all real estates that are unavailable
     public function getByStateUnavailable()
     {
-        return RealEstateResource::collection(
-            RealEstate::where('state', 'unavailable')
-                ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->get()
-        );
+        $realEstates = RealEstate::where('state', 'unavailable')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+        return $this->WithIsFavority($realEstates);
     }
 
     // Get all real estates that are for sale
     public function getByType2ForSale()
     {
-        return RealEstateResource::collection(
-            RealEstate::where('type2', 'for sale')
-                ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->get()
-        );
+
+        $realEstates = RealEstate::where('type2', 'for sale')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+        return $this->WithIsFavority($realEstates);
     }
 
     // Get all real estates that are for rent
     public function getByType2ForRent()
     {
-        return RealEstateResource::collection(
-            RealEstate::where('type2', 'for rent')
-                ->with(['locations:id,name', 'types:id,name', 'ratings'])
-                ->get()
-        );
+
+        $realEstates = RealEstate::where('type2', 'for rent')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+        return $this->WithIsFavority($realEstates);
     }
 
     public function search($query)
@@ -197,7 +218,7 @@ class RealEstateController extends Controller
             ->get();
 
         // Return the real estates as a resource
-        return RealEstateResource::collection($realEstates);
+        return $this->WithIsFavority($realEstates);
     }
 
 }

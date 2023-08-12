@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->enum('role', ['user', 'admin', 'marketer', 'company'])->default('user');
             $table->string('phone_number')->nullable();
             $table->string('avatar')->nullable();
+            $table->boolean('activated')->default(false);
+            $table->string('activation_code')->nullable();
             $table->unsignedBigInteger('registered_by')->nullable();
             $table->rememberToken();
             $table->timestamps();

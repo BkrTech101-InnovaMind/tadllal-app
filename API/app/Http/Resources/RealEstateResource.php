@@ -34,14 +34,22 @@ class RealEstateResource extends JsonResource
                 'name' => $this->name,
                 'description' => $this->description,
                 'price' => $this->price,
-                'location' => $this->locations->name,
+                'location' => [
+                    'id' => (string) $this->locations->id,
+                    'name' => $this->locations->name
+                ],
                 'locationInfo' => $this->location_info,
-                'firstType' => $this->types->name,
+                'firstType' => [
+                    'id' => (string) $this->types->id,
+                    'name' => $this->types->name
+                ],
                 'state' => $this->state,
                 'secondType' => $this->type2,
                 'date' => $this->created_at,
                 'photo' => $this->image,
                 'ratings' => $ratings,
+                'isFavorite' => $this->isFavorite,
+                'images' => $this->images->pluck('image'),
             ]
         ];
     }

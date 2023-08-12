@@ -36,6 +36,18 @@ class RealEstateController extends Controller
     {
         $request->validated($request->all());
         $imagePath = $request->file('photo')->store('public/images/realEstate');
+
+
+        // Upload the images and get their paths
+        $images = [];
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $image) {
+                // $path = $image->store('public/images/realEstate/images');
+                $path = Storage::put('public/images/realEstate/images', $image);
+                $images[] = ['image' => str_replace('public/', 'storage/', $path)];
+            }
+        }
         $realEstate = RealEstate::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -47,6 +59,8 @@ class RealEstateController extends Controller
             'type2' => $request->secondType,
         ]);
 
+        // Associate the images with the real estate
+        $realEstate->images()->createMany($images);
         return new RealEstateResource($realEstate);
     }
 

@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\admin\UsersController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConstructionServiceController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
+use App\Http\Controllers\SubConstructionServiceController;
 use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Http\Request;
@@ -15,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
 use App\Http\Controllers\Admin\TypesController as AdminTypesController;
+use App\Http\Controllers\Admin\LocationsController as AdminLocationsController;
 use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
 
 /*
@@ -30,6 +34,7 @@ use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
 //Public routes
 //app
 Route::post('app/login', [AuthController::class, 'login']);
+Route::post('app/activate', [AuthController::class, 'activateAccount']);
 Route::post('app/register', [AuthController::class, 'register']);
 
 //admin
@@ -67,14 +72,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
     });
 
     Route::prefix('users')->group(function () {
-        Route::get('/', [UserManagementController::class, 'viewUsers']);
-        Route::post('/{id}', [UserManagementController::class, 'show']);
-        Route::post('/add', [UserManagementController::class, 'store']);
-        Route::put('/edit/{id}', [UserManagementController::class, 'modifyUser']);
-        Route::put('/changeType/{id}', [UserManagementController::class, 'changeUserType']);
-        Route::delete('delete/{id}', [UserManagementController::class, 'deleteUser']);
-
+        Route::resource('/users', UsersController::class);
+        Route::post('/edit/{id}', [UsersController::class, 'modifyUser']);
+        Route::put('/changeType/{id}', [UsersController::class, 'changeUserType']);
     });
+
     // Logout
     Route::post('/logout', [AdminAuthController::class, 'logout']);
 });
@@ -120,6 +122,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
     });
     Route::prefix('orders')->group(function () {
         Route::post('/new/{id}', [OrdersController::class, 'submitOrder']);
+        Route::prefix('service')->group(function () {
+            Route::post('/new/{id}', [OrdersController::class, 'submitServiceOrder']);
+        });
     });
     Route::prefix('preferences')->group(function () {
         //Add User Preference
@@ -137,5 +142,12 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
     });
 
 
+    Route::prefix('services')->group(function () {
+        Route::get('/', [ConstructionServiceController::class, 'index']);
+        Route::prefix('sub-services')->group(function () {
+            Route::get('/', [SubConstructionServiceController::class, 'index']);
+            Route::get('/{constructionServiceId}', [SubConstructionServiceController::class, 'showSubServices']);
+        });
+    });
 
 });

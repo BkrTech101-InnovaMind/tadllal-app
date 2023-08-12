@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use ActivationCodeMail;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\SampleMail;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+
+
 
 class AuthController extends Controller
 {
@@ -27,6 +33,10 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
+        if (!$user->activated) {
+
+            return $this->error('', 'Account is not activated', 401);
+        }
 
         return $this->success([
             'user' => new UserResource($user),
@@ -34,23 +44,55 @@ class AuthController extends Controller
         ]);
     }
 
+    public function activateAccount(Request $request)
+    {
+        $code = $request->input('code'); // استخراج الكود من الطلب
 
+        $user = User::where('activation_code', $code)->first(); // البحث عن المستخدم باستخدام الكود
+
+        if (!$user) {
+            return $this->error('', 'Invalid activation code', 400);
+        }
+
+        // تفعيل حساب المستخدم
+        $user->update([
+            'activated' => true,
+            'activation_code' => null,
+        ]);
+
+        return $this->success([
+            'user' => new UserResource($user),
+            'token' => $user->createToken('Api Token of ' . $user->name)->plainTextToken
+        ], 'Account activated successfully');
+    }
 
     public function register(StoreUserRequest $request)
     {
 
         $request->validated($request->all());
+        $activationCode = Str::random(40); // توليد رمز تفعيل عشوائي
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'activation_code' => $activationCode,
         ]);
+
+        $content = [
+            'subject' => 'TactivationCode',
+            'body' => 'activationCode is :' . $activationCode,
+        ];
+
+        $sampleMail = new SampleMail($content);
+        Mail::to($user->email)->send($sampleMail);
+
+
 
         return $this->success([
             'user' => new UserResource($user),
-            'token' => $user->createToken('API Token of' . $user->name)->plainTextToken
-        ]);
+            'code' => $activationCode,
+        ], 'Account created successfully. Please check your email for activation instructions.');
     }
 
 

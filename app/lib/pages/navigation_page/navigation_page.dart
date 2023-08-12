@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tadllal/pages/home_page/home_page.dart';
+import 'package:tadllal/pages/user_page/profile_page.dart';
 
 class NavigationPage extends StatefulHookConsumerWidget {
   const NavigationPage({super.key});
@@ -17,27 +18,27 @@ class _NavigationPageState extends ConsumerState<NavigationPage> {
     const HomePage(),
     const HomePage(),
     const HomePage(),
-    const HomePage(),
+    const ProfilePage(),
   ];
 
   final List<FlashyTabBarItem> items = [
     FlashyTabBarItem(
       icon: SvgPicture.asset('assets/icons/home-icon.svg'),
-      title: const Text("الرئيسية"),
+      title: const Text("الرئيسية", style: TextStyle(fontSize: 17)),
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset('assets/icons/search-icon.svg'),
-      title: const Text("ألبحث"),
+      title: const Text("ألبحث", style: TextStyle(fontSize: 17)),
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset(
         'assets/icons/favorites-icon.svg',
       ),
-      title: const Text("ألمفضلة"),
+      title: const Text("ألمفضلة", style: TextStyle(fontSize: 17)),
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset('assets/icons/user-icon.svg'),
-      title: const Text("الحساب"),
+      title: const Text("الحساب", style: TextStyle(fontSize: 17)),
     ),
   ];
 

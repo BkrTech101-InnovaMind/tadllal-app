@@ -1,6 +1,7 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
 
 class RealEstates extends StatefulWidget {
   const RealEstates({super.key});
@@ -109,7 +110,11 @@ class _RealEstatesState extends State<RealEstates> {
         }
         return TextButton(
           style: TextButton.styleFrom(padding: const EdgeInsets.all(5)),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return RealEstateDetailsPage(realEstate: realEstates[index]);
+            }));
+          },
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(

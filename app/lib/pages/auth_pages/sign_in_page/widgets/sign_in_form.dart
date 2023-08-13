@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/pages/forget_password_page/forget_password_page.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -159,7 +160,14 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ForgetPasswordPage(),
+                    ),
+                  );
+                },
                 child: const Text(
                   "هل نسيت كلمة السر؟",
                   style: TextStyle(

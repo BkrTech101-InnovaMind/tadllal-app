@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OrderPopup extends StatefulWidget {
-  const OrderPopup({super.key});
+  final dynamic order;
+  const OrderPopup({required this.order, super.key});
 
   @override
   State<OrderPopup> createState() => OrderPopupState();
@@ -24,15 +25,11 @@ class OrderPopupState extends State<OrderPopup> {
 
   void sendMessage() {
     final message = messageController.text;
+    final order = widget.order;
     final sentMassage = {
-      "user_details": {
-        ...senderDetails,
-        "message": message,
-        "order": {
-          "order_id": "23",
-          "order_title": "test order title",
-        }
-      },
+      ...senderDetails,
+      "message": message,
+      "order_details": {"order": order},
     };
     print(sentMassage);
   }

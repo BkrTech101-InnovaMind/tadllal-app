@@ -41,32 +41,6 @@ final realEstatesApiExample = [
   },
 ];
 
-class RealEstate {
-  final List<String> images;
-  final String availability;
-  final String state;
-  final String location;
-  final String price;
-  final String type;
-  final String title;
-  final String description;
-  final String rating;
-  final bool isFavorite;
-
-  RealEstate({
-    required this.images,
-    required this.availability,
-    required this.state,
-    required this.location,
-    required this.price,
-    required this.type,
-    required this.title,
-    required this.description,
-    required this.rating,
-    required this.isFavorite,
-  });
-}
-
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 

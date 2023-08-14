@@ -115,23 +115,64 @@ class _SearchPageState extends State<SearchPage> {
       body: searchValue.isNotEmpty
           ? GestureDetector(
               onPanDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: filteredResults().length,
-                itemBuilder: (context, index) {
-                  final realEstate = filteredResults()[index];
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return RealEstateDetailsPage(realEstate: realEstate);
-                      }));
-                    },
-                    leading: Image.asset(realEstate['images'][0]),
-                    title: Text(realEstate['title']),
-                    subtitle: Text('${realEstate['price']} \$'),
-                  );
-                },
+              child: Container(
+                margin: const EdgeInsets.only(top: 40),
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: filteredResults().length,
+                  itemBuilder: (context, index) {
+                    final realEstate = filteredResults()[index];
+                    return Container(
+                      margin:
+                          const EdgeInsets.only(bottom: 20, left: 10, right: 7),
+                      color: const Color(0xFFF5F4F8),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return RealEstateDetailsPage(
+                                  realEstate: realEstate);
+                            }),
+                          );
+                        },
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage(realEstate['images'][0]),
+                        ),
+                        title: Text(
+                          realEstate['title'],
+                          style: const TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        subtitle: Text(
+                          '${realEstate['price']} \$',
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        trailing: SizedBox(
+                          width: 60,
+                          child: Row(
+                            children: [
+                              Text(realEstate['rating']),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Icon(
+                                Icons.star,
+                                color: Color(0xFFE0A410),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             )
           : GestureDetector(

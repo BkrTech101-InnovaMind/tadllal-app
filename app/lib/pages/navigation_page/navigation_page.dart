@@ -2,7 +2,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tadllal/pages/facorites_page/facorites_page.dart';
+import 'package:tadllal/pages/favorites_page/favorites_page.dart';
 import 'package:tadllal/pages/home_page/home_page.dart';
 import 'package:tadllal/pages/search_page/search_page.dart';
 import 'package:tadllal/pages/user_page/profile_page.dart';

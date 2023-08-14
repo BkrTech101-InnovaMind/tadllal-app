@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/methods/in_intro_tour_preferences.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 import 'package:tadllal/pages/navigation_page/navigation_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SaveTourForFirstTime.init();
   runApp(const ProviderScope(child: TadllalApp()));
 }
 

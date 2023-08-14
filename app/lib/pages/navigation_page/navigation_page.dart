@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tadllal/pages/home_page/home_page.dart';
+import 'package:tadllal/pages/search_page/search_page.dart';
 import 'package:tadllal/pages/user_page/profile_page.dart';
 
 class NavigationPage extends StatefulHookConsumerWidget {
@@ -16,7 +17,7 @@ class _NavigationPageState extends ConsumerState<NavigationPage> {
   final PageController pageController = PageController();
   final List<Widget> pages = [
     const HomePage(),
-    const HomePage(),
+    const SearchPage(),
     const HomePage(),
     const ProfilePage(),
   ];

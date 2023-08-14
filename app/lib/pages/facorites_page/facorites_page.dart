@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:tadllal/methods/in_intro_tour_preferences.dart';
 import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
+import 'package:tadllal/utils/in_intro_tour.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 final realEstatesApiExample = [
   {
@@ -50,6 +53,39 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   List<Map<String, dynamic>> realEstateFetcher = realEstatesApiExample;
+  final realEstateKey = GlobalKey();
+  late TutorialCoachMark tutorialCoachMark;
+
+  void showTutorial() {
+    Future.delayed(const Duration(seconds: 1), () {
+      SaveTourForFirstTime().getTourForFirstTimeState().then(
+        (value) {
+          if (value == false) {
+            tutorialCoachMark.show(context: context);
+          }
+        },
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: addFavoritesPageTarget(realEstateKey: realEstateKey),
+      colorShadow: const Color(0xFF194706),
+      paddingFocus: 10,
+      hideSkip: false,
+      opacityShadow: 0.8,
+      showSkipInLastTarget: false,
+      onFinish: () {
+        SaveTourForFirstTime().saveTourForFirstTime();
+        print("Finish");
+      },
+    );
+    showTutorial();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +109,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               itemBuilder: (context, index) {
                 final realEstate = realEstateFetcher[index];
                 return Container(
+                  key: index == 1 ? realEstateKey : null,
                   margin: const EdgeInsets.only(bottom: 20, left: 10, right: 7),
                   decoration: BoxDecoration(
                     color: const Color(0xFFF5F4F8),

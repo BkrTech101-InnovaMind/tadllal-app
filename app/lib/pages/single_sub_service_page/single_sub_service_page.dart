@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tadllal/components/order_pop_up.dart';
 
-class SingleServicesPage extends StatefulWidget {
+class SingleSubServicesPage extends StatefulWidget {
   final Map serviceDetails;
-  const SingleServicesPage({required this.serviceDetails, super.key});
+  const SingleSubServicesPage({required this.serviceDetails, super.key});
 
   @override
-  State<SingleServicesPage> createState() => _SingleServicesPageState();
+  State<SingleSubServicesPage> createState() => _SingleSubServicesPageState();
 }
 
-class _SingleServicesPageState extends State<SingleServicesPage> {
+class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
   Map? serviceDetails;
 
   @override
@@ -59,7 +59,7 @@ class _SingleServicesPageState extends State<SingleServicesPage> {
       child: Column(
         children: [
           Text(
-            "${serviceDetails?['name']}",
+            "${serviceDetails?['title']}",
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,
@@ -75,7 +75,7 @@ class _SingleServicesPageState extends State<SingleServicesPage> {
             ),
           ),
           Text(
-            "${serviceDetails?['description']}",
+            "${serviceDetails?['sub_title']}",
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,

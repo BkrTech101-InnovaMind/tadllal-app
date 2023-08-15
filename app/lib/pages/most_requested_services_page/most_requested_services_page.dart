@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/single_service_page/single_service_page.dart';
+import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
 
 final subServices = [
   {
@@ -65,7 +65,7 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SingleServicesPage(
+                      builder: (context) => SingleSubServicesPage(
                           serviceDetails: subServices[index]),
                     ),
                   );

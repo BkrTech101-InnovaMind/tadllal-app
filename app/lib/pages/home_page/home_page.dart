@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tadllal/pages/general_services_page/general_services_page.dart';
 import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
 import 'package:tadllal/pages/most_requested_services_page/most_requested_services_page.dart';
-import 'package:tadllal/pages/single_service_page/single_service_page.dart';
+import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        buildService(),
+        buildService(context),
         buildMostRequest(context),
         const LocationFilter(),
         const RealEstateFilter(),
@@ -139,7 +140,7 @@ Widget buildFilterMenu() {
 }
 
 // service Widget
-Widget buildService() {
+Widget buildService(context) {
   final serviceData = [
     {
       'image': 'assets/images/services.png',
@@ -164,7 +165,13 @@ Widget buildService() {
                 color: Color(0xFF234F68), fontWeight: FontWeight.w900),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const GeneralServicesPage()),
+              );
+            },
             child: const Text(
               "رؤية الكل",
               style: TextStyle(color: Color(0xFF234F68)),
@@ -259,33 +266,33 @@ Widget buildService() {
 Widget buildMostRequest(context) {
   final subServices = [
     {
-      "name": "ديكورات",
+      "title": "ديكورات",
       "image": "https://i.pravatar.cc/300",
-      "description":
+      "sub_title":
           "تقدم خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية، حيث نجمع بين الفن والابتكار لخلق أماكن رائعة ومميزة تعكس شخصية واحتياجات عملائنا. نحن نهتم بكل التفاصيل، من اختيار الألوان والمواد إلى توزيع الفراغات بطريقة تجمع بين الجمال والوظائف العملية."
     },
     {
-      "name": "تصاميم هندسية",
+      "title": "تصاميم هندسية",
       "image": "https://i.pravatar.cc/300",
-      "description":
+      "sub_title":
           "نقدم خدمات تصميم وتخطيط مشاريع هندسية مبتكرة ومتطورة. فريقنا من المهندسين المحترفين يعمل على تحويل الأفكار إلى واقع من خلال تصاميم دقيقة واقتصادية. سواء كنت تبحث عن تصميم مبنى سكني أو تجاري، نحن هنا لنجعل رؤيتك تتحقق بأعلى معايير الجودة."
     },
     {
-      "name": "مقاولات",
+      "title": "مقاولات",
       "image": "https://i.pravatar.cc/300",
-      "description":
+      "sub_title":
           "نحن شركة مقاولات متخصصة في إدارة وتنفيذ مشاريع البناء والإنشاء بكل احترافية وجودة. نقوم بتقديم خدمات متكاملة تشمل التخطيط والتنفيذ وإدارة المشاريع، مع التركيز على تحقيق الجودة والمواعيد الزمنية. نحن نضمن تنفيذ المشاريع بأعلى معايير الأمان والاستدامة."
     },
     {
-      "name": "حديد",
+      "title": "حديد",
       "image": "https://i.pravatar.cc/300",
-      "description":
+      "sub_title":
           "نحن متخصصون في توريد وتركيب وتصنيع منتجات من الحديد والمعدن. نقدم تشكيلة واسعة من المنتجات التي تتضمن الأبواب، الشبابيك، السلالم، والأثاث المعدني. نحن نضمن جودة عالية وتصميمات مبتكرة، مع التركيز على تلبية احتياجات عملائنا بشكل فعال."
     },
     {
-      "name": "أسمنت",
+      "title": "أسمنت",
       "image": "https://i.pravatar.cc/300",
-      "description":
+      "sub_title":
           "نحن شركة توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية. نقدم مجموعة متنوعة من المنتجات عالية الجودة لدعم مشاريع البناء والتشييد. نحن نهتم بتزويد عملائنا بالمواد ذات الجودة العالية والتي تلبي معايير الأمان والاستدامة."
     }
   ];
@@ -329,7 +336,7 @@ Widget buildMostRequest(context) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SingleServicesPage(
+                          builder: (context) => SingleSubServicesPage(
                               serviceDetails: subServices[index]),
                         ),
                       );
@@ -344,7 +351,7 @@ Widget buildMostRequest(context) {
                     ),
                   ),
                   Text(
-                    '${subServices[index]["name"]}',
+                    '${subServices[index]["title"]}',
                   ),
                 ],
               ),

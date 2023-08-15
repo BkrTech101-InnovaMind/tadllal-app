@@ -5,7 +5,7 @@ import 'package:tap_to_expand/tap_to_expand.dart';
 final generalServices = [
   {
     'image': "https://i.pravatar.cc/300",
-    'title': 'خدمات إنشائية \n وصيانة',
+    'title': 'خدمات إنشائية وصيانة',
     'sub_title': 'خدمات تصميم وتنفيذ',
   },
   {

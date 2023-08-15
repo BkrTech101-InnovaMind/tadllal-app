@@ -6,12 +6,12 @@ final generalServices = [
   {
     'image': "https://i.pravatar.cc/300",
     'title': 'خدمات إنشائية \n وصيانة',
-    'subtitle': 'خدمات تصميم وتنفيذ',
+    'sub_title': 'خدمات تصميم وتنفيذ',
   },
   {
     'image': "https://i.pravatar.cc/300",
     'title': 'موارد بناء وتوريدات',
-    'subtitle': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
+    'sub_title': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
   },
 ];
 
@@ -90,64 +90,73 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TapToExpand(
-                  openedHeight: 187.5,
+                  openedHeight: 200,
                   closedHeight: 68,
-                  scrollable: false,
+                  scrollable: true,
+                  scrollPhysics: const BouncingScrollPhysics(),
                   onTapPadding: 0,
                   color: Colors.transparent,
                   boxShadow: const [BoxShadow(color: Colors.transparent)],
                   duration: const Duration(seconds: 1),
-                  content: SizedBox(
-                    height: 100,
-                    child: Card(
-                      elevation: 0,
-                      color: Colors.white.withOpacity(0.4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: subServices.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.only(left: 15),
-                              child: Column(
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              SingleSubServicesPage(
-                                            serviceDetails: subServices[index],
+                  content: Column(
+                    children: [
+                      Text("${generalService[index]["sub_title"]}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      Card(
+                        elevation: 0,
+                        color: Colors.white.withOpacity(0.4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: SizedBox(
+                          height: 89,
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: subServices.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.only(left: 15),
+                                child: Column(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SingleSubServicesPage(
+                                              serviceDetails:
+                                                  subServices[index],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.all(4),
-                                        shape: const CircleBorder()),
-                                    child: CircleAvatar(
-                                      radius: 28,
-                                      backgroundImage: NetworkImage(
-                                          '${subServices[index]["image"]}'),
+                                        );
+                                      },
+                                      style: TextButton.styleFrom(
+                                          padding: const EdgeInsets.all(4),
+                                          shape: const CircleBorder()),
+                                      child: CircleAvatar(
+                                        radius: 28,
+                                        backgroundImage: NetworkImage(
+                                            '${subServices[index]["image"]}'),
+                                      ),
                                     ),
-                                  ),
-                                  Text('${subServices[index]["title"]}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                ],
-                              ),
-                            );
-                          },
+                                    Text('${subServices[index]["title"]}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        )),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                   title: Text(
                     "${generalService[index]['title']}",

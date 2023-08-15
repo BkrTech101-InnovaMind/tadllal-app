@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tadllal/components/change_password_pop_up.dart';
 import 'package:tadllal/methods/auth_provider.dart';
 import 'package:tadllal/pages/add_user_page/add_user_page.dart';
+import 'package:tadllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
 import 'package:tadllal/pages/profile_editor_page/profile_editor_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -259,6 +260,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ],
+          ),
+        ),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color(0xFF1F4C6B),
+            fixedSize: const Size(278, 63),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ChangeUserPreferencesPage()),
+            );
+          },
+          child: const Text(
+            "إعدادات التفضيلات",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
         ),
       ],

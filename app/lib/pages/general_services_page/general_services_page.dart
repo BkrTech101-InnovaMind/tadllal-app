@@ -137,9 +137,10 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                           '${subServices[index]["image"]}'),
                                     ),
                                   ),
-                                  Text(
-                                    '${subServices[index]["title"]}',
-                                  ),
+                                  Text('${subServices[index]["title"]}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      )),
                                 ],
                               ),
                             );

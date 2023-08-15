@@ -4,7 +4,7 @@ import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
 import 'package:tadllal/pages/most_requested_services_page/most_requested_services_page.dart';
-import 'package:tadllal/pages/single_service_page/single_service_page.dart';
+import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -329,7 +329,7 @@ Widget buildMostRequest(context) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SingleServicesPage(
+                          builder: (context) => SingleSubServicesPage(
                               serviceDetails: subServices[index]),
                         ),
                       );

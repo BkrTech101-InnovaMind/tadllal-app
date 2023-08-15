@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tadllal/components/order_pop_up.dart';
 
-class SingleServicesPage extends StatefulWidget {
+class SingleSubServicesPage extends StatefulWidget {
   final Map serviceDetails;
-  const SingleServicesPage({required this.serviceDetails, super.key});
+  const SingleSubServicesPage({required this.serviceDetails, super.key});
 
   @override
-  State<SingleServicesPage> createState() => _SingleServicesPageState();
+  State<SingleSubServicesPage> createState() => _SingleSubServicesPageState();
 }
 
-class _SingleServicesPageState extends State<SingleServicesPage> {
+class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
   Map? serviceDetails;
 
   @override

@@ -59,7 +59,7 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
       child: Column(
         children: [
           Text(
-            "${serviceDetails?['name']}",
+            "${serviceDetails?['title']}",
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,
@@ -75,7 +75,7 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
             ),
           ),
           Text(
-            "${serviceDetails?['description']}",
+            "${serviceDetails?['sub_title']}",
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,

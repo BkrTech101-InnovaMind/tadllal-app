@@ -4,6 +4,7 @@ import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
 import 'package:tadllal/pages/most_requested_services_page/most_requested_services_page.dart';
+import 'package:tadllal/pages/single_service_page/single_service_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -256,19 +257,37 @@ Widget buildService() {
 
 // Most Requested widget
 Widget buildMostRequest(context) {
-  final List titles = [
-    "ديكورات",
-    "تصاميم هندسيه",
-    "مقاولات",
-    "حديد",
-    "أسمنت",
-  ];
-  final List images = [
-    "assets/request/decor.png",
-    "assets/request/engineering-designs.png",
-    "assets/request/construction.png",
-    "assets/request/iron.png",
-    "assets/request/cement.png",
+  final subServices = [
+    {
+      "name": "ديكورات",
+      "image": "https://i.pravatar.cc/300",
+      "description":
+          "تقدم خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية، حيث نجمع بين الفن والابتكار لخلق أماكن رائعة ومميزة تعكس شخصية واحتياجات عملائنا. نحن نهتم بكل التفاصيل، من اختيار الألوان والمواد إلى توزيع الفراغات بطريقة تجمع بين الجمال والوظائف العملية."
+    },
+    {
+      "name": "تصاميم هندسية",
+      "image": "https://i.pravatar.cc/300",
+      "description":
+          "نقدم خدمات تصميم وتخطيط مشاريع هندسية مبتكرة ومتطورة. فريقنا من المهندسين المحترفين يعمل على تحويل الأفكار إلى واقع من خلال تصاميم دقيقة واقتصادية. سواء كنت تبحث عن تصميم مبنى سكني أو تجاري، نحن هنا لنجعل رؤيتك تتحقق بأعلى معايير الجودة."
+    },
+    {
+      "name": "مقاولات",
+      "image": "https://i.pravatar.cc/300",
+      "description":
+          "نحن شركة مقاولات متخصصة في إدارة وتنفيذ مشاريع البناء والإنشاء بكل احترافية وجودة. نقوم بتقديم خدمات متكاملة تشمل التخطيط والتنفيذ وإدارة المشاريع، مع التركيز على تحقيق الجودة والمواعيد الزمنية. نحن نضمن تنفيذ المشاريع بأعلى معايير الأمان والاستدامة."
+    },
+    {
+      "name": "حديد",
+      "image": "https://i.pravatar.cc/300",
+      "description":
+          "نحن متخصصون في توريد وتركيب وتصنيع منتجات من الحديد والمعدن. نقدم تشكيلة واسعة من المنتجات التي تتضمن الأبواب، الشبابيك، السلالم، والأثاث المعدني. نحن نضمن جودة عالية وتصميمات مبتكرة، مع التركيز على تلبية احتياجات عملائنا بشكل فعال."
+    },
+    {
+      "name": "أسمنت",
+      "image": "https://i.pravatar.cc/300",
+      "description":
+          "نحن شركة توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية. نقدم مجموعة متنوعة من المنتجات عالية الجودة لدعم مشاريع البناء والتشييد. نحن نهتم بتزويد عملائنا بالمواد ذات الجودة العالية والتي تلبي معايير الأمان والاستدامة."
+    }
   ];
   return Column(
     children: [
@@ -299,21 +318,33 @@ Widget buildMostRequest(context) {
         height: 104,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: titles.length,
+          itemCount: subServices.length,
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.only(left: 15),
               child: Column(
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SingleServicesPage(
+                              serviceDetails: subServices[index]),
+                        ),
+                      );
+                    },
                     style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(4),
                         shape: const CircleBorder()),
-                    child: Image.asset(images[index]),
+                    child: CircleAvatar(
+                      radius: 28,
+                      backgroundImage:
+                          NetworkImage('${subServices[index]["image"]}'),
+                    ),
                   ),
                   Text(
-                    titles[index],
+                    '${subServices[index]["name"]}',
                   ),
                 ],
               ),

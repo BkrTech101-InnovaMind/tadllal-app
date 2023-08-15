@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:tadllal/pages/single_service_page/single_service_page.dart';
 
 final subServices = [
   {
     "name": "ديكورات",
-    "image": "assets/request/decor.png",
-    "description": "خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية."
+    "image": "https://i.pravatar.cc/300",
+    "description":
+        "تقدم خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية، حيث نجمع بين الفن والابتكار لخلق أماكن رائعة ومميزة تعكس شخصية واحتياجات عملائنا. نحن نهتم بكل التفاصيل، من اختيار الألوان والمواد إلى توزيع الفراغات بطريقة تجمع بين الجمال والوظائف العملية."
   },
   {
-    "name": "تصاميم هندسيه",
-    "image": "assets/request/engineering-designs.png",
-    "description": "تصميم وتخطيط للمشاريع الهندسية والإنشائية."
+    "name": "تصاميم هندسية",
+    "image": "https://i.pravatar.cc/300",
+    "description":
+        "نقدم خدمات تصميم وتخطيط مشاريع هندسية مبتكرة ومتطورة. فريقنا من المهندسين المحترفين يعمل على تحويل الأفكار إلى واقع من خلال تصاميم دقيقة واقتصادية. سواء كنت تبحث عن تصميم مبنى سكني أو تجاري، نحن هنا لنجعل رؤيتك تتحقق بأعلى معايير الجودة."
   },
   {
     "name": "مقاولات",
-    "image": "assets/request/construction.png",
-    "description": "خدمات المقاولات وإدارة وتنفيذ مشاريع البناء والإنشاء."
+    "image": "https://i.pravatar.cc/300",
+    "description":
+        "نحن شركة مقاولات متخصصة في إدارة وتنفيذ مشاريع البناء والإنشاء بكل احترافية وجودة. نقوم بتقديم خدمات متكاملة تشمل التخطيط والتنفيذ وإدارة المشاريع، مع التركيز على تحقيق الجودة والمواعيد الزمنية. نحن نضمن تنفيذ المشاريع بأعلى معايير الأمان والاستدامة."
   },
   {
     "name": "حديد",
-    "image": "assets/request/iron.png",
-    "description": "توريد وتركيب وتصنيع منتجات من الحديد والمعدن."
+    "image": "https://i.pravatar.cc/300",
+    "description":
+        "نحن متخصصون في توريد وتركيب وتصنيع منتجات من الحديد والمعدن. نقدم تشكيلة واسعة من المنتجات التي تتضمن الأبواب، الشبابيك، السلالم، والأثاث المعدني. نحن نضمن جودة عالية وتصميمات مبتكرة، مع التركيز على تلبية احتياجات عملائنا بشكل فعال."
   },
   {
     "name": "أسمنت",
-    "image": "assets/request/cement.png",
-    "description": "توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية."
+    "image": "https://i.pravatar.cc/300",
+    "description":
+        "نحن شركة توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية. نقدم مجموعة متنوعة من المنتجات عالية الجودة لدعم مشاريع البناء والتشييد. نحن نهتم بتزويد عملائنا بالمواد ذات الجودة العالية والتي تلبي معايير الأمان والاستدامة."
   }
 ];
 
@@ -55,9 +61,18 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
             return Card(
               margin: const EdgeInsets.only(top: 10),
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SingleServicesPage(
+                          serviceDetails: subServices[index]),
+                    ),
+                  );
+                },
                 leading: CircleAvatar(
-                    backgroundImage: AssetImage("${services[index]['image']}")),
+                    backgroundImage:
+                        NetworkImage("${services[index]['image']}")),
                 title: Text("${services[index]['name']}"),
                 subtitle: Text(
                   "${services[index]['description']}",

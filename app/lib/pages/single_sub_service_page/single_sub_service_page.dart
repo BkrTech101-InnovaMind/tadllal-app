@@ -39,12 +39,12 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
             ),
           ),
           child: Container(
+            margin: const EdgeInsets.only(top: 75),
             color: Colors.black.withOpacity(0.3),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 buildServiceCard(),
-                buildOrderButton(),
               ],
             ),
           ),
@@ -55,16 +55,19 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
 
   Widget buildServiceCard() {
     return Card(
-      color: Colors.white.withOpacity(0.3),
+      color: Colors.white.withOpacity(0.5),
       child: Column(
         children: [
-          Text(
-            "${serviceDetails?['title']}",
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              fontSize: 25,
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Text(
+              "${serviceDetails?['title']}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                fontSize: 25,
+              ),
             ),
           ),
           Padding(
@@ -74,14 +77,19 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
               color: Colors.white.withOpacity(0.5),
             ),
           ),
-          Text(
-            "${serviceDetails?['sub_title']}",
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              "${serviceDetails?['sub_title']}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+              ),
             ),
           ),
+          const SizedBox(height: 20),
+          buildOrderButton(),
         ],
       ),
     );
@@ -89,16 +97,15 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
 
   Widget buildOrderButton() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF1F4C6B),
-          backgroundColor: Colors.white.withOpacity(0.5),
-          fixedSize: const Size(278, 63),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFF194706).withOpacity(0.8),
+          fixedSize: const Size(150, 63),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
         ),
         onPressed: () {
           showDialog(
@@ -107,7 +114,7 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
           );
         },
         child: const Text(
-          "طلب الخدمة",
+          "أطلب ألان",
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),

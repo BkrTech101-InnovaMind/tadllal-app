@@ -597,6 +597,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  tap_to_expand:
+    dependency: "direct main"
+    description:
+      name: tap_to_expand
+      sha256: "180ecb98055b5f7ff1d575e7fc00c465bb01dfff8482bf33c70c495d6e904d05"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.1"
   term_glyph:
     dependency: transitive
     description:

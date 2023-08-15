@@ -5,6 +5,7 @@ import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
 import 'package:tadllal/pages/most_requested_services_page/most_requested_services_page.dart';
+import 'package:tadllal/pages/single_general_services_page/single_general_services_page.dart';
 import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      physics: const BouncingScrollPhysics(),
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,16 +143,80 @@ Widget buildFilterMenu() {
 
 // service Widget
 Widget buildService(context) {
-  final serviceData = [
+  final List<Map<String, dynamic>> serviceData = [
     {
-      'image': 'assets/images/services.png',
-      'title': 'خدمات إنشائية \n وصيانة',
+      'image': "https://i.pravatar.cc/300",
+      'title': 'خدمات إنشائية وصيانة',
       'subtitle': 'خدمات تصميم وتنفيذ',
+      "subServices": [
+        {
+          "title": "ديكورات",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "تقدم خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية، حيث نجمع بين الفن والابتكار لخلق أماكن رائعة ومميزة تعكس شخصية واحتياجات عملائنا. نحن نهتم بكل التفاصيل، من اختيار الألوان والمواد إلى توزيع الفراغات بطريقة تجمع بين الجمال والوظائف العملية."
+        },
+        {
+          "title": "تصاميم هندسية",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نقدم خدمات تصميم وتخطيط مشاريع هندسية مبتكرة ومتطورة. فريقنا من المهندسين المحترفين يعمل على تحويل الأفكار إلى واقع من خلال تصاميم دقيقة واقتصادية. سواء كنت تبحث عن تصميم مبنى سكني أو تجاري، نحن هنا لنجعل رؤيتك تتحقق بأعلى معايير الجودة."
+        },
+        {
+          "title": "مقاولات",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نحن شركة مقاولات متخصصة في إدارة وتنفيذ مشاريع البناء والإنشاء بكل احترافية وجودة. نقوم بتقديم خدمات متكاملة تشمل التخطيط والتنفيذ وإدارة المشاريع، مع التركيز على تحقيق الجودة والمواعيد الزمنية. نحن نضمن تنفيذ المشاريع بأعلى معايير الأمان والاستدامة."
+        },
+        {
+          "title": "حديد",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نحن متخصصون في توريد وتركيب وتصنيع منتجات من الحديد والمعدن. نقدم تشكيلة واسعة من المنتجات التي تتضمن الأبواب، الشبابيك، السلالم، والأثاث المعدني. نحن نضمن جودة عالية وتصميمات مبتكرة، مع التركيز على تلبية احتياجات عملائنا بشكل فعال."
+        },
+        {
+          "title": "أسمنت",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نحن شركة توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية. نقدم مجموعة متنوعة من المنتجات عالية الجودة لدعم مشاريع البناء والتشييد. نحن نهتم بتزويد عملائنا بالمواد ذات الجودة العالية والتي تلبي معايير الأمان والاستدامة."
+        }
+      ],
     },
     {
-      'image': 'assets/images/resources.png',
+      'image': "https://i.pravatar.cc/300",
       'title': 'موارد بناء وتوريدات',
       'subtitle': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
+      "subServices": [
+        {
+          "title": "ديكورات",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "تقدم خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية، حيث نجمع بين الفن والابتكار لخلق أماكن رائعة ومميزة تعكس شخصية واحتياجات عملائنا. نحن نهتم بكل التفاصيل، من اختيار الألوان والمواد إلى توزيع الفراغات بطريقة تجمع بين الجمال والوظائف العملية."
+        },
+        {
+          "title": "تصاميم هندسية",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نقدم خدمات تصميم وتخطيط مشاريع هندسية مبتكرة ومتطورة. فريقنا من المهندسين المحترفين يعمل على تحويل الأفكار إلى واقع من خلال تصاميم دقيقة واقتصادية. سواء كنت تبحث عن تصميم مبنى سكني أو تجاري، نحن هنا لنجعل رؤيتك تتحقق بأعلى معايير الجودة."
+        },
+        {
+          "title": "مقاولات",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نحن شركة مقاولات متخصصة في إدارة وتنفيذ مشاريع البناء والإنشاء بكل احترافية وجودة. نقوم بتقديم خدمات متكاملة تشمل التخطيط والتنفيذ وإدارة المشاريع، مع التركيز على تحقيق الجودة والمواعيد الزمنية. نحن نضمن تنفيذ المشاريع بأعلى معايير الأمان والاستدامة."
+        },
+        {
+          "title": "حديد",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نحن متخصصون في توريد وتركيب وتصنيع منتجات من الحديد والمعدن. نقدم تشكيلة واسعة من المنتجات التي تتضمن الأبواب، الشبابيك، السلالم، والأثاث المعدني. نحن نضمن جودة عالية وتصميمات مبتكرة، مع التركيز على تلبية احتياجات عملائنا بشكل فعال."
+        },
+        {
+          "title": "أسمنت",
+          "image": "https://i.pravatar.cc/300",
+          "sub_title":
+              "نحن شركة توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية. نقدم مجموعة متنوعة من المنتجات عالية الجودة لدعم مشاريع البناء والتشييد. نحن نهتم بتزويد عملائنا بالمواد ذات الجودة العالية والتي تلبي معايير الأمان والاستدامة."
+        }
+      ],
     },
   ];
 
@@ -188,71 +254,83 @@ Widget buildService(context) {
           scrollDirection: Axis.horizontal,
           itemCount: serviceData.length,
           itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.3),
-                        BlendMode.srcATop,
-                      ),
-                      child: Image.asset(
-                        serviceData[index]['image'] ?? "",
-                        fit: BoxFit.fill,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SingleGeneralServicesPage(
+                            generalServiceDetails: serviceData[index])));
+              },
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.3),
+                            BlendMode.srcATop,
+                          ),
+                          child: Image.network(
+                            serviceData[index]['image'].toString(),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 10, right: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              serviceData[index]['title'] ?? "",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                height: 1,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 10, right: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                serviceData[index]['title'] ?? "",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              serviceData[index]['subtitle'] ?? "",
-                              style: const TextStyle(
-                                  color: Colors.white, height: 1),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 23,
-                        ),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25),
+                              const SizedBox(height: 10),
+                              Text(
+                                serviceData[index]['subtitle'] ?? "",
+                                style: const TextStyle(
+                                    color: Colors.white, height: 1),
+                              ),
+                            ],
                           ),
-                          color: Color(0xFF234F68),
                         ),
-                        child: const Icon(
-                          Icons.arrow_forward_sharp,
-                          size: 30,
-                          color: Colors.white,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 23,
+                          ),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                            ),
+                            color: Color(0xFF234F68),
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_sharp,
+                            size: 30,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             );
           },

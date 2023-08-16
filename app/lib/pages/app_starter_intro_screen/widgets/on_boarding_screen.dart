@@ -26,11 +26,9 @@ class OnBoardingScreen extends StatelessWidget {
                     ).createShader(bounds);
                   },
                   blendMode: BlendMode.srcATop,
-                  child: const Positioned.fill(
-                    child: Image(
-                      image: AssetImage('assets/images/splash_screen.png'),
-                      fit: BoxFit.fill,
-                    ),
+                  child: const Image(
+                    image: AssetImage('assets/images/splash_screen.png'),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

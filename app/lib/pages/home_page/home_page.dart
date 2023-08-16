@@ -5,6 +5,7 @@ import 'package:tadllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estate_filter.dart';
 import 'package:tadllal/pages/home_page/widgets/real_estates.dart';
 import 'package:tadllal/pages/most_requested_services_page/most_requested_services_page.dart';
+import 'package:tadllal/pages/notification_page/notification_page.dart';
 import 'package:tadllal/pages/single_general_services_page/single_general_services_page.dart';
 import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
 
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             buildFilterMenu(),
             Row(
               children: [
-                buildNotificationsIcon(true),
+                buildNotificationsIcon(context, true),
                 const SizedBox(width: 15),
                 buildUserImage(context),
               ],
@@ -69,12 +70,21 @@ Widget buildUserImage(BuildContext context) {
 }
 
 // Notifications icon widget
-Widget buildNotificationsIcon(bool hasNotification) {
+Widget buildNotificationsIcon(BuildContext context, bool hasNotification) {
   return TextButton(
     style: TextButton.styleFrom(
       shape: const CircleBorder(),
     ),
-    onPressed: () {},
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NotificationPage(
+            isHasNotification: hasNotification,
+          ),
+        ),
+      );
+    },
     child: Stack(
       children: [
         Container(
@@ -88,13 +98,17 @@ Widget buildNotificationsIcon(bool hasNotification) {
             size: 28,
           ),
         ),
-        if (hasNotification)
-          Positioned(
+        Visibility(
+          visible: hasNotification,
+          child: Positioned(
             right: 10,
             top: 10,
             child: Container(
-              color: Colors.white,
               padding: const EdgeInsets.all(5),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
               child: Container(
                 width: 10,
                 height: 10,
@@ -104,7 +118,8 @@ Widget buildNotificationsIcon(bool hasNotification) {
                 ),
               ),
             ),
-          )
+          ),
+        )
       ],
     ),
   );

@@ -21,7 +21,7 @@ class ServicesOrders extends Model
 
     public function subConstructionService()
     {
-        return $this->belongsTo(SubConstructionService::class);
+        return $this->belongsTo(SubConstructionService::class, "sub_construction_services_id");
     }
 
 }

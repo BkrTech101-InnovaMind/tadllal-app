@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ServicesOrdersController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\admin\UsersController;
 use App\Http\Controllers\AuthController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController
 use App\Http\Controllers\Admin\TypesController as AdminTypesController;
 use App\Http\Controllers\Admin\LocationsController as AdminLocationsController;
 use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
+use App\Http\Controllers\Admin\ConstructionServiceController as AdminConstructionServiceController;
+use App\Http\Controllers\Admin\SubConstructionServiceController as AdminSubConstructionServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,7 @@ use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
 //app
 Route::post('app/login', [AuthController::class, 'login']);
 Route::post('app/activate', [AuthController::class, 'activateAccount']);
+Route::post('app/reSend', [AuthController::class, 'resendActivationCode']);
 Route::post('app/register', [AuthController::class, 'register']);
 
 //admin
@@ -76,6 +80,24 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
         Route::post('/delete/{orderId}', [AdminOrdersController::class, 'destroyOrder']);
     });
 
+    Route::prefix('services')->group(function () {
+        Route::resource('/services', AdminConstructionServiceController::class);
+        Route::post('/{id}/edit', [AdminConstructionServiceController::class, 'updateService']);
+        Route::get('/{id}', [AdminConstructionServiceController::class, 'showSubServices']);
+    });
+    Route::prefix('subServices')->group(function () {
+        Route::resource('/services', AdminSubConstructionServiceController::class);
+        Route::get('/{id}', [AdminSubConstructionServiceController::class, 'show']);
+        Route::post('/{id}/edit', [AdminSubConstructionServiceController::class, 'updateSubService']);
+    });
+
+    Route::prefix('servicesOrders')->group(function () {
+        Route::put('/approve/{orderId}', [ServicesOrdersController::class, 'approveServiceOrder']);
+        Route::get('/', [ServicesOrdersController::class, 'getAllServicesOrders']);
+        Route::get('/approved', [ServicesOrdersController::class, 'getApprovedServiceOrders']);
+        Route::get('/pending', [ServicesOrdersController::class, 'getPendingServiceOrders']);
+        Route::post('/delete/{orderId}', [ServicesOrdersController::class, 'destroyServiceOrder']);
+    });
     Route::prefix('users')->group(function () {
         Route::resource('/users', UsersController::class);
         Route::post('/edit/{id}', [UsersController::class, 'modifyUser']);

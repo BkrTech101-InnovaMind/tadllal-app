@@ -31,6 +31,7 @@ class UpdateRealEstateRequest extends FormRequest
             'locationInfo' => ['string', 'max:255'],
             'secondType' => ['string'],
             'state' => ['string'],
+            'images.*' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];
     }
 }

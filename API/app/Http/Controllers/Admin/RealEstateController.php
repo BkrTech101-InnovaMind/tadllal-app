@@ -101,6 +101,7 @@ class RealEstateController extends Controller
             'locationInfo' => 'location_info',
             'secondType' => 'type2',
         ];
+
         $updatedFields = [];
         foreach ($fieldMappings as $requestField => $dbField) {
             if ($request->filled($requestField)) {
@@ -111,11 +112,14 @@ class RealEstateController extends Controller
                 } else {
                     $updatedFields[$dbField] = $request->$requestField;
                 }
+
             }
         }
 
         if (!empty($updatedFields)) {
             $realty->update($updatedFields);
+            // Create new images
+
         }
         return new RealEstateResource($realty);
     }
@@ -129,6 +133,13 @@ class RealEstateController extends Controller
             // If the real estate is not found, return a 404 response
             return $this->error('', 'Real estate not found', 404);
         } else {
+            foreach ($realty->images as $image) {
+                $imagePath = str_replace('storage/', 'public/', $image->image);
+                Storage::delete($imagePath);
+            }
+            $imagePath = str_replace('storage/', 'public/', $realty->image);
+            Storage::delete($imagePath);
+            $realty->images()->delete();
             $realty->delete();
 
             return $this->success([
@@ -187,12 +198,38 @@ class RealEstateController extends Controller
             $updatedFields['image'] = str_replace('public/', 'storage/', $imagePath);
 
         }
+
+        $images = [];
+        if ($request->hasFile('images')) {
+            // Delete existing images from the storage folder
+
+            foreach ($realEstate->images as $image) {
+                $imagePath = str_replace('storage/', 'public/', $image->image); // تحويل المسار ليكون متوافقا مع Storage
+                Storage::delete($imagePath);
+            }
+            // Delete existing images from the database
+            $realEstate->images()->delete();
+
+            // Upload and associate the new images
+            foreach ($request->file('images') as $image) {
+                $path = Storage::put('public/images/realEstate/images', $image);
+                $images[] = ['image' => str_replace('public/', 'storage/', $path)];
+            }
+
+
+
+            // Create new images
+            $realEstate->images()->createMany($images);
+        }
         // Fill the real estate model with the updated fields and save it to the database
         $realEstate->fill(array_filter($updatedFields));
         $realEstate->save();
 
+
+        // جلب العقار بعد تنفيذ العمليات
+        $updatedRealEstate = RealEstate::find($id);
         // Return the updated real estate resource as the response
-        return new RealEstateResource($realEstate);
+        return new RealEstateResource($updatedRealEstate);
 
     }
 }

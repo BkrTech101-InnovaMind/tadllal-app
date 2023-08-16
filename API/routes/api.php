@@ -14,6 +14,7 @@ use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
@@ -39,7 +40,10 @@ Route::post('app/register', [AuthController::class, 'register']);
 
 //admin
 Route::post('admin/login', [AdminAuthController::class, 'login']);
-
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+// Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -58,6 +62,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
 
     Route::prefix('types')->group(function () {
         Route::resource('/types', AdminTypesController::class);
+        Route::post('/{id}/edit', [AdminTypesController::class, 'updateTypes']);
     });
     Route::prefix('locations')->group(function () {
         Route::resource('/location', AdminLocationsController::class);

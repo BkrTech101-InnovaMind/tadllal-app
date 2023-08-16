@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\LocatiosResource;
 use App\Models\Rlocations;
 use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
 
 class LocationsController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -66,6 +68,8 @@ class LocationsController extends Controller
     public function destroy(Rlocations $Location)
     {
         $Location->delete();
-        return response(null, 204);
+        return $this->success([
+            'message' => 'The real estate has been deleted successfully',
+        ]);
     }
 }

@@ -195,4 +195,9 @@ class AuthController extends Controller
             'user' => new UserResource($newUser),
         ], 'New User account created successfully.');
     }
+
+    public function user(Request $request)
+    {
+        return $request->user();
+    }
 }

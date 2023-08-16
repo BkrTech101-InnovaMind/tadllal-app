@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tadllal/pages/app_starter_intro_screen/app_starter_intro_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -38,7 +39,13 @@ class OnBoardingScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/logo.png', height: 180),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Image.asset('assets/images/logo.png', height: 180),
+                    ),
                     const SizedBox(height: 20),
                     const Text.rich(
                       textAlign: TextAlign.center,
@@ -70,7 +77,11 @@ class OnBoardingScreen extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const AppStarterIntroScreen(),
+                        ));
+                      },
                       child: const Text(
                         "هيا لنبدأ",
                         style: TextStyle(

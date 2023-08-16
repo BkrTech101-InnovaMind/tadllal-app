@@ -24,6 +24,40 @@ class AuthController extends Controller
 {
     use HttpResponses;
 
+    public function generateAndSendActivationCode(string $email, string $message)
+    {
+        // $activationCode = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // توليد رمز تفعيل عشوائي مكون من 4 أرقام
+        $existingCodes = User::pluck('activation_code')->toArray();
+
+        do {
+            $activationCode = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+        } while (in_array($activationCode, $existingCodes));
+
+
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return $this->error('', 'User not found', 404);
+        }
+
+        $user->update([
+            'activation_code' => $activationCode,
+        ]);
+
+        $content = [
+            'subject' => 'Activation Code',
+            'body' => 'Your activation code is: ' . $activationCode,
+        ];
+
+        $sampleMail = new SampleMail($content);
+        Mail::to($user->email)->send($sampleMail);
+
+        return $this->success([
+            'user' => new UserResource($user),
+            'code' => $activationCode,
+        ], $message);
+    }
+
     public function login(LoginUserRequest $request)
     {
         $request->validated($request->all());
@@ -70,7 +104,12 @@ class AuthController extends Controller
     {
 
         $request->validated($request->all());
-        $activationCode = Str::random(40); // توليد رمز تفعيل عشوائي
+        $existingCodes = User::pluck('activation_code')->toArray();
+
+        do {
+            $activationCode = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+        } while (in_array($activationCode, $existingCodes));
+
 
         $user = User::create([
             'name' => $request->name,
@@ -95,7 +134,14 @@ class AuthController extends Controller
         ], 'Account created successfully. Please check your email for activation instructions.');
     }
 
+    public function resendActivationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
 
+        return $this->generateAndSendActivationCode($request->email, 'Activation code has been generated and sent successfully.');
+    }
     public function logout()
     {
         Auth::user()->currentAccessToken()->delete();
@@ -191,9 +237,10 @@ class AuthController extends Controller
             'registered_by' => $user->id,
         ]);
 
-        return $this->success([
-            'user' => new UserResource($newUser),
-        ], 'New User account created successfully.');
+        return $this->generateAndSendActivationCode($newUser->email, 'New User account created successfully & Activation code has been generated and sent successfully.');
+        // return $this->success([
+        //     'user' => new UserResource($newUser),
+        // ], 'New User account created successfully.');
     }
 
     public function user(Request $request)

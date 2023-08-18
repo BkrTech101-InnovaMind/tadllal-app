@@ -8,7 +8,8 @@
     -->
 </head>
 <body>
-    <p>{{ $content['body'] }}</p>
+    Welcome New User your account created successfully & Activation code is :
+    <h1> {{$codee}}</h1> 
   
 </body>
 </html>

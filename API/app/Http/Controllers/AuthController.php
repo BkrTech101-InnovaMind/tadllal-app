@@ -7,6 +7,7 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\ForgetMail;
 use App\Mail\SampleMail;
 use App\Models\User;
 use App\Traits\HttpResponses;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Password;
 
 
 class AuthController extends Controller
@@ -123,7 +124,7 @@ class AuthController extends Controller
             'body' => 'activationCode is :' . $activationCode,
         ];
 
-        $sampleMail = new SampleMail($content);
+        $sampleMail = new SampleMail($activationCode);
         Mail::to($user->email)->send($sampleMail);
 
 
@@ -247,4 +248,82 @@ class AuthController extends Controller
     {
         return $request->user();
     }
+
+
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return $this->error('', 'User not found', 404);
+        }
+
+        $resetCode = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+
+        $user->update([
+            'reset_code' => $resetCode,
+        ]);
+
+        $content = [
+            'subject' => 'Password Reset Code',
+            'body' => 'Your password reset code is: ' . $resetCode,
+        ];
+
+        $sampleMail = new ForgetMail($resetCode);
+        Mail::to($user->email)->send($sampleMail);
+
+        return $this->success([], 'Reset code has been generated and sent successfully.');
+    }
+
+    public function verifyResetCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'reset_code' => 'required|digits:4',
+        ]);
+
+        $user = User::where('email', $request->email)
+            ->where('reset_code', $request->reset_code)
+            ->first();
+
+        if (!$user) {
+            return $this->error('', 'Invalid email or reset code', 400);
+        }
+
+        return $this->success([], 'Reset code is valid.');
+    }
+
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'reset_code' => 'required|digits:4',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)
+            ->where('reset_code', $request->reset_code)
+            ->first();
+
+        if (!$user) {
+            return $this->error('', 'Invalid email or reset code', 400);
+        }
+
+        // Update the new password
+        $user->password = Hash::make($request->new_password);
+        $user->reset_code = null; // Clear the reset code
+        $user->save();
+
+        return $this->success([
+            'message' => 'Password reset successfully',
+        ]);
+    }
+
+
 }

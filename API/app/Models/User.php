@@ -27,6 +27,7 @@ class User extends Authenticatable
         'registered_by',
         'activated',
         'activation_code',
+        'reset_code',
 
     ];
     public function favorites()

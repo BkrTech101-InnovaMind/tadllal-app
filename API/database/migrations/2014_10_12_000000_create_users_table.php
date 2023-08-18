@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('avatar')->nullable();
             $table->boolean('activated')->default(false);
             $table->string('activation_code')->nullable();
+            $table->string('reset_code')->nullable();
             $table->unsignedBigInteger('registered_by')->nullable();
             $table->rememberToken();
             $table->timestamps();

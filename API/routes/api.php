@@ -38,10 +38,14 @@ use App\Http\Controllers\Admin\SubConstructionServiceController as AdminSubConst
 //Public routes
 //app
 Route::post('app/login', [AuthController::class, 'login']);
+// Route::post('app/resetPassword', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('app/activate', [AuthController::class, 'activateAccount']);
 Route::post('app/reSend', [AuthController::class, 'resendActivationCode']);
 Route::post('app/register', [AuthController::class, 'register']);
-
+//forget
+Route::post('app/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('app/verifyResetCode', [AuthController::class, 'verifyResetCode']);
+Route::post('app/resetPassword', [AuthController::class, 'resetPassword']);
 //admin
 Route::post('admin/login', [AdminAuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

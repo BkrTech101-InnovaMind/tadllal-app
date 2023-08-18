@@ -71,7 +71,7 @@ class UserPreferenceController extends Controller
 
         $user_preferences = UserPerferenceResource::collection(
             UserPreference::where('user_id', $user_id)
-                ->with('type:id,name')
+                ->with('type:id,name,image')
                 ->get()
         );
 

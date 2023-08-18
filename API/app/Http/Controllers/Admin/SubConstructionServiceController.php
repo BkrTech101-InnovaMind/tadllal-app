@@ -18,7 +18,7 @@ class SubConstructionServiceController extends Controller
     public function index()
     {
         return SubConstructionServiceResource::collection(
-            SubConstructionService::get()
+            SubConstructionService::with('constructionService')->get()
         );
     }
 
@@ -129,8 +129,9 @@ class SubConstructionServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SubConstructionService $subService)
+    public function destroy($id)
     {
+        $subService = SubConstructionService::find($id);
         if (!$subService) {
             return $this->error('', 'Sub-service not found', 404);
         } else {

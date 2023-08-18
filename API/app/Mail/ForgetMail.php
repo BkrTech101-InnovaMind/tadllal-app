@@ -8,12 +8,10 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
 
-class SampleMail extends Mailable
+class ForgetMail extends Mailable
 {
     use Queueable, SerializesModels;
-    // public array $content;
     public string $codee;
     /**
      * Create a new message instance.
@@ -29,8 +27,7 @@ class SampleMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('example@example.com', 'Test Sender'),
-            subject: 'تفعيل حسابك',
+            subject: ' استعادة كلمة المرور',
         );
     }
 
@@ -40,7 +37,7 @@ class SampleMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.sample',
+            view: 'emails.forget',
             with: ['code' => $this->codee],
         );
     }
@@ -54,11 +51,4 @@ class SampleMail extends Mailable
     {
         return [];
     }
-
-    // public function build(): Content
-    // {
-
-    //     return $this->Content();
-    // }
-
 }

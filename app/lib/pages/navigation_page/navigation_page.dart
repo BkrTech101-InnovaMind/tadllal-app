@@ -73,18 +73,28 @@ class _NavigationPageState extends State<NavigationPage> {
           );
         },
       ),
-      bottomNavigationBar: FlashyTabBar(
-        items: items,
-        onItemSelected: onItemSelected,
-        selectedIndex: currentIndex,
-        animationCurve: Curves.easeInOutBack,
-        animationDuration: const Duration(
-          milliseconds: 400,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              width: 1,
+              color: Colors.grey,
+            ),
+          ),
         ),
-        showElevation: true,
-        shadows: [BoxShadow(color: Colors.black.withOpacity(0.5))],
-        height: 55,
-        iconSize: 20,
+        child: FlashyTabBar(
+          items: items,
+          onItemSelected: onItemSelected,
+          selectedIndex: currentIndex,
+          animationCurve: Curves.easeInOutBack,
+          animationDuration: const Duration(
+            milliseconds: 400,
+          ),
+          showElevation: true,
+          shadows: [BoxShadow(color: Colors.black.withOpacity(0.5))],
+          height: 55,
+          iconSize: 20,
+        ),
       ),
     );
   }

@@ -32,40 +32,57 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ClipPath(
-          clipper: HalfCircleClipper(),
-          child: Container(
-            height: 300,
-            color: const Color(0xFFE3E3E3),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("الرئيسية"),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF194706),
+      ),
+      body: Stack(
+        children: [
+          ClipPath(
+            clipper: HalfCircleClipper(),
+            child: Container(
+              height: 300,
+              color: const Color(0xFFE3E3E3),
+            ),
           ),
-        ),
-        ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Container(
+            margin: const EdgeInsets.only(top: 15),
+            child: Column(
               children: [
-                const MenuFilter(),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    buildNotificationsIcon(true),
-                    const SizedBox(width: 15),
-                    buildUserImage(),
+                    const MenuFilter(),
+                    Row(
+                      children: [
+                        buildNotificationsIcon(true),
+                        const SizedBox(width: 15),
+                        buildUserImage(),
+                      ],
+                    ),
                   ],
+                ),
+                Expanded(
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    children: [
+                      buildService(context),
+                      buildMostRequest(context),
+                      const LocationFilter(),
+                      const RealEstateFilter(),
+                      const SizedBox(height: 20),
+                      const RealEstates(),
+                    ],
+                  ),
                 ),
               ],
             ),
-            buildService(context),
-            buildMostRequest(context),
-            const LocationFilter(),
-            const RealEstateFilter(),
-            const SizedBox(height: 20),
-            const RealEstates(),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

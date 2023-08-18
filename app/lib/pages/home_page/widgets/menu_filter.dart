@@ -70,17 +70,22 @@ class _MenuFilterState extends State<MenuFilter> {
           key: _popupKey,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFFDFDFDF)),
+            border: Border.all(color: const Color(0xFFDFDFDF), width: 2),
             borderRadius: BorderRadius.circular(25),
           ),
           child: Row(
             children: [
               SvgPicture.asset('assets/icons/filter-icon.svg'),
               const SizedBox(width: 10),
-              Text(
-                selectedOptions.isNotEmpty
-                    ? selectedOptions.map((option) => option.label).join(', ')
-                    : 'فلترة المعروضات',
+              SizedBox(
+                width: 100,
+                child: Text(
+                  selectedOptions.isNotEmpty
+                      ? selectedOptions.map((option) => option.label).join('، ')
+                      : 'فلترة المعروضات',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const SizedBox(width: 5),
               const Icon(Icons.arrow_drop_down_rounded),

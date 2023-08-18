@@ -17,6 +17,7 @@ class UserPerferenceResource extends JsonResource
         return [
             'id' => (string) $this->type->id,
             'name' => $this->type->name,
+            'image' => $this->type->image,
         ];
     }
 }

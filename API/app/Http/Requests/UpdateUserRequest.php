@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255', 'unique:users'],
             'password' => ['nullable', 'confirmed', Password::defaults()],
-            'role' => ['nullable', 'string', 'in:user,marketer,company'],
+            'role' => ['nullable', 'string', 'in:user,marketer,company,admin'],
             'phone' => ['nullable', 'string', 'max:20'],
             'avatar' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];

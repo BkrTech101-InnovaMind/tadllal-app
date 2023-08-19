@@ -97,6 +97,9 @@ class UsersController extends Controller
         if ($request->has('name')) {
             $user->name = $request->name;
         }
+        if ($request->has('role')) {
+            $user->role = $request->role;
+        }
 
         if ($request->has('phone')) {
             $user->phone_number = $request->phone;

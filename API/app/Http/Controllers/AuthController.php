@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         $content = [
             'subject' => 'Activation Code',
-            'body' => 'Your activation code is: ' . $activationCode,
+            'body' => 'Your activation code is : ' . $activationCode,
         ];
 
         $sampleMail = new SampleMail($content);

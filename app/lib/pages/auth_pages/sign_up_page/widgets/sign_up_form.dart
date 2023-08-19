@@ -124,6 +124,19 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             child: TextFormField(
               keyboardType: TextInputType.visiblePassword,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "الرجاء ادخال كلمة السر";
+                } else if (value.length < 6) {
+                  return "كلمة السر يجب أن لا تقل عن 8 أحرف";
+                } else if (value.length > 24) {
+                  return "كلمة السر يجب أن لا تزيد عن 24 حرف";
+                } else if (!_isValidPassword(value)) {
+                  return "كلمة السر يجب أن تحتوي على ألاقل حرفاً كبيراً وحرفاً صغيراً ورقماً وحرفاً خاص";
+                } else {
+                  return null;
+                }
+              },
               obscureText: password,
               controller: _passwordController,
               decoration: const InputDecoration(
@@ -196,4 +209,11 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
+}
+
+// password Validation Pattern
+bool _isValidPassword(String value) {
+  RegExp passwordPattern =
+      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]+$');
+  return passwordPattern.hasMatch(value);
 }

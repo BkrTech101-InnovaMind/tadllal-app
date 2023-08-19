@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/main.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({super.key});
@@ -228,11 +227,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         if (showSuccessPopup)
           TextButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TadllalApp(),
-                  ));
+              // Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => const TadllalApp(),
+              //     ));
             },
             child: const Text("الذهاب الى الصفحة الرئيسية"),
           ),

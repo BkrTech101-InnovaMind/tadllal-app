@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:tadllal/config/config.dart';
+import 'package:tadllal/model/api_molels/login_response.dart';
+import 'package:tadllal/widgets/code_authentication_dialog.dart';
 
 class CodeAuthenticationPage extends StatefulWidget {
   const CodeAuthenticationPage({super.key});
@@ -49,6 +53,40 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
     }
   }
 
+  void onComplete(String value) {
+    setState(() {
+      verificationCode = value;
+    });
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => CodeAuthenticationDialog(
+        formValue: const {
+          "path": "/activate",
+          "myData": const {"code": "1k3BKTaHBlLMf5v5h84RvvfFlGmJISx6KFFix7M5"}
+        },
+        onUrlChanged: (data) {
+          print(data);
+
+          LoginResponse s = LoginResponse.fromJson(data.data);
+          Config.set(
+            'token',
+            s.data!.token,
+          );
+          Config.set(
+            'user',
+            json.encode(s.data!.user!.toJson()),
+          );
+          Navigator.of(context2).pop();
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
+        },
+      ),
+    );
+    print("verificationCode: $verificationCode");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -59,7 +97,6 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
             margin: const EdgeInsets.symmetric(horizontal: 15),
             padding: const EdgeInsets.only(top: 15),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildBackButton(context),
@@ -86,12 +123,7 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
                                 const TextStyle(color: Color(0xFF252B5C)),
                             underlineUnfocusedColor: Colors.transparent,
                             underlineWidth: 2,
-                            onCompleted: (String value) {
-                              setState(() {
-                                verificationCode = value;
-                              });
-                              print("verificationCode: $verificationCode");
-                            },
+                            onCompleted: onComplete,
                             onEditing: (value) {},
                           ),
                         ),

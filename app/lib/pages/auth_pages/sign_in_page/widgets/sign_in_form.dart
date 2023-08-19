@@ -1,8 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/config/global.dart';
+import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
 import 'package:tadllal/pages/forget_password_page/forget_password_page.dart';
+import 'package:tadllal/services/helpers.dart';
+import 'package:tadllal/services/http.dart';
+import 'package:tadllal/widgets/sinin_sinup_dialog.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -36,46 +39,28 @@ class _SignInFormState extends State<SignInForm> {
       return;
     }
 
-    final form = {
-      "email": _phoneController.text,
-      "password": _passwordController.text,
-      "device_name": "mobile",
-    };
+    setBaseUrl(APP_API_URI);
+    SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest(
+        email: _phoneController.text.toString().trim(),
+        password: _passwordController.text.toString().trim());
 
-    try {
-      AuthProvider authProvider = AuthProvider();
-      Response response = await authProvider.signIn(data: form);
-      if (response.data != null) {
-        final token = response.data['data']['token'];
-        await authProvider.saveAccessToken(token: token);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("تم تسجيل الدخول بنجاح")),
-        );
-      }
-    } catch (e) {
-      if (e is DioException) {
-        if (e.response!.data['message'] == 'Credentials do not match') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                  "يبدو ان إسم المستخدم او كلمة المرور غير صحيحة, حاول مجدداً"),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-              "يبدو أن هناك خطأ ما, تأكد من إتصالك بالانترنت وحاول مجدداً",
-            ),
-          ));
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-            "يبدو أن هناك خطأ ما, حاول مجدداً",
-          ),
-        ));
-      }
-    }
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SinInSinUpDialog(
+        sinInSinUpRequest: sinInSinUpRequest,
+        type: SININ_TYPE,
+        onLogin: (response) async {
+          await updateUserDetails(
+                  response: response, sinInSinUpRequest: sinInSinUpRequest)
+              .whenComplete(() {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/successSignInSplashScreen', (route) => false);
+          });
+          // Navigator.of(context).pushNamedAndRemoveUntil('/navigationPage',(route) => false);
+        },
+      ),
+    );
   }
 
   @override

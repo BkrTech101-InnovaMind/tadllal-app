@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:tadllal/config/global.dart';
+import 'package:tadllal/config/login_info.dart';
+import 'package:tadllal/widgets/save_dialog.dart';
 
 class ChangePasswordPopUp extends StatefulWidget {
   const ChangePasswordPopUp({super.key});
@@ -13,6 +18,7 @@ class _ChangePasswordPopUpState extends State<ChangePasswordPopUp> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool showSuccessPopup = false;
+  String oldPassword = jsonDecode(LoginInfo().login_info!)[PASSWORD];
 
   Map<String, dynamic> passwordValues = {};
 
@@ -59,11 +65,37 @@ class _ChangePasswordPopUpState extends State<ChangePasswordPopUp> {
         ),
       );
     } else {
-      setState(() {
-        showSuccessPopup = true;
-      });
+      _onChange();
       print(passwordValues);
     }
+  }
+
+  Future<void> _onChange() async {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SaveDialog(
+        formValue: [
+          {"path": "/profile/change-password", "myData": passwordValues}
+        ],
+        onUrlChanged: (data) {
+          for (var element in data) {
+            // if(element.data.)
+            print("element ====> $element");
+          }
+
+          LoginInfo.set_USERNAME_PASSWORD(
+              user_name: jsonDecode(LoginInfo().login_info!)[USERNAME],
+              password: _newPasswordController.text.trim());
+
+          Navigator.of(context2).pop();
+
+          setState(() {
+            showSuccessPopup = true;
+          });
+        },
+      ),
+    );
   }
 
   bool _isValidPassword(String value) {

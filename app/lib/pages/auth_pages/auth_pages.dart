@@ -9,14 +9,18 @@ class AuthenticationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildIntro(),
-            buildBody(context),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  // height: MediaQuery.sizeOf(context).height/0.5,
+                  child: buildIntro()),
+              Container(child: buildBody(context)),
+            ],
+          ),
         ),
       ),
     );
@@ -55,96 +59,92 @@ Widget buildIntro() {
 
 // Body widget
 Widget buildBody(BuildContext context) {
-  return Expanded(
-    child: Container(
-      margin: const EdgeInsets.only(top: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
-            text: const TextSpan(
-              text: "مستعد لبدء ",
-              style: TextStyle(fontSize: 25, color: Colors.black),
-              children: <TextSpan>[
-                TextSpan(
-                  text: "الإكتشاف",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(text: "؟", style: TextStyle(fontSize: 35))
-              ],
-            ),
+  return Container(
+    margin: const EdgeInsets.only(top: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: const TextSpan(
+            text: "مستعد لبدء ",
+            style: TextStyle(fontSize: 25, color: Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "الإكتشاف",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: "؟", style: TextStyle(fontSize: 30))
+            ],
           ),
-          buildBodyButtons(context),
-        ],
-      ),
+        ),
+        buildBodyButtons(context),
+      ],
     ),
   );
 }
 
 // Body Buttons widget
 Widget buildBodyButtons(BuildContext context) {
-  return Expanded(
-    child: Center(
-      child: Container(
-        margin: const EdgeInsets.only(top: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8BC83F),
-                  foregroundColor: Colors.white,
-                  fixedSize: const Size(278, 63),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  )),
-              onPressed: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SignInPage(),
-                  ),
-                );
-              },
-              child: const Text(
-                "تسجيل الدخول",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Row(
-              children: [
-                const Expanded(child: Divider(color: Colors.black45)),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const Text("أو"),
+  return Center(
+    child: Container(
+      margin: const EdgeInsets.only(top: 20, bottom: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+                backgroundColor: const Color(0xFF8BC83F),
+                foregroundColor: Colors.white,
+                fixedSize: const Size(278, 63),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                )),
+            onPressed: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const SignInPage(),
                 ),
-                const Expanded(child: Divider(color: Colors.black45)),
-              ],
+              );
+            },
+            child: const Text(
+              "تسجيل الدخول",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8BC83F),
-                  foregroundColor: Colors.white,
-                  fixedSize: const Size(278, 63),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  )),
-              onPressed: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SignUpPage(),
-                  ),
-                );
-              },
-              child: const Text(
-                "إنشاء حساب جديد",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: [
+              const Expanded(child: Divider(color: Colors.black45)),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                child: const Text("أو"),
               ),
+              const Expanded(child: Divider(color: Colors.black45)),
+            ],
+          ),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+                backgroundColor: const Color(0xFF8BC83F),
+                foregroundColor: Colors.white,
+                fixedSize: const Size(278, 63),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                )),
+            onPressed: () {
+              Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const SignUpPage(),
+                ),
+              );
+            },
+            child: const Text(
+              "إنشاء حساب جديد",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
-            const ShareButton()
-          ],
-        ),
+          ),
+          const ShareButton()
+        ],
       ),
     ),
   );

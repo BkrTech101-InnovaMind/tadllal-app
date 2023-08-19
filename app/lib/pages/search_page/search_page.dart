@@ -1,45 +1,9 @@
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tadllal/methods/api_provider.dart';
+import 'package:tadllal/model/real_estate.dart';
 import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
-
-final realEstatesApiExample = [
-  {
-    'images': [
-      'assets/images/shape.png',
-      'assets/images/shape2.png',
-      'assets/images/shape3.png',
-      'assets/images/shape4.png',
-    ],
-    "availability": "متاح",
-    "state": "للإيجار",
-    "location": "حدة,حي العفيفة",
-    "price": "220",
-    "type": "أرض",
-    "title": "شقة مفروشة للإيجار",
-    "description":
-        "شقة مفروشة للايجار في ارقى احياء صنعاء مجهزة باحدث وسائل الراحة الممكنه التي قد تحلم بها في حياتك ",
-    "rating": "4.8",
-    "isFavorite": false
-  },
-  {
-    'images': [
-      'assets/images/shape.png',
-      'assets/images/shape2.png',
-      'assets/images/shape3.png',
-      'assets/images/shape4.png',
-    ],
-    "availability": "غير متاح",
-    "state": "للبيع",
-    "type": "شقة",
-    "location": "بيت بوس, حي الشباب",
-    "price": "500,000",
-    "title": "فيلا بتصميم حديث",
-    "description":
-        "شقة مفروشة للايجار في ارقى احياء صنعاء مجهزة باحدث وسائل الراحة الممكنه التي قد تحلم بها في حياتك ",
-    "rating": "4.8",
-    "isFavorite": false
-  },
-];
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -51,16 +15,17 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String searchValue = '';
   final List<String> _suggestions = [];
+  List<RealEstate> realEstatesApiExample = [];
 
-  List<Map<String, dynamic>> filteredResults() {
-    return realEstatesApiExample.where((Map<String, dynamic> realEstate) {
-      return (realEstate['title'].toLowerCase().contains(
+  List<RealEstate> filteredResults() {
+    return realEstatesApiExample.where((realEstate) {
+      return (realEstate.attributes!.name!.toLowerCase().contains(
                 searchValue.toLowerCase(),
               )) ||
-          (realEstate['location'].toLowerCase().contains(
+          (realEstate.attributes!.location!.name!.toLowerCase().contains(
                 searchValue.toLowerCase(),
               )) ||
-          (realEstate['price'].toString().toLowerCase().contains(
+          (realEstate.attributes!.price.toString().toLowerCase().contains(
                 searchValue.toLowerCase(),
               ));
     }).toList();
@@ -71,17 +36,17 @@ class _SearchPageState extends State<SearchPage> {
       searchValue = value;
       _suggestions.clear();
       if (searchValue.isNotEmpty) {
-        for (Map<String, dynamic> realEstate in realEstatesApiExample) {
-          if ((realEstate['title'].toLowerCase().contains(
+        for (RealEstate realEstate in realEstatesApiExample) {
+          if ((realEstate.attributes!.name!.toLowerCase().contains(
                     searchValue.toLowerCase(),
                   )) ||
-              (realEstate['location'].toLowerCase().contains(
+              (realEstate.attributes!.location!.name!.toLowerCase().contains(
                     searchValue.toLowerCase(),
                   )) ||
-              (realEstate['price'].toString().toLowerCase().contains(
+              (realEstate.attributes!.price.toString().toLowerCase().contains(
                     searchValue.toLowerCase(),
                   ))) {
-            _suggestions.add(realEstate['title']);
+            _suggestions.add(realEstate.attributes!.name!);
           }
         }
       }
@@ -96,6 +61,16 @@ class _SearchPageState extends State<SearchPage> {
         _suggestions.add(suggestion);
       }
     });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      realEstatesApiExample =
+          Provider.of<AppProvider>(context, listen: false).realEstateList;
+    });
+
+    super.initState();
   }
 
   @override
@@ -138,17 +113,18 @@ class _SearchPageState extends State<SearchPage> {
                         },
                         leading: CircleAvatar(
                           radius: 30,
-                          backgroundImage: AssetImage(realEstate['images'][0]),
+                          backgroundImage:
+                              NetworkImage(realEstate.attributes!.photo!),
                         ),
                         title: Text(
-                          realEstate['title'],
+                          realEstate.attributes!.name!,
                           style: const TextStyle(
                             fontSize: 19,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         subtitle: Text(
-                          '${realEstate['price']} \$',
+                          '${realEstate.attributes!.price!} \$',
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w700,
@@ -158,7 +134,8 @@ class _SearchPageState extends State<SearchPage> {
                           width: 60,
                           child: Row(
                             children: [
-                              Text(realEstate['rating']),
+                              Text(realEstate
+                                  .attributes!.ratings!.averageRating!),
                               const SizedBox(
                                 width: 10,
                               ),

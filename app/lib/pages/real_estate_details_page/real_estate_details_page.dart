@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:tadllal/components/order_pop_up.dart';
+import 'package:tadllal/model/real_estate.dart';
 
 class RealEstateDetailsPage extends StatefulWidget {
-  final Map realEstate;
+  final RealEstate realEstate;
 
-  const RealEstateDetailsPage({required this.realEstate, super.key});
+  const RealEstateDetailsPage({Key? key, required this.realEstate})
+      : super(key: key);
 
   @override
   State<RealEstateDetailsPage> createState() => _RealEstateDetailsPageState();
@@ -15,19 +16,17 @@ class RealEstateDetailsPage extends StatefulWidget {
 class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    final realEstate = widget.realEstate;
     return Scaffold(
       appBar: AppBar(
-        title: Text(realEstate["title"]),
+        title: Text(widget.realEstate.attributes!.name!),
         backgroundColor: const Color(0xFF194706),
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: ListView(
           children: [
-            buildImagesSection(context, realEstate),
-            buildDetailsSection(realEstate),
-            buildOrderButton(realEstate),
+            buildImagesSection(),
+            buildDetailsSection(),
             buildCommentsSection(),
           ],
         ),
@@ -35,8 +34,8 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-// Images section
-  Widget buildImagesSection(BuildContext context, Map realEstate) {
+  // Images section
+  Widget buildImagesSection() {
     return CarouselSlider(
       options: CarouselOptions(
         viewportFraction: 0.5,
@@ -46,7 +45,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
         enableInfiniteScroll: true,
         aspectRatio: 16 / 9,
       ),
-      items: realEstate["images"].map<Widget>(
+      items: widget.realEstate.attributes!.images!.map<Widget>(
         (image) {
           return GestureDetector(
             onTap: () {
@@ -56,7 +55,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                   builder: (_) {
                     return Scaffold(
                       appBar: AppBar(
-                        title: Text(realEstate["title"]),
+                        title: Text(widget.realEstate.attributes!.name!),
                         backgroundColor: const Color(0xFF194706),
                       ),
                       body: Center(
@@ -74,7 +73,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                               ),
                             ),
                           ),
-                          imageProvider: AssetImage(image),
+                          imageProvider: NetworkImage(image),
                           minScale: PhotoViewComputedScale.contained * 0.8,
                           maxScale: PhotoViewComputedScale.contained * 2,
                         ),
@@ -84,7 +83,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                 ),
               );
             },
-            child: Image.asset(image,
+            child: Image.network(image,
                 fit: BoxFit.contain, filterQuality: FilterQuality.high),
           );
         },
@@ -93,7 +92,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   }
 
 // Details section
-  Widget buildDetailsSection(Map realEstate) {
+  Widget buildDetailsSection() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       child: Column(
@@ -111,7 +110,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: "\n${realEstate["title"]}",
+                      text: "\n${widget.realEstate.attributes!.name!}",
                       style: const TextStyle(fontWeight: FontWeight.normal),
                     )
                   ],
@@ -121,12 +120,13 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               // Type Text
               Text.rich(
                 TextSpan(
-                  text: "ألتصنيف: ",
+                  text: "التصنيف: ",
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: "\n${realEstate["type"]}",
+                      text:
+                          "\n${widget.realEstate.attributes!.firstType!.name}",
                       style: const TextStyle(fontWeight: FontWeight.normal),
                     )
                   ],
@@ -148,7 +148,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: "\n${realEstate["price"]}",
+                      text: "\n${widget.realEstate.attributes!.price!}",
                       style: const TextStyle(fontWeight: FontWeight.normal),
                     ),
                     const TextSpan(
@@ -166,7 +166,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: "\n${realEstate["availability"]}",
+                      text: "\n${widget.realEstate.attributes!.state}",
                       style: const TextStyle(fontWeight: FontWeight.normal),
                     )
                   ],
@@ -188,7 +188,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: "\n${realEstate["location"]}",
+                      text: "\n${widget.realEstate.attributes!.location!.name}",
                       style: const TextStyle(fontWeight: FontWeight.normal),
                     )
                   ],
@@ -203,7 +203,8 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
-                      text: "\n${realEstate["rating"]}",
+                      text:
+                          "\n${widget.realEstate.attributes!.ratings!.averageRating}",
                       style: const TextStyle(fontWeight: FontWeight.normal),
                     )
                   ],
@@ -216,11 +217,11 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
           // Description Text
           Text.rich(
             TextSpan(
-              text: "ألوصف: ",
+              text: "الوصف: ",
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               children: [
                 TextSpan(
-                  text: "\n${realEstate["description"]}",
+                  text: "\n${widget.realEstate.attributes!.description}",
                   style: const TextStyle(fontWeight: FontWeight.normal),
                 )
               ],
@@ -280,33 +281,6 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
           },
         ),
       ],
-    );
-  }
-
-  Widget buildOrderButton(realEstate) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF1F4C6B),
-          fixedSize: const Size(278, 63),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
-        ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => OrderPopup(order: realEstate),
-          );
-          // print(realEstate);
-        },
-        child: const Text(
-          "أطلبه الان",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 }

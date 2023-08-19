@@ -1,38 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
+import 'dart:convert';
 
-final subServices = [
-  {
-    "name": "ديكورات",
-    "image": "https://i.pravatar.cc/300",
-    "description":
-        "تقدم خدمات تصميم وتنفيذ الديكورات الداخلية والخارجية، حيث نجمع بين الفن والابتكار لخلق أماكن رائعة ومميزة تعكس شخصية واحتياجات عملائنا. نحن نهتم بكل التفاصيل، من اختيار الألوان والمواد إلى توزيع الفراغات بطريقة تجمع بين الجمال والوظائف العملية."
-  },
-  {
-    "name": "تصاميم هندسية",
-    "image": "https://i.pravatar.cc/300",
-    "description":
-        "نقدم خدمات تصميم وتخطيط مشاريع هندسية مبتكرة ومتطورة. فريقنا من المهندسين المحترفين يعمل على تحويل الأفكار إلى واقع من خلال تصاميم دقيقة واقتصادية. سواء كنت تبحث عن تصميم مبنى سكني أو تجاري، نحن هنا لنجعل رؤيتك تتحقق بأعلى معايير الجودة."
-  },
-  {
-    "name": "مقاولات",
-    "image": "https://i.pravatar.cc/300",
-    "description":
-        "نحن شركة مقاولات متخصصة في إدارة وتنفيذ مشاريع البناء والإنشاء بكل احترافية وجودة. نقوم بتقديم خدمات متكاملة تشمل التخطيط والتنفيذ وإدارة المشاريع، مع التركيز على تحقيق الجودة والمواعيد الزمنية. نحن نضمن تنفيذ المشاريع بأعلى معايير الأمان والاستدامة."
-  },
-  {
-    "name": "حديد",
-    "image": "https://i.pravatar.cc/300",
-    "description":
-        "نحن متخصصون في توريد وتركيب وتصنيع منتجات من الحديد والمعدن. نقدم تشكيلة واسعة من المنتجات التي تتضمن الأبواب، الشبابيك، السلالم، والأثاث المعدني. نحن نضمن جودة عالية وتصميمات مبتكرة، مع التركيز على تلبية احتياجات عملائنا بشكل فعال."
-  },
-  {
-    "name": "أسمنت",
-    "image": "https://i.pravatar.cc/300",
-    "description":
-        "نحن شركة توريد وتوزيع مواد البناء والأسمنت والمواد الإنشائية. نقدم مجموعة متنوعة من المنتجات عالية الجودة لدعم مشاريع البناء والتشييد. نحن نهتم بتزويد عملائنا بالمواد ذات الجودة العالية والتي تلبي معايير الأمان والاستدامة."
-  }
-];
+import 'package:flutter/material.dart';
+import 'package:tadllal/config/global.dart';
+import 'package:tadllal/model/services.dart';
+import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
+import 'package:tadllal/services/api/dio_api.dart';
+import 'package:tadllal/widgets/LodingUi/Loder2.dart';
 
 class MostRequestedServicesPage extends StatefulWidget {
   const MostRequestedServicesPage({super.key});
@@ -43,7 +16,31 @@ class MostRequestedServicesPage extends StatefulWidget {
 }
 
 class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
-  final services = subServices;
+  final DioApi dioApi = DioApi();
+  Future<List<Services>> subServicesDataList = Future(() => []);
+
+  @override
+  void initState() {
+    _syncData();
+    super.initState();
+  }
+
+  _syncData() {
+    setState(() {
+      subServicesDataList = _getSubServicesData();
+    });
+  }
+
+  Future<List<Services>> _getSubServicesData() async {
+    var rowData = await dioApi.get("/services/sub-services");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,35 +51,96 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        child: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: services.length,
-          itemBuilder: (context, index) {
-            return Card(
-              margin: const EdgeInsets.only(top: 10),
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SingleSubServicesPage(
-                          serviceDetails: subServices[index]),
-                    ),
+        child: FutureBuilder<List<Services>>(
+            future: subServicesDataList,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<Services>> subServices) {
+              if (subServices.connectionState == ConnectionState.done) {
+                if (subServices.hasData && subServices.hasError == false) {
+                  return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: subServices.data!.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        margin: const EdgeInsets.only(top: 10),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SingleSubServicesPage(
+                                  subServiceDetails: subServices.data![index],
+                                ),
+                              ),
+                            );
+                          },
+                          leading: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  subServices.data![index].attributes!.image!)),
+                          title:
+                              Text(subServices.data![index].attributes!.name!),
+                          subtitle: Text(
+                            subServices.data![index].attributes!.description!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      );
+                    },
                   );
-                },
-                leading: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage("${services[index]['image']}")),
-                title: Text("${services[index]['name']}"),
-                subtitle: Text(
-                  "${services[index]['description']}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            );
-          },
-        ),
+                } else if (subServices.hasError) {
+                  print("DATA ERROR ${subServices.error}");
+                  return const Center(
+                      child: Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text(ERROR_WHILE_GET_DATA),
+                  ));
+                } else {
+                  return const Center(
+                      child: Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text(NO_DATA),
+                  ));
+                }
+              } else if (subServices.connectionState ==
+                  ConnectionState.waiting) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: ColorLoader2(),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text(LOADING_DATA_FROM_SERVER),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircularProgressIndicator(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text(LOADING_DATA_FROM_SERVER),
+                      )
+                    ],
+                  ),
+                );
+              }
+            }),
       ),
     );
   }

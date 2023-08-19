@@ -16,7 +16,6 @@ class DioApi {
         data: sinInSinUpRequest.toJson(),
         options: Options(validateStatus: (status) => status! < 500),
       );
-      print("Login response $response");
       if (response.statusCode == HttpStatus.ok) {
         if (kDebugMode) {
           print("===================");
@@ -29,8 +28,6 @@ class DioApi {
           print("Login response headers Map ${response.headers.map}");
           print("===================");
         }
-
-        // var user=jsonEncode(response.data);
 
         return LoginResponse.fromJson(response.data);
       } else {
@@ -71,8 +68,6 @@ class DioApi {
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
         ),
-        // options: requestOptions
-        // options: Options(validateStatus: (status) => status! < 500),
       );
 
       if (response.statusCode == HttpStatus.ok) {
@@ -115,7 +110,6 @@ class DioApi {
               " Please ensure that the server has a valid SSL configuration.",
         );
       }
-      print("error $error");
       throw ErrorResponse(statusMessage: error.message!);
     }
   }
@@ -137,10 +131,7 @@ class DioApi {
       {dynamic myData,
       Map<String, dynamic>? queryParameters,
       Options? options}) async {
-    Options requestOptions = options ??
-        Options(
-            // contentType: Headers.formUrlEncodedContentType,
-            );
+    Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
     Map<String, dynamic>? authorization = DioHelper.getAuthorizationHeader();
     if (authorization != null) {

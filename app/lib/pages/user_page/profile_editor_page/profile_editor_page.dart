@@ -87,11 +87,28 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
     );
 
     if (changedFields.isNotEmpty) {
-      print("Changed fields: $changedFields");
       _onEdit();
-    } else {
-      print("No changes to submit");
     }
+  }
+
+  void _showSaveDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SaveDialog(
+        formValue: [
+          {"path": "/profile/update", "myData": formData}
+        ],
+        onUrlChanged: (data) {
+          User user = User.fromJson(data[0].data["data"]["user"]);
+          Config.set(
+            'user',
+            json.encode(user),
+          );
+          Navigator.of(context2).pop();
+        },
+      ),
+    );
   }
 
   Future<void> _onEdit() async {
@@ -107,31 +124,10 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
       formData = FormData.fromMap({
         "name": userNameController.text.trim(),
         "phone": phoneNumberController.text.trim(),
-        // "email":emailController.text.trim(),
+        "email": emailController.text.trim(),
       });
     }
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context2) => SaveDialog(
-        formValue: [
-          {"path": "/profile/update", "myData": formData}
-        ],
-        onUrlChanged: (data) {
-          for (var element in data) {
-            // if(element.data.)
-            print(element);
-          }
-
-          User user = User.fromJson(data[0].data["data"]["user"]);
-          Config.set(
-            'user',
-            json.encode(user),
-          );
-          Navigator.of(context2).pop();
-        },
-      ),
-    );
+    _showSaveDialog();
   }
 
   @override
@@ -285,11 +281,9 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
           child: Icon(Icons.person, size: 70, color: Color(0xFFA1A5C1)),
         );
       } else {
-        print("--------------------");
         return CachedNetworkImage(
           imageUrl: user.attributes!.avatar!,
           imageBuilder: (context, imageProvider) {
-            print("1");
             return CircleAvatar(
               radius: 60,
               backgroundColor: const Color(0xFFF5F4F8),
@@ -297,7 +291,6 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
             );
           },
           placeholder: (context, url) {
-            print("2");
             return const CircleAvatar(
               radius: 60,
               backgroundColor: Color(0xFFF5F4F8),
@@ -305,7 +298,6 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
             );
           },
           errorWidget: (context, url, error) {
-            print("3");
             return const CircleAvatar(
               radius: 60,
               backgroundColor: Color(0xFFF5F4F8),

@@ -72,8 +72,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
       setState(() {
         showSuccessPopup = true;
       });
-      print(showSuccessPopup);
-      print(passwordValues);
     }
   }
 
@@ -116,7 +114,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
   // Forget password form widget
   Widget buildForgetPasswordForm() {
-    print(showSuccessPopup);
     return Form(
       key: _verifyingFormKey,
       child: Column(

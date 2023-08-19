@@ -1,13 +1,10 @@
 import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tadllal/config/config.dart';
-
-
-
 
 class DioHelper {
   static Dio? dio;
@@ -25,8 +22,6 @@ class DioHelper {
       );
     // dio?.options.connectTimeout = 60 * 1000;
     // dio?.options.receiveTimeout = 60 * 1000;
-
-
   }
 
   static Future initCookies() async {
@@ -46,38 +41,30 @@ class DioHelper {
       var cookies = await cookieJar.loadForRequest(Config().uri!);
 
       var cookie = CookieManager.getCookies(cookies);
-      print("cookie ${cookie}");
       return cookie;
     } else {
       return null;
     }
   }
 
-  static Map<String,dynamic>? getAuthorizationHeader() {
-    Map<String,dynamic> headers={};
-    String accessToken=Config().token;
-    if(accessToken.isNotEmpty)
-     {
-       headers["Authorization"]= "Bearer $accessToken";
-     }
+  static Map<String, dynamic>? getAuthorizationHeader() {
+    Map<String, dynamic> headers = {};
+    String accessToken = Config().token;
+    if (accessToken.isNotEmpty) {
+      headers["Authorization"] = "Bearer $accessToken";
+    }
 
     return headers;
   }
 
-  static Map<String,dynamic>? getRegesterHeader() {
-    Map<String,dynamic> headers={};
+  static Map<String, dynamic>? getRegesterHeader() {
+    Map<String, dynamic> headers = {};
 
+    headers["Content-Type"] = "application/vnd.api+json";
 
-
-      headers["Content-Type"]= "application/vnd.api+json";
-
-      // headers["Accept"]= "*/*";
-      headers["Accept"]= "application/vnd.api+json";
-
-
+    // headers["Accept"]= "*/*";
+    headers["Accept"] = "application/vnd.api+json";
 
     return headers;
   }
 }
-
-

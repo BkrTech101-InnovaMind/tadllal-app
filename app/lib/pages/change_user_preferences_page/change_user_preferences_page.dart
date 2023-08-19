@@ -89,8 +89,6 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
       }
     }
 
-    print(selectedPreferences);
-
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("تم تغيير المفضلة"),

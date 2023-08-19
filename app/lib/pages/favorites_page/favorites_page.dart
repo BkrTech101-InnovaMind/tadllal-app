@@ -52,7 +52,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
         showSkipInLastTarget: false,
         onFinish: () {
           SaveTourForFirstTime().saveTourForFirstTime();
-          print("Finish");
         },
       );
       showTutorial();
@@ -126,7 +125,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                     context: context,
                                                     builder: (BuildContext
                                                             context2) =>
-                                                        ErrorDialog(
+                                                        const ErrorDialog(
                                                       desc:
                                                           "فشلت عملية الحذف من المفضلة",
                                                     ),
@@ -211,7 +210,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         },
                       );
                     } else if (snapshot.hasError) {
-                      print("DATA ERROR ${snapshot.error}");
                       return const Center(
                           child: Padding(
                         padding: EdgeInsets.only(top: 16),
@@ -226,7 +224,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     }
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,7 +234,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             height: 60,
                             child: ColorLoader2(),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(top: 16),
                             child: Text(LOADING_DATA_FROM_SERVER),
                           )

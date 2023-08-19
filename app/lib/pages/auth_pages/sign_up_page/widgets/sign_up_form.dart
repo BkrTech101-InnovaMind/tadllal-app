@@ -52,10 +52,16 @@ class _SignUpFormState extends State<SignUpForm> {
         onLogin: (response) async {
           await updateUserDetails(
               response: response, sinInSinUpRequest: sinInSinUpRequest);
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/codeAuthenticationPage', (route) => false);
+          _navigateToSignInPage();
         },
       ),
+    );
+  }
+
+  void _navigateToSignInPage() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/codeAuthenticationPage',
+      (route) => false,
     );
   }
 

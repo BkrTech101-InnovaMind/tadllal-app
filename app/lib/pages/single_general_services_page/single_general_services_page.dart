@@ -105,7 +105,6 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
                         },
                       );
                     } else if (snapshot.hasError) {
-                      print("DATA ERROR ${snapshot.error}");
                       return const Center(
                           child: Padding(
                         padding: EdgeInsets.only(top: 16),
@@ -120,7 +119,7 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
                     }
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,7 +129,7 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
                             height: 60,
                             child: ColorLoader2(),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(top: 16),
                             child: Text(LOADING_DATA_FROM_SERVER),
                           )

@@ -185,8 +185,6 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                               },
                                             );
                                           } else if (subServices.hasError) {
-                                            print(
-                                                "DATA ERROR ${subServices.error}");
                                             return const Center(
                                                 child: Padding(
                                               padding: EdgeInsets.only(top: 16),
@@ -202,7 +200,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                         } else if (subServices
                                                 .connectionState ==
                                             ConnectionState.waiting) {
-                                          return Center(
+                                          return const Center(
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -214,7 +212,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                                   height: 60,
                                                   child: ColorLoader2(),
                                                 ),
-                                                const Padding(
+                                                Padding(
                                                   padding:
                                                       EdgeInsets.only(top: 16),
                                                   child: Text(
@@ -267,7 +265,6 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                     },
                   );
                 } else if (generalServices.hasError) {
-                  print("DATA ERROR ${generalServices.error}");
                   return const Center(
                       child: Padding(
                     padding: EdgeInsets.only(top: 16),
@@ -282,7 +279,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                 }
               } else if (generalServices.connectionState ==
                   ConnectionState.waiting) {
-                return Center(
+                return const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -292,7 +289,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                         height: 60,
                         child: ColorLoader2(),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 16),
                         child: Text(LOADING_DATA_FROM_SERVER),
                       )

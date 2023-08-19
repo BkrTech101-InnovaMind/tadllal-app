@@ -64,11 +64,9 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
       builder: (BuildContext context2) => CodeAuthenticationDialog(
         formValue: const {
           "path": "/activate",
-          "myData": const {"code": "1k3BKTaHBlLMf5v5h84RvvfFlGmJISx6KFFix7M5"}
+          "myData": {"code": "1k3BKTaHBlLMf5v5h84RvvfFlGmJISx6KFFix7M5"}
         },
         onUrlChanged: (data) {
-          print(data);
-
           LoginResponse s = LoginResponse.fromJson(data.data);
           Config.set(
             'token',
@@ -84,7 +82,6 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
         },
       ),
     );
-    print("verificationCode: $verificationCode");
   }
 
   @override

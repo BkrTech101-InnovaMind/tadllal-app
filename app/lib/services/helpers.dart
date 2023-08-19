@@ -12,8 +12,6 @@ import 'package:tadllal/services/storage_service.dart';
 import 'package:tadllal/widgets/logout_dialog.dart';
 
 getDownloadPath() async {
-  // TODO : add it to save data to phone Storage
-
   if (Platform.isAndroid) {
     return '/storage/emulated/0/Download/';
   } else if (Platform.isIOS) {
@@ -22,17 +20,6 @@ getDownloadPath() async {
     return downloadsDirectory.path;
   }
 }
-
-// Future<bool> _checkPermission() async {
-//   if (Platform.isAndroid) {
-//     if (await Permission.storage.request().isGranted) {
-//       return true;
-//     }
-//   } else {
-//     return true;
-//   }
-//   return false;
-// }
 
 String toTitleCase(String str) {
   return str
@@ -74,7 +61,6 @@ clearLoginInfo() async {
     cookie.delete(
       Config().uri!,
     );
-    // OfflineStorage.remove('allUsers');
   }
 
   Config.set('isLoggedIn', false);
@@ -111,7 +97,6 @@ Future<void> updateUserDetails(
 }
 
 clearDetails() {
-  // Config.remove("user");
   Config.clear();
 }
 

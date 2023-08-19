@@ -89,7 +89,6 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
                     },
                   );
                 } else if (subServices.hasError) {
-                  print("DATA ERROR ${subServices.error}");
                   return const Center(
                       child: Padding(
                     padding: EdgeInsets.only(top: 16),
@@ -104,7 +103,7 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
                 }
               } else if (subServices.connectionState ==
                   ConnectionState.waiting) {
-                return Center(
+                return const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,7 +113,7 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
                         height: 60,
                         child: ColorLoader2(),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 16),
                         child: Text(LOADING_DATA_FROM_SERVER),
                       )

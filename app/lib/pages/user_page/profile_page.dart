@@ -26,7 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     user = Config().user;
     super.initState();
   }

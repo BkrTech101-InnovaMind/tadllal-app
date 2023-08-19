@@ -151,7 +151,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               Navigator.of(context).pop();
                             },
                             splashColor: Colors.redAccent,
-                            child: Text(
+                            child: const Text(
                               'إغلاق',
                               style: TextStyle(fontSize: 12),
                             ),
@@ -216,7 +216,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               Navigator.of(context).pop();
                             },
                             splashColor: Colors.redAccent,
-                            child: Text(
+                            child: const Text(
                               'إغلاق',
                               style: TextStyle(fontSize: 12),
                             ),
@@ -236,7 +236,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               _getData();
                             },
                             splashColor: Colors.redAccent,
-                            child: Text(
+                            child: const Text(
                               'إعادة المحاولة',
                               style: TextStyle(fontSize: 12),
                             ),
@@ -305,7 +305,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               Navigator.of(context).pop();
                             },
                             splashColor: Colors.redAccent,
-                            child: Text(
+                            child: const Text(
                               'إغلاق',
                               style: TextStyle(fontSize: 12),
                             ),
@@ -325,7 +325,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               _getData();
                             },
                             splashColor: Colors.redAccent,
-                            child: Text(
+                            child: const Text(
                               'إعادة المحاولة',
                               style: TextStyle(fontSize: 12),
                             ),
@@ -392,7 +392,7 @@ class _SaveDialogState extends State<SaveDialog> {
                             Navigator.of(context).pop();
                           },
                           splashColor: Colors.redAccent,
-                          child: Text(
+                          child: const Text(
                             'إغلاق',
                             style: TextStyle(fontSize: 12),
                           ),
@@ -412,7 +412,7 @@ class _SaveDialogState extends State<SaveDialog> {
                             _getData();
                           },
                           splashColor: Colors.redAccent,
-                          child: Text(
+                          child: const Text(
                             'إعادة المحاولة',
                             style: TextStyle(fontSize: 12),
                           ),
@@ -431,7 +431,6 @@ class _SaveDialogState extends State<SaveDialog> {
     List<Response> tempData = [];
 
     for (int i = 0; i < widget.formValue.length; i++) {
-      print("=============== ${widget.formValue[i]["myData"]}");
       Response r = await dioApi.post(widget.formValue[i]["path"],
           myData: widget.formValue[i]["myData"]);
       tempData.insert(i, r);

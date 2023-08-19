@@ -62,10 +62,34 @@ class _SuccessSignInScreenState extends State<SuccessSignInSplashScreen> {
     super.initState();
   }
 
+  void _showSaveDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SaveDialog(
+        formValue: [
+          {
+            "path": "/preferences/add",
+            "myData": {"types": typeCheckedList}
+          },
+          {"path": "/profile/update", "myData": formData}
+        ],
+        onUrlChanged: (data) {
+          User user = User.fromJson(data[1].data["data"]["user"]);
+          Config.set(
+            'user',
+            json.encode(user),
+          );
+          Navigator.of(context2).pop();
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
+        },
+      ),
+    );
+  }
+
   Future<void> nextButton() async {
     if (currentIndex == 1) {
-      print("CheckedList :$typeCheckedList");
-
       if (selectedImage != null) {
         String fileName = selectedImage!.path.split('/').last;
         formData = FormData.fromMap({
@@ -80,34 +104,7 @@ class _SuccessSignInScreenState extends State<SuccessSignInSplashScreen> {
           "phone": phoneNumberController.text.trim(),
         });
       }
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context2) => SaveDialog(
-          formValue: [
-            {
-              "path": "/preferences/add",
-              "myData": {"types": typeCheckedList}
-            },
-            {"path": "/profile/update", "myData": formData}
-          ],
-          onUrlChanged: (data) {
-            for (var element in data) {
-              // if(element.data.)
-              print(element);
-            }
-
-            User user = User.fromJson(data[1].data["data"]["user"]);
-            Config.set(
-              'user',
-              json.encode(user),
-            );
-            Navigator.of(context2).pop();
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
-          },
-        ),
-      );
+      _showSaveDialog();
     } else if (currentIndex < _pages.length - 1) {
       setState(() {
         currentIndex++;

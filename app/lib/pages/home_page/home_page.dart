@@ -102,14 +102,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _setRealEstateData() async {
     var rowData = await dioApi.get("/realEstate/realty");
-    // log("rowData ${rowData}");
     String jsonString = json.encode(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
 
-    // log("data ${data}");
     List<RealEstate> realEstate =
         (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
 
@@ -119,13 +116,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Location>> _getLocationData() async {
     var rowData = await dioApi.get("/locations");
-    // log("rowData ${rowData}");
     String jsonString = json.encode(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-    // log("rowData ${data[0]}");
     List<Location> locationList =
         (data).map((itemWord) => Location.fromJson(itemWord)).toList();
     locationList.insert(0, Location.fromJson(allLocationAndType));
@@ -222,7 +216,6 @@ class _HomePageState extends State<HomePage> {
                                     },
                                   );
                                 } else if (snapshot.hasError) {
-                                  print("DATA ERROR ${snapshot.error}");
                                   return const Center(
                                       child: Padding(
                                     padding: EdgeInsets.only(top: 16),
@@ -237,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                                 }
                               } else if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                return const Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -248,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                                         height: 60,
                                         child: ColorLoader2(),
                                       ),
-                                      const Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(top: 16),
                                         child: Text(LOADING_DATA_FROM_SERVER),
                                       )
@@ -294,7 +287,6 @@ class _HomePageState extends State<HomePage> {
                                     },
                                   );
                                 } else if (snapshot.hasError) {
-                                  print("DATA ERROR ${snapshot.error}");
                                   return const Center(
                                       child: Padding(
                                     padding: EdgeInsets.only(top: 16),
@@ -309,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                                 }
                               } else if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                return const Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -320,7 +312,7 @@ class _HomePageState extends State<HomePage> {
                                         height: 60,
                                         child: ColorLoader2(),
                                       ),
-                                      const Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(top: 16),
                                         child: Text(LOADING_DATA_FROM_SERVER),
                                       )
@@ -655,7 +647,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    print("DATA ERROR ${snapshot.error}");
                     return const Center(
                         child: Padding(
                       padding: EdgeInsets.only(top: 16),
@@ -670,7 +661,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -680,7 +671,7 @@ class _HomePageState extends State<HomePage> {
                           height: 60,
                           child: ColorLoader2(),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 16),
                           child: Text(LOADING_DATA_FROM_SERVER),
                         )
@@ -790,7 +781,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    print("DATA ERROR ${snapshot.error}");
                     return const Center(
                         child: Padding(
                       padding: EdgeInsets.only(top: 16),
@@ -805,7 +795,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -815,7 +805,7 @@ class _HomePageState extends State<HomePage> {
                           height: 60,
                           child: ColorLoader2(),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 16),
                           child: Text(LOADING_DATA_FROM_SERVER),
                         )

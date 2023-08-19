@@ -226,7 +226,7 @@ class _ChoseFavPageState extends State<ChoseFavPage> {
             ));
           }
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,7 +236,7 @@ class _ChoseFavPageState extends State<ChoseFavPage> {
                   height: 60,
                   child: ColorLoader2(),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 16),
                   child: Text(LOADING_DATA_FROM_SERVER),
                 )

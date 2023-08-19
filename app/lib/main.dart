@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tadllal/methods/auth_provider.dart';
-import 'package:tadllal/methods/in_intro_tour_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:tadllal/methods/api_provider.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/pages/navigation_page/navigation_page.dart';
+import 'package:tadllal/pages/splash/splash_screen.dart';
+import 'package:tadllal/pages/splash/success_sign_in_splash_screen/success_sign_in_splash_screen.dart';
+import 'package:tadllal/services/helpers.dart';
+import 'package:tadllal/services/http.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SaveTourForFirstTime.init();
-  runApp(const ProviderScope(child: TadllalApp()));
-}
 
-class TadllalApp extends HookConsumerWidget {
-  const TadllalApp({super.key});
+  await initDb();
+  await initApiConfig();
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
-    return MaterialApp(
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => AppProvider()),
+    ],
+    child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          body: SafeArea(
-            child: authState.when(
-              data: (isAuthenticated) {
-                return isAuthenticated
-                    ? const NavigationPage()
-                    : const AuthenticationPage();
-              },
-              error: (error, stackTrace) =>
-                  Center(child: Text('Error: $error')),
-              loading: () => const Center(child: CircularProgressIndicator()),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+      localizationsDelegates: const [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("ar", "YE"), // OR Locale('ar', 'AE') OR Other RTL locales
+      ],
+      title: 'Tadllal App',
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const SplashScreen(),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/navigationPage': (context) => const NavigationPage(),
+        // '/login': (context) => const Login(),
+        '/authentication': (context) => const AuthenticationPage(),
+        '/successSignInSplashScreen': (context) =>
+            const SuccessSignInSplashScreen(),
+        '/codeAuthenticationPage': (context) => const CodeAuthenticationPage(),
+      },
+    ),
+  ));
 }

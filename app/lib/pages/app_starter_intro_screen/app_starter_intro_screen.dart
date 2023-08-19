@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/main.dart';
+import 'package:tadllal/config/config.dart';
 import 'package:tadllal/pages/app_starter_intro_screen/widgets/on_boarding_splash.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 
@@ -61,6 +61,7 @@ class _AppStarterIntroScreenState extends State<AppStarterIntroScreen> {
 
   @override
   void initState() {
+    Config.set("starterHasShown", true);
     setState(() {
       _screens = [
         const OnBoardingSplash(
@@ -88,21 +89,18 @@ class _AppStarterIntroScreenState extends State<AppStarterIntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  buildSkipAndLogoSection(),
-                  buildSplashScreens(),
-                ],
-              ),
-              buildNextAndBackButton(),
-            ],
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                buildSkipAndLogoSection(),
+                buildSplashScreens(),
+              ],
+            ),
+            buildNextAndBackButton(),
+          ],
         ),
       ),
     );
@@ -120,7 +118,7 @@ class _AppStarterIntroScreenState extends State<AppStarterIntroScreen> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const TadllalApp(),
+                  builder: (context) => const AuthenticationPage(),
                 ),
               );
             },

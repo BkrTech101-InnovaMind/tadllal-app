@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
 
-final List<Map<String, dynamic>> realEstates = [
+final List realEstates = [
   {
     'images': [
       'assets/images/shape.png',

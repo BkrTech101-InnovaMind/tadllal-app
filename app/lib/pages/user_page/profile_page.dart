@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tadllal/components/change_password_pop_up.dart';
-import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/config/config.dart';
+import 'package:tadllal/model/api_molels/user.dart';
 import 'package:tadllal/pages/add_user_page/add_user_page.dart';
 import 'package:tadllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
-import 'package:tadllal/pages/profile_editor_page/profile_editor_page.dart';
+import 'package:tadllal/pages/user_page/profile_editor_page/profile_editor_page.dart';
+import 'package:tadllal/services/helpers.dart';
+import 'package:tadllal/widgets/logout_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,43 +19,37 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final Map<String, dynamic> user = {
-    "user": {
-      "id": "4",
-      "attributes": {
-        "name": "أبوبكر صديق",
-        "email": "zz78zz@zzz6z.tttt665604",
-        "role": "marketer",
-        "phone": null,
-        "avatar": "https://i.pravatar.cc/300"
-      }
-    },
-  };
+  User user = User();
 
   File? selectedImage;
   String userImage = "";
 
   @override
+  void initState() {
+    user = Config().user;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final userInfo = user['user']!['attributes'];
-    String userRole = userInfo["role"];
-    print(userRole);
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          buildUserAvatar(userInfo),
-          buildUserInfo(userInfo, userRole),
-          buildButtons(userRole),
-        ],
+    return Scaffold(
+      body: Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            buildUserAvatar(),
+            buildUserInfo(),
+            buildButtons(),
+          ],
+        ),
       ),
     );
   }
 
   //User Avatar widget
-  Widget buildUserAvatar(userInfo) {
-    if (userInfo["avatar"] == null) {
+  Widget buildUserAvatar() {
+    if (user.attributes!.avatar == null) {
       return const CircleAvatar(
         radius: 100,
         backgroundColor: Color(0xFFF5F4F8),
@@ -60,21 +58,39 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       return Column(
         children: [
-          CircleAvatar(
-            radius: 100,
-            backgroundColor: const Color(0xFFF5F4F8),
-            backgroundImage: NetworkImage(userInfo["avatar"]),
-          ),
+          CachedNetworkImage(
+            imageBuilder: (context, imageProvider) {
+              return CircleAvatar(
+                radius: 100,
+                backgroundColor: const Color(0xFFF5F4F8),
+                backgroundImage: imageProvider,
+              );
+            },
+            imageUrl: user.attributes!.avatar!,
+            placeholder: (context, url) {
+              return const CircleAvatar(
+                radius: 100,
+                backgroundColor: Color(0xFFF5F4F8),
+                child: Icon(Icons.person, size: 70, color: Color(0xFFA1A5C1)),
+              );
+            },
+            errorWidget: (context, url, error) => const CircleAvatar(
+              radius: 100,
+              backgroundColor: Color(0xFFF5F4F8),
+              child: Icon(Icons.person, size: 70, color: Color(0xFFA1A5C1)),
+            ),
+          )
         ],
       );
     }
   }
 
   // User Info widget
-  Widget buildUserInfo(userInfo, userRole) {
-    if (userRole == "company") {
+  Widget buildUserInfo() {
+    String userRole = user.attributes!.role!;
+    if (user.attributes!.role == "company") {
       userRole = "شركة";
-    } else if (userRole == "marketer") {
+    } else if (user.attributes!.role == "marketer") {
       userRole = "مسوق";
     } else {
       userRole = "مستخدم قياسي";
@@ -84,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           margin: const EdgeInsets.only(top: 30),
           child: Text(
-            userInfo["name"],
+            user.attributes!.name!,
             style: const TextStyle(
               color: Color(0xFF234F68),
               fontWeight: FontWeight.w700,
@@ -128,7 +144,8 @@ class _ProfilePageState extends State<ProfilePage> {
               fontWeight: FontWeight.w700,
               fontSize: 25,
             ),
-            subtitle: Text(userInfo["email"], textAlign: TextAlign.center),
+            subtitle:
+                Text(user.attributes!.email!, textAlign: TextAlign.center),
             subtitleTextStyle: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,
@@ -148,8 +165,8 @@ class _ProfilePageState extends State<ProfilePage> {
               fontWeight: FontWeight.w700,
               fontSize: 25,
             ),
-            subtitle: userInfo["phone"] != null
-                ? Text(userInfo["phone"])
+            subtitle: user.attributes!.phone != null
+                ? Text(user.attributes!.phone!)
                 : const Text("لا يوجد", textAlign: TextAlign.center),
             subtitleTextStyle: const TextStyle(
               fontSize: 20,
@@ -162,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // Buttons widget
-  Widget buildButtons(userRole) {
+  Widget buildButtons() {
     return Column(
       children: [
         Container(
@@ -180,9 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfileEditorPage(
-                    isProfileEditor: true,
-                  ),
+                  builder: (context) => const ProfileEditorPage(),
                 ),
               );
             },
@@ -192,9 +207,11 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ),
-        if (userRole == "company" || userRole == "marketer")
+        if (user.attributes!.role! == "company" ||
+            user.attributes!.role! == "marketer")
           const SizedBox(height: 30),
-        if (userRole == "company" || userRole == "marketer")
+        if (user.attributes!.role! == "company" ||
+            user.attributes!.role! == "marketer")
           OutlinedButton(
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFF1F4C6B),
@@ -252,7 +269,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   side: const BorderSide(color: Color(0xFFFF0011), width: 3),
                 ),
                 onPressed: () {
-                  AuthProvider().signOut();
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context2) => LogoutDialog(
+                      onLogOutPressed: () {
+                        clearDetails();
+                        Navigator.of(context2).pop();
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/authentication', (route) => false);
+                      },
+                    ),
+                  );
                 },
                 child: const Text(
                   "تسجيل الخروج",

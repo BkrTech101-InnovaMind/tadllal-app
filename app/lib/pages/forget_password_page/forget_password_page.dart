@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/main.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({super.key});
@@ -73,8 +72,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
       setState(() {
         showSuccessPopup = true;
       });
-      print(showSuccessPopup);
-      print(passwordValues);
     }
   }
 
@@ -117,7 +114,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
   // Forget password form widget
   Widget buildForgetPasswordForm() {
-    print(showSuccessPopup);
     return Form(
       key: _verifyingFormKey,
       child: Column(
@@ -228,11 +224,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         if (showSuccessPopup)
           TextButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TadllalApp(),
-                  ));
+              // Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => const TadllalApp(),
+              //     ));
             },
             child: const Text("الذهاب الى الصفحة الرئيسية"),
           ),

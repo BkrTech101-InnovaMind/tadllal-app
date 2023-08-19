@@ -1,7 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/methods/auth_provider.dart';
+import 'package:tadllal/config/global.dart';
+import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
 import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
+import 'package:tadllal/services/helpers.dart';
+import 'package:tadllal/services/http.dart';
+import 'package:tadllal/widgets/sinin_sinup_dialog.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -19,16 +22,10 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   void initState() {
-    _phoneController.text = "zzzz@zzzz.tttt";
-    _passwordController.text = "@Abo77927";
+    _userNameController.text = "يوسف صديق";
+    _phoneController.text = "zabobaker7355@gmail.com";
+    _passwordController.text = "@Abo77920";
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 
   void handleSubmit() async {
@@ -44,35 +41,28 @@ class _SignUpFormState extends State<SignUpForm> {
       "device_name": "mobile",
     };
 
-    try {
-      AuthProvider authProvider = AuthProvider();
-      Response response = await authProvider.signUp(data: form);
-      if (response.data != null) {
-        final token = response.data['data']['token'];
-        await authProvider.saveAccessToken(token: token);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text("ألرجاء التأكد من رمز التحقق لمتابعة التسجيل")),
-        );
-      }
+    setBaseUrl(APP_API_URI);
+    SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest.fromJson(form);
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SinInSinUpDialog(
+        sinInSinUpRequest: sinInSinUpRequest,
+        type: SINUP_TYPE,
+        onLogin: (response) async {
+          await updateUserDetails(
+              response: response, sinInSinUpRequest: sinInSinUpRequest);
+          _navigateToSignInPage();
+        },
+      ),
+    );
+  }
 
-      print(response.data.toString());
-    } catch (e) {
-      if (e is DioException) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content:
-                  Text("هذا الحساب مسجلُ مسبقاً, حاول بإستخدام حساب اَخر")),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-            "يبدو أن هناك خطأ ما, تأكد من إتصالك بالانترنت وحاول مجدداً",
-          )),
-        );
-      }
-    }
+  void _navigateToSignInPage() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/codeAuthenticationPage',
+      (route) => false,
+    );
   }
 
   @override
@@ -135,19 +125,6 @@ class _SignUpFormState extends State<SignUpForm> {
             child: TextFormField(
               keyboardType: TextInputType.visiblePassword,
               obscureText: password,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "الرجاء ادخال كلمة السر";
-                } else if (value.length < 6) {
-                  return "كلمة السر يجب أن لا تقل عن 8 أحرف";
-                } else if (value.length > 24) {
-                  return "كلمة السر يجب أن لا تزيد عن 24 حرف";
-                } else if (!_isValidPassword(value)) {
-                  return "كلمة السر يجب أن تحتوي على ألاقل حرفاً كبيراً وحرفاً صغيراً ورقماً وحرفاً خاص";
-                } else {
-                  return null;
-                }
-              },
               controller: _passwordController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.lock_outlined),
@@ -209,9 +186,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             ),
-            onPressed: () {
-              handleSubmit();
-            },
+            onPressed: () => handleSubmit(),
             child: const Text(
               "إنشاء حساب",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -221,11 +196,4 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
-}
-
-// password Validation Pattern
-bool _isValidPassword(String value) {
-  RegExp passwordPattern =
-      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]+$');
-  return passwordPattern.hasMatch(value);
 }

@@ -30,16 +30,13 @@ class _AddUserPageState extends State<AddUserPage> {
         title: const Text("اضافة مستخدم"),
         backgroundColor: const Color(0xFF194706),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SafeArea(
-          child: ListView(
-            physics: const BouncingScrollPhysics(),
-            children: [
-              buildText(),
-              buildForm(),
-            ],
-          ),
+      body: SafeArea(
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            buildText(),
+            buildForm(),
+          ],
         ),
       ),
     );

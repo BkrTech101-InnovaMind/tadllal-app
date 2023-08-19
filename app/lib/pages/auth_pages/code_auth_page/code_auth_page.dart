@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:tadllal/config/config.dart';
+import 'package:tadllal/model/api_molels/login_response.dart';
+import 'package:tadllal/widgets/code_authentication_dialog.dart';
 
 class CodeAuthenticationPage extends StatefulWidget {
   const CodeAuthenticationPage({super.key});
@@ -49,65 +53,86 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
     }
   }
 
+  void onComplete(String value) {
+    setState(() {
+      verificationCode = value;
+    });
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => CodeAuthenticationDialog(
+        formValue: {
+          "path": "/activate",
+          "myData": {"code": verificationCode}
+        },
+        onUrlChanged: (data) {
+          LoginResponse s = LoginResponse.fromJson(data.data);
+          Config.set(
+            'token',
+            s.data!.token,
+          );
+          Config.set(
+            'user',
+            json.encode(s.data!.user!.toJson()),
+          );
+          Navigator.of(context2).pop();
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: Scaffold(
-          body: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            padding: const EdgeInsets.only(top: 15),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildBackButton(context),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      buildIntroText(),
-                      Container(
-                        alignment: AlignmentDirectional.center,
-                        child: Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: VerificationCode(
-                            autofocus: true,
-                            length: 4,
-                            keyboardType: TextInputType.number,
-                            fullBorder: true,
-                            fillColor: const Color(0xFFF5F4F8),
-                            margin: const EdgeInsets.all(10),
-                            itemSize: 60,
-                            underlineColor: const Color(0xFF234F68),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF252B5C)),
-                            underlineUnfocusedColor: Colors.transparent,
-                            underlineWidth: 2,
-                            onCompleted: (String value) {
-                              setState(() {
-                                verificationCode = value;
-                              });
-                              print("verificationCode: $verificationCode");
-                            },
-                            onEditing: (value) {},
-                          ),
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.only(top: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildBackButton(context),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildIntroText(),
+                    Container(
+                      alignment: AlignmentDirectional.center,
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: VerificationCode(
+                          autofocus: true,
+                          length: 4,
+                          keyboardType: TextInputType.number,
+                          fullBorder: true,
+                          fillColor: const Color(0xFFF5F4F8),
+                          margin: const EdgeInsets.all(10),
+                          itemSize: 60,
+                          underlineColor: const Color(0xFF234F68),
+                          textStyle: const TextStyle(color: Color(0xFF252B5C)),
+                          underlineUnfocusedColor: Colors.transparent,
+                          underlineWidth: 2,
+                          onCompleted: onComplete,
+                          onEditing: (value) {},
                         ),
                       ),
-                      Column(
-                        children: [
-                          buildTimer(countdownSeconds),
-                          const SizedBox(height: 10),
-                          buildResendButton(onResendPressed: resendCode),
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                    Column(
+                      children: [
+                        buildTimer(countdownSeconds),
+                        const SizedBox(height: 10),
+                        buildResendButton(onResendPressed: resendCode),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

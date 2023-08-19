@@ -13,64 +13,61 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildSignInIntro(context),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SignInForm(),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          const Expanded(child: Divider(color: Colors.black45)),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: const Text("أو"),
-                          ),
-                          const Expanded(child: Divider(color: Colors.black45)),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFF1F4C6B),
-                          fixedSize: const Size(278, 63),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          side: const BorderSide(
-                              color: Color(0xFF8BC83F), width: 3),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildSignInIntro(context),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SignInForm(),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        const Expanded(child: Divider(color: Colors.black45)),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: const Text("أو"),
                         ),
-                        onPressed: () {
-                          Navigator.push<void>(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  const SignUpPage(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "إنشاء حساب جديد",
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                        const Expanded(child: Divider(color: Colors.black45)),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color(0xFF1F4C6B),
+                        fixedSize: const Size(278, 63),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
+                        side: const BorderSide(
+                            color: Color(0xFF8BC83F), width: 3),
                       ),
-                      const SizedBox(height: 30),
-                      const ShareButton()
-                    ],
-                  ),
+                      onPressed: () {
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                const SignUpPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "إنشاء حساب جديد",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    const ShareButton()
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tadllal/model/api_molels/location.dart';
 
 class LocationFilter extends StatefulWidget {
-  const LocationFilter({super.key});
+  const LocationFilter(
+      {super.key, required this.locationList, required this.onLocationPressed});
+  final List<Location> locationList;
+  final Function(Location filter) onLocationPressed;
 
   @override
   State<LocationFilter> createState() => _LocationFilterState();
@@ -9,50 +13,34 @@ class LocationFilter extends StatefulWidget {
 
 class _LocationFilterState extends State<LocationFilter> {
   int activeFilter = 0;
+
   @override
   Widget build(BuildContext context) {
-    final List locations = [
-      "أرتل",
-      "حدة",
-      "السبعين",
-      "الأصبحي",
-      "المطار",
-    ];
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "أفضل المواقع",
-              style: TextStyle(
-                  color: Color(0xFF234F68), fontWeight: FontWeight.w900),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "إكتشف الكل",
-                style: TextStyle(color: Color(0xFF234F68)),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 60,
-          child: Directionality(
-            textDirection: TextDirection.ltr,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "أفضل المواقع",
+            style: TextStyle(
+                color: Color(0xFF234F68), fontWeight: FontWeight.w900),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height / 15,
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: locations.length,
+              itemCount: widget.locationList.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: const EdgeInsets.only(right: 15),
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 17.5,
-                        horizontal: 24,
+                        vertical: 2.5,
+                        horizontal: 2.5,
                       ),
                       backgroundColor: activeFilter == index
                           ? const Color(0xFF234F68)
@@ -61,12 +49,13 @@ class _LocationFilterState extends State<LocationFilter> {
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                     ),
                     onPressed: () {
+                      widget.onLocationPressed(widget.locationList[index]);
                       setState(() {
                         activeFilter = index;
                       });
                     },
                     child: Text(
-                      locations[index],
+                      widget.locationList[index].attributes!.name!,
                       style: activeFilter == index
                           ? const TextStyle(color: Colors.white)
                           : const TextStyle(color: Colors.black),
@@ -76,8 +65,8 @@ class _LocationFilterState extends State<LocationFilter> {
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tadllal/components/order_pop_up.dart';
+import 'package:tadllal/model/services.dart';
 
 class SingleSubServicesPage extends StatefulWidget {
-  final Map serviceDetails;
-  const SingleSubServicesPage({required this.serviceDetails, super.key});
+  final Services subServiceDetails;
+  const SingleSubServicesPage({required this.subServiceDetails, super.key});
 
   @override
   State<SingleSubServicesPage> createState() => _SingleSubServicesPageState();
 }
 
 class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
-  Map? serviceDetails;
-
-  @override
-  void initState() {
-    serviceDetails = widget.serviceDetails;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,27 +19,23 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
         centerTitle: true,
         backgroundColor: const Color(0xFF194706),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          constraints: const BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                "${serviceDetails?['image']}",
-              ),
-              fit: BoxFit.fill,
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              "${widget.subServiceDetails.attributes!.image}",
             ),
+            fit: BoxFit.fill,
           ),
-          child: Container(
-            margin: const EdgeInsets.only(top: 75),
-            color: Colors.black.withOpacity(0.3),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                buildServiceCard(),
-              ],
-            ),
+        ),
+        child: Container(
+          margin: const EdgeInsets.only(top: 75),
+          color: Colors.black.withOpacity(0.3),
+          child: Column(
+            children: [
+              buildServiceCard(),
+            ],
           ),
         ),
       ),
@@ -61,7 +50,7 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Text(
-              "${serviceDetails?['title']}",
+              "${widget.subServiceDetails.attributes!.name}",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white,
@@ -80,7 +69,7 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Text(
-              "${serviceDetails?['sub_title']}",
+              "${widget.subServiceDetails.attributes!.description}",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white,
@@ -110,7 +99,8 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => OrderPopup(order: serviceDetails),
+            builder: (context) =>
+                OrderPopup(subServiceDetails: widget.subServiceDetails),
           );
         },
         child: const Text(

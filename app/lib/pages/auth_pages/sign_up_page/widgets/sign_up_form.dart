@@ -23,7 +23,7 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   void initState() {
     _userNameController.text = "يوسف صديق";
-    _phoneController.text = "king59@example.com";
+    _phoneController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77920";
     super.initState();
   }

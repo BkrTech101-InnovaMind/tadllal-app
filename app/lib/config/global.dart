@@ -8,7 +8,7 @@ const String USERNAME = "user_name";
 const String PASSWORD = "password";
 
 // API endpoint URL
-const String APP_API_URI = "http://http://127.0.0.1:8080";
+const String APP_API_URI = "http://192.168.0.46:8080";
 // const String APP_API_URI="http://192.168.0.221";
 
 //Hero Tags

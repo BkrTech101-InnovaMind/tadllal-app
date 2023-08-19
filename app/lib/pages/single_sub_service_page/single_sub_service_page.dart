@@ -19,26 +19,23 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
         centerTitle: true,
         backgroundColor: const Color(0xFF194706),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          constraints: const BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                "${widget.subServiceDetails.attributes!.image}",
-              ),
-              fit: BoxFit.fill,
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              "${widget.subServiceDetails.attributes!.image}",
             ),
+            fit: BoxFit.fill,
           ),
-          child: Container(
-            margin: const EdgeInsets.only(top: 75),
-            color: Colors.black.withOpacity(0.3),
-            child: Column(
-              children: [
-                buildServiceCard(),
-              ],
-            ),
+        ),
+        child: Container(
+          margin: const EdgeInsets.only(top: 75),
+          color: Colors.black.withOpacity(0.3),
+          child: Column(
+            children: [
+              buildServiceCard(),
+            ],
           ),
         ),
       ),

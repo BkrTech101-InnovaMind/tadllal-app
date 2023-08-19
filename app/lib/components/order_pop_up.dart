@@ -30,49 +30,46 @@ class OrderPopupState extends State<OrderPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: AlertDialog(
-        title: Text(
-          showSuccessPopup ? '✅ تم ارسال طلبك بنجاح' : 'هل تريد هذا الطلب ؟',
-        ),
-        content: SingleChildScrollView(
-          child: showSuccessPopup
-              ? const Text('سيتم الرد عليك في اقرب وقت.')
-              : Column(
-                  children: [
-                    const Text(
-                      'تم اخذ تفاصيل طلبك اَليا، هل هناك تفاصيل اخرى تود إضافتها ؟.',
+    return AlertDialog(
+      title: Text(
+        showSuccessPopup ? '✅ تم ارسال طلبك بنجاح' : 'هل تريد هذا الطلب ؟',
+      ),
+      content: SingleChildScrollView(
+        child: showSuccessPopup
+            ? const Text('سيتم الرد عليك في اقرب وقت.')
+            : Column(
+                children: [
+                  const Text(
+                    'تم اخذ تفاصيل طلبك اَليا، هل هناك تفاصيل اخرى تود إضافتها ؟.',
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: messageController,
+                    decoration: const InputDecoration(
+                      labelText: 'رسالتك',
                     ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: messageController,
-                      decoration: const InputDecoration(
-                        labelText: 'رسالتك',
-                      ),
-                    ),
-                  ],
-                ),
-        ),
-        actions: [
-          if (!showSuccessPopup)
-            TextButton(
-              onPressed: () {
-                sendMessage();
-                setState(() {
-                  showSuccessPopup = true;
-                });
-              },
-              child: const Text('طلب'),
-            ),
+                  ),
+                ],
+              ),
+      ),
+      actions: [
+        if (!showSuccessPopup)
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              sendMessage();
+              setState(() {
+                showSuccessPopup = true;
+              });
             },
-            child: Text(!showSuccessPopup ? 'إلغاء' : "حسناً"),
+            child: const Text('طلب'),
           ),
-        ],
-      ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(!showSuccessPopup ? 'إلغاء' : "حسناً"),
+        ),
+      ],
     );
   }
 }

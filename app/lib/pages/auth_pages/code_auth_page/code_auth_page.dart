@@ -62,9 +62,9 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context2) => CodeAuthenticationDialog(
-        formValue: const {
+        formValue: {
           "path": "/activate",
-          "myData": {"code": "1k3BKTaHBlLMf5v5h84RvvfFlGmJISx6KFFix7M5"}
+          "myData": {"code": verificationCode}
         },
         onUrlChanged: (data) {
           LoginResponse s = LoginResponse.fromJson(data.data);
@@ -86,57 +86,53 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: Scaffold(
-          body: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            padding: const EdgeInsets.only(top: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildBackButton(context),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      buildIntroText(),
-                      Container(
-                        alignment: AlignmentDirectional.center,
-                        child: Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: VerificationCode(
-                            autofocus: true,
-                            length: 4,
-                            keyboardType: TextInputType.number,
-                            fullBorder: true,
-                            fillColor: const Color(0xFFF5F4F8),
-                            margin: const EdgeInsets.all(10),
-                            itemSize: 60,
-                            underlineColor: const Color(0xFF234F68),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF252B5C)),
-                            underlineUnfocusedColor: Colors.transparent,
-                            underlineWidth: 2,
-                            onCompleted: onComplete,
-                            onEditing: (value) {},
-                          ),
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.only(top: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildBackButton(context),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildIntroText(),
+                    Container(
+                      alignment: AlignmentDirectional.center,
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: VerificationCode(
+                          autofocus: true,
+                          length: 4,
+                          keyboardType: TextInputType.number,
+                          fullBorder: true,
+                          fillColor: const Color(0xFFF5F4F8),
+                          margin: const EdgeInsets.all(10),
+                          itemSize: 60,
+                          underlineColor: const Color(0xFF234F68),
+                          textStyle: const TextStyle(color: Color(0xFF252B5C)),
+                          underlineUnfocusedColor: Colors.transparent,
+                          underlineWidth: 2,
+                          onCompleted: onComplete,
+                          onEditing: (value) {},
                         ),
                       ),
-                      Column(
-                        children: [
-                          buildTimer(countdownSeconds),
-                          const SizedBox(height: 10),
-                          buildResendButton(onResendPressed: resendCode),
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                    Column(
+                      children: [
+                        buildTimer(countdownSeconds),
+                        const SizedBox(height: 10),
+                        buildResendButton(onResendPressed: resendCode),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

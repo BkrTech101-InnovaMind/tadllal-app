@@ -65,6 +65,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("مفضلاتي", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         backgroundColor: const Color(0xFF194706),
       ),
       body: Container(
@@ -88,7 +89,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            key: index == 1 ? realEstateKey : null,
+                            key: index == 0 ? realEstateKey : null,
                             margin: const EdgeInsets.only(
                                 bottom: 20, left: 10, right: 7),
                             decoration: BoxDecoration(

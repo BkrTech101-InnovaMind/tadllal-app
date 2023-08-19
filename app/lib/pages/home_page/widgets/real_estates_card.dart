@@ -188,13 +188,10 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(8)),
                                   ),
-                                  child: Directionality(
-                                    textDirection: TextDirection.ltr,
-                                    child: Text(
-                                      '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
+                                  child: Text(
+                                    '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                   ),
                                 ),
                               ],
@@ -286,13 +283,10 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(8)),
                                     ),
-                                    child: Directionality(
-                                      textDirection: TextDirection.ltr,
-                                      child: Text(
-                                        '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
+                                    child: Text(
+                                      '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
                                     ),
                                   ),
                                 ],

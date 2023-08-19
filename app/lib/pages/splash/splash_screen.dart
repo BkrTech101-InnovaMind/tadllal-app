@@ -2,7 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tadllal/config/config.dart';
 import 'package:tadllal/config/global.dart';
-import 'package:tadllal/pages/app_starter_intro_screen/app_starter_intro_screen.dart';
+import 'package:tadllal/pages/app_starter_intro_screen/widgets/on_boarding_screen.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 import 'package:tadllal/pages/navigation_page/navigation_page.dart';
 
@@ -67,7 +67,7 @@ class _NextPageState extends State<NextPage> {
     } else if (isLoggedIn == false && starterHasShown == true) {
       return const AuthenticationPage();
     } else {
-      return const AppStarterIntroScreen();
+      return const OnBoardingScreen();
     }
   }
 }

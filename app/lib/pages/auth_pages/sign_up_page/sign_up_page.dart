@@ -12,23 +12,20 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            dragStartBehavior: DragStartBehavior.down,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildIntroTexts(context),
-                  const SizedBox(height: 40),
-                  const SignUpForm(),
-                ],
-              ),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          dragStartBehavior: DragStartBehavior.down,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                buildIntroTexts(context),
+                const SizedBox(height: 40),
+                const SignUpForm(),
+              ],
             ),
           ),
         ),

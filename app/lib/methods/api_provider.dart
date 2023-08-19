@@ -12,7 +12,9 @@ class AppProvider extends ChangeNotifier {
   void filterRealEstateListByType({required RealEstateType type}) {
     this.type = type;
     if (this.type!.id!.isEmpty || type.id == "0") {
-      if (location!.id!.isEmpty || location!.id == "0") {
+      if (location!.id == null ||
+          location!.id!.isEmpty ||
+          location!.id == "0") {
         filteredRealEstateList = realEstateList;
       } else {
         filteredRealEstateList = realEstateList
@@ -21,7 +23,9 @@ class AppProvider extends ChangeNotifier {
             .toList();
       }
     } else {
-      if (location!.id!.isEmpty || location!.id == "0") {
+      if (location!.id == null ||
+          location!.id!.isEmpty ||
+          location!.id == "0") {
         filteredRealEstateList = realEstateList
             .where((element) => element.attributes!.firstType!.id == type.id)
             .toList();
@@ -71,6 +75,22 @@ class AppProvider extends ChangeNotifier {
     filteredRealEstateList.addAll(realEstateList);
     location = Location();
     type = RealEstateType();
+    notifyListeners();
+  }
+
+  void addFilteredRealEstateList({required List<RealEstate> listData}) {
+    filteredRealEstateList.clear();
+
+    filteredRealEstateList.addAll(listData);
+
+    notifyListeners();
+  }
+
+  void ret() {
+    filteredRealEstateList.clear();
+
+    filteredRealEstateList.addAll(realEstateList);
+
     notifyListeners();
   }
 }

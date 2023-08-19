@@ -21,15 +21,12 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
         title: Text(widget.realEstate.attributes!.name!),
         backgroundColor: const Color(0xFF194706),
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView(
-          children: [
-            buildImagesSection(),
-            buildDetailsSection(),
-            buildCommentsSection(),
-          ],
-        ),
+      body: ListView(
+        children: [
+          buildImagesSection(),
+          buildDetailsSection(),
+          buildCommentsSection(),
+        ],
       ),
     );
   }

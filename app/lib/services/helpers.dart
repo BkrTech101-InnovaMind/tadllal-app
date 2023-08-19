@@ -113,7 +113,6 @@ initDb() async {
 Widget userPlaceHolderImage() {
   return Container(
     padding: const EdgeInsets.all(5),
-    margin: const EdgeInsets.only(left: 5),
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       border: Border.all(color: const Color(0xFFDFDFDF), width: 2),

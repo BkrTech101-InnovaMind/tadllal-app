@@ -9,6 +9,7 @@ import 'package:tadllal/config/global.dart';
 import 'package:tadllal/methods/api_provider.dart';
 import 'package:tadllal/model/api_molels/location.dart';
 import 'package:tadllal/model/api_molels/user.dart';
+import 'package:tadllal/model/filter_option.dart';
 import 'package:tadllal/model/real_estate.dart';
 import 'package:tadllal/model/real_estate_type.dart';
 import 'package:tadllal/model/services.dart';
@@ -177,14 +178,117 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
+                    width: MediaQuery.of(context).size.width,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        const MenuFilter(),
+                        MenuFilter(
+                          onFiltersChecked:
+                              (List<FilterOption> selectedOptions) {
+                            List<RealEstate> data =
+                                Provider.of<AppProvider>(context, listen: false)
+                                    .realEstateList;
+                            if (selectedOptions.isEmpty) {
+                              setState(() {
+                                Provider.of<AppProvider>(context, listen: false)
+                                    .ret();
+                              });
+                            }
+                            for (var element in selectedOptions) {
+                              switch (element.label) {
+                                case "للإيجار":
+                                  {
+                                    if (element.isChecked == true) {
+                                      List<RealEstate> temp = data
+                                          .where((element2) =>
+                                              element2.attributes!.secondType ==
+                                              "for rent")
+                                          .toList();
+                                      setState(() {
+                                        Provider.of<AppProvider>(context,
+                                                listen: false)
+                                            .addFilteredRealEstateList(
+                                                listData: temp);
+                                      });
+                                    }
+                                    break;
+                                  }
+                                case "للبيع":
+                                  {
+                                    if (element.isChecked == true) {
+                                      List<RealEstate> temp = data
+                                          .where((element2) =>
+                                              element2.attributes!.secondType ==
+                                              "for sale")
+                                          .toList();
+                                      setState(() {
+                                        Provider.of<AppProvider>(context,
+                                                listen: false)
+                                            .addFilteredRealEstateList(
+                                                listData: temp);
+                                      });
+                                    }
+                                    break;
+                                  }
+                                case "متاح":
+                                  {
+                                    print(data.length);
+                                    print(element.isChecked);
+                                    if (element.isChecked == true) {
+                                      List<RealEstate> temp = data
+                                          .where((element2) =>
+                                              element2.attributes!.state ==
+                                              "available")
+                                          .toList();
+                                      setState(() {
+                                        Provider.of<AppProvider>(context,
+                                                listen: false)
+                                            .addFilteredRealEstateList(
+                                                listData: temp);
+                                      });
+
+                                      print(temp.length);
+                                    }
+                                    break;
+                                  }
+                                case "التقييم":
+                                  {
+                                    if (element.isChecked == true) {
+                                      List<RealEstate> temp = data;
+
+                                      temp.sort((a, b) => a
+                                          .attributes!.ratings!.averageRating!
+                                          .compareTo(b.attributes!.ratings!
+                                              .averageRating!));
+
+                                      setState(() {
+                                        Provider.of<AppProvider>(context,
+                                                listen: false)
+                                            .addFilteredRealEstateList(
+                                                listData: temp);
+                                      });
+                                    }
+                                    break;
+                                  }
+                                default:
+                                  {
+                                    setState(() {
+                                      Provider.of<AppProvider>(context,
+                                              listen: false)
+                                          .ret;
+                                    });
+                                  }
+                              }
+                            }
+                          },
+                        ),
                         Row(
                           children: [
                             buildNotificationsIcon(true),
-                            const SizedBox(width: 15),
+                            const SizedBox(
+                              width: 5,
+                            ),
                             buildUserImage(),
                           ],
                         ),
@@ -445,14 +549,13 @@ class _HomePageState extends State<HomePage> {
 // Notifications icon widget
   Widget buildNotificationsIcon(bool hasNotification) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(100),
+        shape: BoxShape.circle,
       ),
       child: TextButton(
         style: TextButton.styleFrom(
-          shape: const CircleBorder(),
-        ),
+            shape: const CircleBorder(), padding: const EdgeInsets.all(4)),
         onPressed: () {
           Navigator.push(
             context,

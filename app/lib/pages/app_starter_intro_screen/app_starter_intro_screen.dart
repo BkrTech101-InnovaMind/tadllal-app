@@ -89,21 +89,18 @@ class _AppStarterIntroScreenState extends State<AppStarterIntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  buildSkipAndLogoSection(),
-                  buildSplashScreens(),
-                ],
-              ),
-              buildNextAndBackButton(),
-            ],
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                buildSkipAndLogoSection(),
+                buildSplashScreens(),
+              ],
+            ),
+            buildNextAndBackButton(),
+          ],
         ),
       ),
     );

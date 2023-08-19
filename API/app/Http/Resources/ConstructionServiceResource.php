@@ -20,7 +20,8 @@ class ConstructionServiceResource extends JsonResource
                 'name' => $this->name,
                 'description' => $this->description,
                 'image' => $this->image,
-            ]
+            ],
+            'sub_services_count' => $this->subServices->count(),
         ];
     }
 }

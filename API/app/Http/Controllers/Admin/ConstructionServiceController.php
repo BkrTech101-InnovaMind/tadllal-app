@@ -19,9 +19,9 @@ class ConstructionServiceController extends Controller
      */
     public function index()
     {
-        return ConstructionServiceResource::collection(
-            ConstructionService::get()
-        );
+        $constructionServices = ConstructionService::withCount('subServices')->get();
+
+        return ConstructionServiceResource::collection($constructionServices);
     }
 
     /**

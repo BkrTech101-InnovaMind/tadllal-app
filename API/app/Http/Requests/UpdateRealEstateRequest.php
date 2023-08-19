@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRealEstateRequest extends FormRequest
 {
@@ -29,8 +30,8 @@ class UpdateRealEstateRequest extends FormRequest
             'firstType' => ['integer'],
             'photo' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
             'locationInfo' => ['string', 'max:255'],
-            'secondType' => ['string'],
-            'state' => ['string'],
+            'secondType' => ['string', Rule::in(['for sale', 'for rent'])],
+            'state' => ['string', Rule::in(['available', 'Unavailable'])],
             'images.*' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];
     }

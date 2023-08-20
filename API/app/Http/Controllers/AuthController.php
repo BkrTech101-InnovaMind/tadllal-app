@@ -45,12 +45,8 @@ class AuthController extends Controller
             'activation_code' => $activationCode,
         ]);
 
-        $content = [
-            'subject' => 'Activation Code',
-            'body' => 'Your activation code is: ' . $activationCode,
-        ];
 
-        $sampleMail = new SampleMail($content);
+        $sampleMail = new SampleMail($activationCode);
         Mail::to($user->email)->send($sampleMail);
 
         return $this->success([
@@ -70,7 +66,8 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user->activated) {
 
-            return $this->error('', 'Account is not activated', 401);
+            // return $this->error('', ' Please check your email for activation instructions. Account is not activated', 401);
+            return $this->generateAndSendActivationCode($user->email, 'Account is not activated Please check your email for activation instructions.');
         }
 
         return $this->success([
@@ -81,12 +78,20 @@ class AuthController extends Controller
 
     public function activateAccount(Request $request)
     {
-        $code = $request->input('code'); // استخراج الكود من الطلب
+        $validatedData = $request->validate([
+            'code' => 'required',
+            'email' => 'required|email',
+        ]);
+        $code = $validatedData['code'];
+        $email = $validatedData['email'];
 
-        $user = User::where('activation_code', $code)->first(); // البحث عن المستخدم باستخدام الكود
+        $user = User::where([
+            ['email', '=', $email],
+            ['activation_code', '=', $code],
+        ])->first();
 
         if (!$user) {
-            return $this->error('', 'Invalid activation code', 400);
+            return $this->error('', 'Credentials do not match', 400);
         }
 
         // تفعيل حساب المستخدم
@@ -119,10 +124,6 @@ class AuthController extends Controller
             'activation_code' => $activationCode,
         ]);
 
-        $content = [
-            'subject' => 'TactivationCode',
-            'body' => 'activationCode is :' . $activationCode,
-        ];
 
         $sampleMail = new SampleMail($activationCode);
         Mail::to($user->email)->send($sampleMail);
@@ -131,7 +132,6 @@ class AuthController extends Controller
 
         return $this->success([
             'user' => new UserResource($user),
-            'code' => $activationCode,
         ], 'Account created successfully. Please check your email for activation instructions.');
     }
 

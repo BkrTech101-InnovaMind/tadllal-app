@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ServicesOrdersController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\admin\UsersController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ConstructionServiceController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
@@ -171,7 +172,10 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
     Route::prefix('locations')->group(function () {
         Route::get('/', [LocationsController::class, 'index']);
     });
-
+    Route::prefix('comments')->group(function () {
+        Route::resource('/comment', CommentsController::class);
+        Route::post('/add/{realEstate}', [CommentsController::class, 'store']);
+    });
 
     Route::prefix('services')->group(function () {
         Route::get('/', [ConstructionServiceController::class, 'index']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RealEstateWithCommentsResource;
 use App\Models\UserPreference;
 use Illuminate\Http\Request;
 use App\Http\Resources\RealEstateResource;
@@ -26,12 +27,6 @@ class RealEstateController extends Controller
     }
     public function index()
     {
-        // return RealEstateResource::collection(
-        //     RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
-        //         ->withCount('ratings') // Load the number of ratings
-        //         ->withAvg('ratings', 'rating') // Load the average rating
-        //         ->get()
-        // );
 
 
         $realEstates = RealEstate::with(['locations:id,name', 'types:id,name', 'ratings', 'images'])
@@ -51,19 +46,24 @@ class RealEstateController extends Controller
             // If the real estate is not found, return a 404 response
             return $this->error('', 'Real estate not found', 404);
         } else {
-            // Load the count of ratings and the average rating for the real estate
-            $realty->loadCount('ratings'); // Load the number of ratings
-            $realty->loadAvg('ratings', 'rating'); // Load the average rating
+            // // Load the count of ratings and the average rating for the real estate
+            // $realty->loadCount('ratings'); // Load the number of ratings
+            // $realty->loadAvg('ratings', 'rating'); // Load the average rating
 
-            $user = Auth::user();
-            $isFavorite = $user->favorites->contains('real_estate_id', $realty->id);
-            $realty->isFavorite = $isFavorite;
-            // Attach images' paths to the real estate data
-            $realty->images = $realty->images->pluck('image');
+            // $user = Auth::user();
+            // $isFavorite = $user->favorites->contains('real_estate_id', $realty->id);
+            // $realty->isFavorite = $isFavorite;
+            // // Attach images' paths to the real estate data
+            // $realty->images = $realty->images->pluck('image');
 
 
-            // Return the real estates as a resource
-            return new RealEstateResource($realty);
+            // // Return the real estates as a resource
+            // return new RealEstateResource($realty);
+
+            $realty->load('comments.user'); // تحميل معلومات المستخدمين للتعليقات
+
+            // Return the real estate with comments as a resource
+            return new RealEstateWithCommentsResource($realty);
         }
     }
 

@@ -11,6 +11,7 @@ use App\Models\Rlocations;
 use App\Models\Rtypes;
 use App\Models\RealEstate;
 use App\Models\Rating;
+use App\Models\UserComment;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,5 +30,6 @@ class DatabaseSeeder extends Seeder
         // RealEstateImage::factory(500)->create();
         // ConstructionService::factory(50)->create();
         // SubConstructionService::factory(50)->create();
+        UserComment::factory(50)->create();
     }
 }

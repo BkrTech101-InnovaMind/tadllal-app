@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 const String APP_VERSION_KEY_NAME = "VERSION";
 const int APP_VERSION_VALUE = 1;
 
@@ -30,3 +32,16 @@ class Consts {
   static const double padding = 11.0;
   static const double avatarRadius = 55.0;
 }
+
+const TextStyle lightDetailsTextFieldTheme = TextStyle(
+    fontFamily: "Cairo",
+    fontSize: 11,
+    color: Colors.white,
+    fontWeight: FontWeight.bold);
+
+const TextStyle lightDetailsLabelTextFieldTheme = TextStyle(
+    fontFamily: "Cairo",
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+    color: Color(0xfff48923),
+    decoration: TextDecoration.underline);

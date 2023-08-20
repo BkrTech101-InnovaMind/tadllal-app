@@ -41,20 +41,23 @@ class _FavoritesPageState extends State<FavoritesPage> {
   void initState() {
     setState(() {
       realStateDataList = _getrealEstateData();
-    });
-    realStateDataList.whenComplete(() {
-      tutorialCoachMark = TutorialCoachMark(
-        targets: addFavoritesPageTarget(realEstateKey: realEstateKey),
-        colorShadow: const Color(0xFF194706),
-        paddingFocus: 10,
-        hideSkip: false,
-        opacityShadow: 0.8,
-        showSkipInLastTarget: false,
-        onFinish: () {
-          SaveTourForFirstTime().saveTourForFirstTime();
-        },
-      );
-      showTutorial();
+
+      realStateDataList.then((value) {
+        if (value.isNotEmpty) {
+          tutorialCoachMark = TutorialCoachMark(
+            targets: addFavoritesPageTarget(realEstateKey: realEstateKey),
+            colorShadow: const Color(0xFF194706),
+            paddingFocus: 10,
+            hideSkip: false,
+            opacityShadow: 0.8,
+            showSkipInLastTarget: false,
+            onFinish: () {
+              SaveTourForFirstTime().saveTourForFirstTime();
+            },
+          );
+          showTutorial();
+        }
+      });
     });
 
     super.initState();

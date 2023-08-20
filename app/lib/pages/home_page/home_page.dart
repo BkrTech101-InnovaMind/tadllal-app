@@ -61,9 +61,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     if (kDebugMode) {
-      // Config.clear();
-      print("Token ${Config().token}");
-
+      if (Config().token.isEmpty) {}
       User u = Config().user;
       print("User ${u.toJson()}");
     }

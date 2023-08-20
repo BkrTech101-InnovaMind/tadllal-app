@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:tadllal/methods/api_provider.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
-import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/pages/navigation_page/navigation_page.dart';
 import 'package:tadllal/pages/splash/splash_screen.dart';
 import 'package:tadllal/pages/splash/success_sign_in_splash_screen/success_sign_in_splash_screen.dart';
@@ -37,11 +36,9 @@ Future<void> main() async {
         '/': (context) => const SplashScreen(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/navigationPage': (context) => const NavigationPage(),
-        // '/login': (context) => const Login(),
         '/authentication': (context) => const AuthenticationPage(),
         '/successSignInSplashScreen': (context) =>
             const SuccessSignInSplashScreen(),
-        '/codeAuthenticationPage': (context) => const CodeAuthenticationPage(),
       },
     ),
   ));

@@ -186,6 +186,7 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
                                       imageUrl: realEstateType[index]
                                           .attributes!
                                           .image!,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),

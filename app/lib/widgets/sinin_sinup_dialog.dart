@@ -1,6 +1,7 @@
 import 'package:colorful_circular_progress_indicator/colorful_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:tadllal/config/global.dart';
+import 'package:tadllal/model/api_molels/error_response.dart';
 import 'package:tadllal/model/api_molels/login_response.dart';
 import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
 import 'package:tadllal/services/api/dio_api.dart';
@@ -135,7 +136,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                   ),
                 );
               } else if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && !snapshot.hasError) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Column(
@@ -182,6 +183,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                     ),
                   );
                 } else if (snapshot.hasError) {
+                  ErrorResponse e = snapshot.error as ErrorResponse;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Column(
@@ -201,22 +203,22 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             indent: 1,
                             endIndent: 1),
                         const SizedBox(height: 11.0),
-                        const Row(
+                        Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 1,
                               child: Icon(
                                 Icons.error_outline,
                                 color: Color(0xfff48923),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Expanded(
                               flex: 5,
-                              child: Text("حدثت مشكلة",
-                                  style: TextStyle(
+                              child: Text(e.statusMessage,
+                                  style: const TextStyle(
                                       fontFamily: "Cairo",
                                       color: Color(0xfff48923),
                                       fontWeight: FontWeight.normal,

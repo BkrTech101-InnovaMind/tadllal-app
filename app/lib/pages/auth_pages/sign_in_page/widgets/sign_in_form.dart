@@ -22,8 +22,8 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   void initState() {
-    _phoneController.text = "wilford.larson@example.com";
-    _passwordController.text = "password";
+    _phoneController.text = "zabobaker7355@gmail.com";
+    _passwordController.text = "@Abo77927";
     super.initState();
   }
 
@@ -53,14 +53,17 @@ class _SignInFormState extends State<SignInForm> {
         onLogin: (response) async {
           await updateUserDetails(
                   response: response, sinInSinUpRequest: sinInSinUpRequest)
-              .whenComplete(() {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/successSignInSplashScreen', (route) => false);
-          });
-          // Navigator.of(context).pushNamedAndRemoveUntil('/navigationPage',(route) => false);
+              .whenComplete(
+            () => _navigateToNavigationPage(),
+          );
         },
       ),
     );
+  }
+
+  void _navigateToNavigationPage() {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
   }
 
   @override

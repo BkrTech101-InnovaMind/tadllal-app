@@ -4,6 +4,7 @@ import 'package:tadllal/config/config.dart';
 import 'package:tadllal/config/global.dart';
 import 'package:tadllal/pages/app_starter_intro_screen/widgets/on_boarding_screen.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/pages/navigation_page/navigation_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -61,13 +62,20 @@ class _NextPageState extends State<NextPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoggedIn == true && starterHasShown == true) {
-      // return AppStarterIntroScreen();
-      return const NavigationPage();
-    } else if (isLoggedIn == false && starterHasShown == true) {
-      return const AuthenticationPage();
+    if (Config().token.isNotEmpty) {
+      if (isLoggedIn == true && starterHasShown == true) {
+        return const NavigationPage();
+      } else if (isLoggedIn == false && starterHasShown == true) {
+        return const AuthenticationPage();
+      } else {
+        return const OnBoardingScreen();
+      }
+    } else if (Config().token.isEmpty && isLoggedIn == true) {
+      return CodeAuthenticationPage(
+        email: Config().user.attributes!.email!,
+      );
     } else {
-      return const OnBoardingScreen();
+      return const AuthenticationPage();
     }
   }
 }

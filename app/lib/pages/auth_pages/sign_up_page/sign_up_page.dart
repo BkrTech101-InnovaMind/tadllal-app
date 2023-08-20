@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tadllal/pages/auth_pages/auth_pages.dart';
 import 'package:tadllal/pages/auth_pages/sign_up_page/widgets/sign_up_form.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -44,7 +45,12 @@ Widget buildIntroTexts(BuildContext context) {
         margin: const EdgeInsets.only(top: 17, bottom: 40),
         child: OutlinedButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AuthenticationPage()),
+              (Route<dynamic> route) => false,
+            );
           },
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.all(16),

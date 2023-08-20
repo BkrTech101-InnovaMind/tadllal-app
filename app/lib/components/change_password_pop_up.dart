@@ -66,7 +66,6 @@ class _ChangePasswordPopUpState extends State<ChangePasswordPopUp> {
       );
     } else {
       _onChange();
-      print(passwordValues);
     }
   }
 

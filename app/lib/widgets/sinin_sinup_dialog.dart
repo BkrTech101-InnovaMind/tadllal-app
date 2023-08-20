@@ -183,95 +183,200 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                     ),
                   );
                 } else if (snapshot.hasError) {
-                  ErrorResponse e = snapshot.error as ErrorResponse;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(title,
-                            style: const TextStyle(
-                                fontFamily: "Cairo",
-                                color: Color(0xfff48923),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15)),
-                        const Divider(
+                  if (snapshot.error is ErrorResponse) {
+                    ErrorResponse e = snapshot.error as ErrorResponse;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(title,
+                              style: const TextStyle(
+                                  fontFamily: "Cairo",
+                                  color: Color(0xfff48923),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15)),
+                          const Divider(
                             height: 10,
                             color: Colors.white,
                             thickness: 1.5,
                             indent: 1,
-                            endIndent: 1),
-                        const SizedBox(height: 11.0),
-                        Row(
-                          children: [
-                            const Expanded(
-                              flex: 1,
-                              child: Icon(
-                                Icons.error_outline,
-                                color: Color(0xfff48923),
+                            endIndent: 1,
+                          ),
+                          const SizedBox(height: 11.0),
+                          Row(
+                            children: [
+                              const Expanded(
+                                flex: 1,
+                                child: Icon(
+                                  Icons.error_outline,
+                                  color: Color(0xfff48923),
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: Text(e.statusMessage,
-                                  style: const TextStyle(
-                                      fontFamily: "Cairo",
-                                      color: Color(0xfff48923),
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            MaterialButton(
-                              height: 30.0,
-                              minWidth: 50.0,
-                              color: const Color(0xFFBD6611),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
+                              const SizedBox(
+                                width: 20,
                               ),
-                              textColor: Colors.white,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              splashColor: Colors.redAccent,
-                              child: const Text(
-                                'إغلاق',
-                                style: TextStyle(fontSize: 12),
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(e.statusMessage,
+                                        style: const TextStyle(
+                                            fontFamily: "Cairo",
+                                            color: Color(0xfff48923),
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12)),
+                                    Text(
+                                      "رقم الخطأ: (${e.statusCode})",
+                                      style: const TextStyle(
+                                          fontFamily: "Cairo",
+                                          color: Color(0xfff48923),
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 12),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            MaterialButton(
-                              height: 30.0,
-                              minWidth: 50.0,
-                              color: const Color(0xFFBD6611),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              MaterialButton(
+                                height: 30.0,
+                                minWidth: 50.0,
+                                color: const Color(0xFFBD6611),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                splashColor: Colors.redAccent,
+                                child: const Text(
+                                  'إغلاق',
+                                  style: TextStyle(fontSize: 12),
+                                ),
                               ),
-                              textColor: Colors.white,
-                              onPressed: () {
-                                _getData();
-                              },
-                              splashColor: Colors.redAccent,
-                              child: const Text(
-                                'إعادة المحاولة',
-                                style: TextStyle(fontSize: 12),
+                              const SizedBox(
+                                width: 30,
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
+                              MaterialButton(
+                                height: 30.0,
+                                minWidth: 50.0,
+                                color: const Color(0xFFBD6611),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  _getData();
+                                },
+                                splashColor: Colors.redAccent,
+                                child: const Text(
+                                  'إعادة المحاولة',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(title,
+                              style: const TextStyle(
+                                  fontFamily: "Cairo",
+                                  color: Color(0xfff48923),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15)),
+                          const Divider(
+                              height: 10,
+                              color: Colors.white,
+                              thickness: 1.5,
+                              indent: 1,
+                              endIndent: 1),
+                          const SizedBox(height: 11.0),
+                          Row(
+                            children: [
+                              const Expanded(
+                                flex: 1,
+                                child: Icon(
+                                  Icons.error_outline,
+                                  color: Color(0xfff48923),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Text("${snapshot.error}",
+                                    style: const TextStyle(
+                                        fontFamily: "Cairo",
+                                        color: Color(0xfff48923),
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12)),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              MaterialButton(
+                                height: 30.0,
+                                minWidth: 50.0,
+                                color: const Color(0xFFBD6611),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                splashColor: Colors.redAccent,
+                                child: const Text(
+                                  'إغلاق',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              MaterialButton(
+                                height: 30.0,
+                                minWidth: 50.0,
+                                color: const Color(0xFFBD6611),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  _getData();
+                                },
+                                splashColor: Colors.redAccent,
+                                child: const Text(
+                                  'إعادة المحاولة',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 } else {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),

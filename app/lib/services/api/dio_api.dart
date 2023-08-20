@@ -70,14 +70,20 @@ class DioApi {
 
   Future<LoginResponse> sinUp(
       {required SinInSinUpRequest sinInSinUpRequest}) async {
+    bool showPrint = false;
     try {
       final response = await DioHelper.dio!.post(
         '/register',
         data: sinInSinUpRequest.toJson(),
-        options: Options(),
+        options: Options(receiveDataWhenStatusError: true),
       );
+
+      if (kDebugMode) {
+        print("===================\n");
+        print("SinUP response $response");
+      }
       if (response.statusCode == HttpStatus.ok) {
-        if (kDebugMode) {
+        if (kDebugMode && showPrint) {
           print("===================");
           print("SinUP response $response");
           print("===================");
@@ -101,37 +107,46 @@ class DioApi {
           statusCode: response.statusCode,
         );
       }
-    } on ErrorResponse catch (e) {
-      throw e.statusMessage;
-    } catch (e) {
-      if (e is DioException) {
-        if (e.response!.statusCode == HttpStatus.found) {
-          throw ErrorResponse(
-            statusCode: e.response!.statusCode,
-            statusMessage: "الحساب موجود مسبقا",
-          );
-        }
+    } on ErrorResponse catch (e, s) {
+      print("==========ErrorResponse=========\n");
+
+      print('Exception details:\n ${e.statusMessage}');
+      print('Stack trace:\n $s');
+      // print("${e.userMessage}");
+      rethrow;
+    } on DioException catch (e) {
+      print("==========DioException=========\n");
+
+      if ((e.response != null) &&
+          (e.response!.statusCode == HttpStatus.found)) {
         throw ErrorResponse(
           statusCode: e.response!.statusCode,
-          statusMessage: e.message!,
+          statusMessage: "الحساب موجود مسبقا",
         );
-      } else if (e is SocketException) {
+      } else if (e.type == DioExceptionType.connectionTimeout) {
         throw ErrorResponse(
-          statusCode: HttpStatus.serviceUnavailable,
-          statusMessage: e.message,
-        );
-      } else if (e is HandshakeException) {
-        throw ErrorResponse(
-          statusCode: HttpStatus.serviceUnavailable,
-          statusMessage: "Cannot connect securely to server."
-              " Please ensure that the server has a valid SSL configuration.",
+          statusCode: 0,
+          statusMessage: "السيرفر غير متوفر"
+              "",
         );
       } else {
-        throw ErrorResponse(
-          statusCode: HttpStatus.conflict,
-          statusMessage: "حدث خطاء",
-        );
+        rethrow;
       }
+    } on SocketException catch (e) {
+      print("==========SocketException=========\n");
+      throw ErrorResponse(
+        statusCode: HttpStatus.serviceUnavailable,
+        statusMessage: e.message,
+      );
+    } on HandshakeException {
+      print("==========HandshakeException=========\n");
+      throw ErrorResponse(
+        statusCode: HttpStatus.serviceUnavailable,
+        statusMessage: "Cannot connect securely to server."
+            " Please ensure that the server has a valid SSL configuration.",
+      );
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -152,7 +167,10 @@ class DioApi {
       {dynamic myData,
       Map<String, dynamic>? queryParameters,
       Options? options}) async {
-    Options requestOptions = options ?? Options();
+    Options requestOptions = options ??
+        Options(
+            // contentType: Headers.formUrlEncodedContentType,
+            );
     requestOptions.headers = requestOptions.headers ?? {};
     Map<String, dynamic>? authorization = DioHelper.getAuthorizationHeader();
     if (authorization != null) {
@@ -176,11 +194,11 @@ class DioApi {
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
     }
+
     var response = await DioHelper.dio!.get(path,
         data: myData,
         queryParameters: queryParameters,
         options: requestOptions);
-
     return response;
   }
 

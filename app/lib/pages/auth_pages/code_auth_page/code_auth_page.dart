@@ -19,7 +19,7 @@ class CodeAuthenticationPage extends StatefulWidget {
 }
 
 class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
-  int countdownSeconds = 30;
+  int countdownSeconds = 120;
   Timer? _timer;
   String verificationCode = "";
 
@@ -82,7 +82,7 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
       builder: (BuildContext context2) => CodeAuthenticationDialog(
         formValue: {
           "path": "/activate",
-          "myData": {"code": verificationCode}
+          "myData": {"email": widget.email, "code": verificationCode}
         },
         onUrlChanged: (data) {
           LoginResponse s = LoginResponse.fromJson(data.data);

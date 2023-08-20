@@ -46,7 +46,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin<HomePage> {
+  @override
+  bool get wantKeepAlive => true;
   final DioApi dioApi = DioApi();
   final Map<String, dynamic> allLocationAndType = {
     "id": "0",
@@ -61,6 +64,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     if (kDebugMode) {
+      print("Token ${Config().token}");
       if (Config().token.isEmpty) {}
       User u = Config().user;
       print("User ${u.toJson()}");
@@ -101,11 +105,14 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _setRealEstateData() async {
     var rowData = await dioApi.get("/realEstate/realty");
+    // log("rowData ${rowData}");
     String jsonString = json.encode(rowData.data["data"]);
+    // log("jsonString ${jsonString}");
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
 
+    // log("data ${data}");
     List<RealEstate> realEstate =
         (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
 
@@ -115,10 +122,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Location>> _getLocationData() async {
     var rowData = await dioApi.get("/locations");
+    // log("rowData ${rowData}");
     String jsonString = json.encode(rowData.data["data"]);
+    // log("jsonString ${jsonString}");
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
+    // log("rowData ${data[0]}");
     List<Location> locationList =
         (data).map((itemWord) => Location.fromJson(itemWord)).toList();
     locationList.insert(0, Location.fromJson(allLocationAndType));
@@ -145,6 +155,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("الرئيسية"),
@@ -547,10 +558,8 @@ class _HomePageState extends State<HomePage> {
 // Notifications icon widget
   Widget buildNotificationsIcon(bool hasNotification) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-      ),
+      decoration:
+          const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
       child: TextButton(
         style: TextButton.styleFrom(
             shape: const CircleBorder(), padding: const EdgeInsets.all(4)),
@@ -748,6 +757,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else if (snapshot.hasError) {
+                    print("DATA ERROR ${snapshot.error}");
                     return const Center(
                         child: Padding(
                       padding: EdgeInsets.only(top: 16),
@@ -882,6 +892,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else if (snapshot.hasError) {
+                    print("DATA ERROR ${snapshot.error}");
                     return const Center(
                         child: Padding(
                       padding: EdgeInsets.only(top: 16),

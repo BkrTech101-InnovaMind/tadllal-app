@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tadllal/config/global.dart';
 import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 import 'package:tadllal/services/helpers.dart';
 import 'package:tadllal/services/http.dart';
@@ -52,16 +55,21 @@ class _SignUpFormState extends State<SignUpForm> {
         onLogin: (response) async {
           await updateUserDetails(
               response: response, sinInSinUpRequest: sinInSinUpRequest);
-          _navigateToSignInPage();
+          _navigateToSignInPage(response);
         },
       ),
     );
   }
 
-  void _navigateToSignInPage() {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      '/codeAuthenticationPage',
-      (route) => false,
+  void _navigateToSignInPage(response) {
+    log("SIN UP USER DATA=>${response.toJson()}");
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CodeAuthenticationPage(
+                email: _phoneController.text.trim(),
+              )),
+      (Route<dynamic> route) => false,
     );
   }
 

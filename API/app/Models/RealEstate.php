@@ -20,6 +20,10 @@ class RealEstate extends Model
         'type2',
     ];
 
+    public function comments()
+    {
+        return $this->hasMany(UserComment::class, 'real_estate_id');
+    }
     public function locations()
     {
         return $this->belongsTo(Rlocations::class, 'location_id');

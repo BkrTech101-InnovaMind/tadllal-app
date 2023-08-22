@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tadllal/config/global.dart';
 import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 import 'package:tadllal/services/helpers.dart';
 import 'package:tadllal/services/http.dart';
@@ -22,7 +25,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   void initState() {
-    _userNameController.text = "يوسف صديق";
+    _userNameController.text = "ابوبكر صديق";
     _phoneController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77920";
     super.initState();
@@ -52,16 +55,21 @@ class _SignUpFormState extends State<SignUpForm> {
         onLogin: (response) async {
           await updateUserDetails(
               response: response, sinInSinUpRequest: sinInSinUpRequest);
-          _navigateToSignInPage();
+          _navigateToSignInPage(response);
         },
       ),
     );
   }
 
-  void _navigateToSignInPage() {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      '/codeAuthenticationPage',
-      (route) => false,
+  void _navigateToSignInPage(response) {
+    log("SIN UP USER DATA=>${response.toJson()}");
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CodeAuthenticationPage(
+                email: _phoneController.text.trim(),
+              )),
+      (Route<dynamic> route) => false,
     );
   }
 
@@ -124,6 +132,19 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             child: TextFormField(
               keyboardType: TextInputType.visiblePassword,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "الرجاء ادخال كلمة السر";
+                } else if (value.length < 6) {
+                  return "كلمة السر يجب أن لا تقل عن 8 أحرف";
+                } else if (value.length > 24) {
+                  return "كلمة السر يجب أن لا تزيد عن 24 حرف";
+                } else if (!_isValidPassword(value)) {
+                  return "كلمة السر يجب أن تحتوي على ألاقل حرفاً كبيراً وحرفاً صغيراً ورقماً وحرفاً خاص";
+                } else {
+                  return null;
+                }
+              },
               obscureText: password,
               controller: _passwordController,
               decoration: const InputDecoration(
@@ -196,4 +217,11 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
+}
+
+// password Validation Pattern
+bool _isValidPassword(String value) {
+  RegExp passwordPattern =
+      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]+$');
+  return passwordPattern.hasMatch(value);
 }

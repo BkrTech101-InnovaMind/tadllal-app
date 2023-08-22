@@ -14,7 +14,7 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
+        id: json["id"].toString(),
         attributes: json["attributes"] == null
             ? null
             : Attributes.fromJson(json["attributes"]),

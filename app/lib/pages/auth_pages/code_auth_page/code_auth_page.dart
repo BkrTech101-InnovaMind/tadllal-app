@@ -6,17 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:tadllal/config/config.dart';
 import 'package:tadllal/model/api_molels/login_response.dart';
+import 'package:tadllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
 import 'package:tadllal/widgets/code_authentication_dialog.dart';
+import 'package:tadllal/widgets/save_dialog.dart';
 
 class CodeAuthenticationPage extends StatefulWidget {
-  const CodeAuthenticationPage({super.key});
+  final String email;
+  const CodeAuthenticationPage({super.key, required this.email});
 
   @override
   State<CodeAuthenticationPage> createState() => _CodeAuthenticationPageState();
 }
 
 class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
-  int countdownSeconds = 30;
+  int countdownSeconds = 120;
   Timer? _timer;
   String verificationCode = "";
 
@@ -46,6 +49,21 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
   }
 
   void resendCode() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SaveDialog(
+        formValue: [
+          {
+            "path": "/reSend",
+            "myData": {"email": widget.email}
+          }
+        ],
+        onUrlChanged: (data) {
+          Navigator.of(context2).pop();
+        },
+      ),
+    );
     if (_timer?.isActive == false) {
       // Reset the countdown to 30 seconds and start the timer again
       countdownSeconds = 30;
@@ -64,7 +82,7 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
       builder: (BuildContext context2) => CodeAuthenticationDialog(
         formValue: {
           "path": "/activate",
-          "myData": {"code": verificationCode}
+          "myData": {"email": widget.email, "code": verificationCode}
         },
         onUrlChanged: (data) {
           LoginResponse s = LoginResponse.fromJson(data.data);
@@ -77,8 +95,9 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
             json.encode(s.data!.user!.toJson()),
           );
           Navigator.of(context2).pop();
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
+
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/successSignInSplashScreen', (route) => false);
         },
       ),
     );
@@ -103,23 +122,20 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
                     buildIntroText(),
                     Container(
                       alignment: AlignmentDirectional.center,
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: VerificationCode(
-                          autofocus: true,
-                          length: 4,
-                          keyboardType: TextInputType.number,
-                          fullBorder: true,
-                          fillColor: const Color(0xFFF5F4F8),
-                          margin: const EdgeInsets.all(10),
-                          itemSize: 60,
-                          underlineColor: const Color(0xFF234F68),
-                          textStyle: const TextStyle(color: Color(0xFF252B5C)),
-                          underlineUnfocusedColor: Colors.transparent,
-                          underlineWidth: 2,
-                          onCompleted: onComplete,
-                          onEditing: (value) {},
-                        ),
+                      child: VerificationCode(
+                        autofocus: true,
+                        length: 4,
+                        keyboardType: TextInputType.number,
+                        fullBorder: true,
+                        fillColor: const Color(0xFFF5F4F8),
+                        margin: const EdgeInsets.all(10),
+                        itemSize: 60,
+                        underlineColor: const Color(0xFF234F68),
+                        textStyle: const TextStyle(color: Color(0xFF252B5C)),
+                        underlineUnfocusedColor: Colors.transparent,
+                        underlineWidth: 2,
+                        onCompleted: onComplete,
+                        onEditing: (value) {},
                       ),
                     ),
                     Column(
@@ -138,100 +154,103 @@ class _CodeAuthenticationPageState extends State<CodeAuthenticationPage> {
       ),
     );
   }
-}
 
 // Back Button widget
-Widget buildBackButton(BuildContext context) {
-  return Container(
-    alignment: AlignmentDirectional.topEnd,
-    child: OutlinedButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.all(16),
-        foregroundColor: Colors.black87,
-        side: const BorderSide(color: Color(0xFFF5F4F8)),
-        backgroundColor: const Color(0xFFF5F4F8),
-        shape: const CircleBorder(),
+  Widget buildBackButton(BuildContext context) {
+    return Container(
+      alignment: AlignmentDirectional.topEnd,
+      child: OutlinedButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const SignUpPage()),
+            (Route<dynamic> route) => false,
+          );
+        },
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.all(16),
+          foregroundColor: Colors.black87,
+          side: const BorderSide(color: Color(0xFFF5F4F8)),
+          backgroundColor: const Color(0xFFF5F4F8),
+          shape: const CircleBorder(),
+        ),
+        child: const Icon(Icons.arrow_forward_ios_rounded, size: 18),
       ),
-      child: const Icon(Icons.arrow_forward_ios_rounded, size: 18),
-    ),
-  );
-}
+    );
+  }
 
 // Intro Text widget
-Widget buildIntroText() {
-  String userNumber = "779-207-445";
-  return Column(
-    children: [
-      RichText(
-        text: const TextSpan(
-          text: "أدخل رمز ",
-          style: TextStyle(fontSize: 25, color: Colors.black),
-          children: <TextSpan>[
+  Widget buildIntroText() {
+    return Column(
+      children: [
+        RichText(
+          text: const TextSpan(
+            text: "أدخل رمز ",
+            style: TextStyle(fontSize: 25, color: Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "التحقق",
+                style: TextStyle(fontWeight: FontWeight.w900),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Text("أدخل رمز ألتحقق ألمكون من 4 أرقام"),
+        Text("الذي أرسلناه إلى ${widget.email}")
+      ],
+    );
+  }
+
+// Timer widget
+  Widget buildTimer(int countdownSeconds) {
+    String minutes = (countdownSeconds ~/ 60).toString().padLeft(2, '0');
+    String seconds = (countdownSeconds % 60).toString().padLeft(2, '0');
+    return Container(
+      alignment: AlignmentDirectional.center,
+      child: IntrinsicWidth(
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: const Color(0xFFF5F4F8),
+          ),
+          child: Row(
+            children: [
+              Text("$minutes:$seconds"),
+              const SizedBox(width: 6),
+              const Icon(Icons.timer_sharp, size: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+// Resend button widget
+  Widget buildResendButton({required VoidCallback onResendPressed}) {
+    return Container(
+      alignment: AlignmentDirectional.center,
+      child: RichText(
+        text: TextSpan(
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              onResendPressed();
+            },
+          text: "لم يصلك رمز التحقق؟",
+          style: const TextStyle(fontSize: 15, color: Colors.black),
+          children: [
             TextSpan(
-              text: "التحقق",
-              style: TextStyle(fontWeight: FontWeight.w900),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  onResendPressed();
+                },
+              text: "إعادة ارسال",
+              style: const TextStyle(fontWeight: FontWeight.w900),
             ),
           ],
         ),
       ),
-      const SizedBox(height: 20),
-      const Text("أدخل رمز ألتحقق ألمكون من 4 أرقام"),
-      Text("الذي أرسلناه إلى $userNumber")
-    ],
-  );
-}
-
-// Timer widget
-Widget buildTimer(int countdownSeconds) {
-  String minutes = (countdownSeconds ~/ 60).toString().padLeft(2, '0');
-  String seconds = (countdownSeconds % 60).toString().padLeft(2, '0');
-  return Container(
-    alignment: AlignmentDirectional.center,
-    child: IntrinsicWidth(
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: const Color(0xFFF5F4F8),
-        ),
-        child: Row(
-          children: [
-            Text("$minutes:$seconds"),
-            const SizedBox(width: 6),
-            const Icon(Icons.timer_sharp, size: 20),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-// Resend button widget
-Widget buildResendButton({required VoidCallback onResendPressed}) {
-  return Container(
-    alignment: AlignmentDirectional.center,
-    child: RichText(
-      text: TextSpan(
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            onResendPressed();
-          },
-        text: "لم يصلك رمز التحقق؟",
-        style: const TextStyle(fontSize: 15, color: Colors.black),
-        children: [
-          TextSpan(
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                onResendPressed();
-              },
-            text: "إعادة ارسال",
-            style: const TextStyle(fontWeight: FontWeight.w900),
-          ),
-        ],
-      ),
-    ),
-  );
+    );
+  }
 }

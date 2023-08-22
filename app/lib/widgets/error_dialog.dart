@@ -7,10 +7,10 @@ class ErrorDialog extends StatefulWidget {
   const ErrorDialog({super.key, required this.desc});
 
   @override
-  State<ErrorDialog> createState() => _ErroeDialogState();
+  State<ErrorDialog> createState() => _ErrorDialogState();
 }
 
-class _ErroeDialogState extends State<ErrorDialog> {
+class _ErrorDialogState extends State<ErrorDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(

@@ -22,7 +22,7 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   void initState() {
-    _phoneController.text = "king59@example.net";
+    _phoneController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77927";
     super.initState();
   }
@@ -53,14 +53,17 @@ class _SignInFormState extends State<SignInForm> {
         onLogin: (response) async {
           await updateUserDetails(
                   response: response, sinInSinUpRequest: sinInSinUpRequest)
-              .whenComplete(() {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/successSignInSplashScreen', (route) => false);
-          });
-          // Navigator.of(context).pushNamedAndRemoveUntil('/navigationPage',(route) => false);
+              .whenComplete(
+            () => _navigateToNavigationPage(),
+          );
         },
       ),
     );
+  }
+
+  void _navigateToNavigationPage() {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
   }
 
   @override
@@ -100,19 +103,6 @@ class _SignInFormState extends State<SignInForm> {
             child: TextFormField(
               keyboardType: TextInputType.visiblePassword,
               obscureText: password,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "الرجاء ادخال كلمة السر";
-                } else if (value.length < 6) {
-                  return "كلمة السر يجب أن لا تقل عن 8 أحرف";
-                } else if (value.length > 24) {
-                  return "كلمة السر يجب أن لا تزيد عن 24 حرف";
-                } else if (!_isValidPassword(value)) {
-                  return "كلمة السر يجب أن تحتوي على ألاقل حرفاً كبيراً وحرفاً صغيراً ورقماً وحرفاً خاص";
-                } else {
-                  return null;
-                }
-              },
               controller: _passwordController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.lock_outlined),
@@ -195,11 +185,4 @@ class _SignInFormState extends State<SignInForm> {
       ),
     );
   }
-}
-
-// password Validation Pattern
-bool _isValidPassword(String value) {
-  RegExp passwordPattern =
-      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]+$');
-  return passwordPattern.hasMatch(value);
 }

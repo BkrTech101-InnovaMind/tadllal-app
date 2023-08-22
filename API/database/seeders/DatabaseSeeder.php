@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        // User::factory(50)->create();
+        // User::factory(5)->create();
         // Rlocations::factory(50)->create();
         // Rtypes::factory(50)->create();
         // RealEstate::factory(50)->create();
@@ -30,6 +30,6 @@ class DatabaseSeeder extends Seeder
         // RealEstateImage::factory(500)->create();
         // ConstructionService::factory(50)->create();
         // SubConstructionService::factory(50)->create();
-        UserComment::factory(50)->create();
+        // UserComment::factory(50)->create();
     }
 }

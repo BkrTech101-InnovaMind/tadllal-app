@@ -45,14 +45,6 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   }
 
   @override
-  void dispose() {
-    widget.userNameController.dispose();
-    widget.emailController.dispose();
-    widget.phoneNumberController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ListView(
       physics: const BouncingScrollPhysics(),

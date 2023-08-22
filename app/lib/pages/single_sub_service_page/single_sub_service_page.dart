@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/components/order_pop_up.dart';
 import 'package:tadllal/model/services.dart';
+import 'package:tadllal/widgets/LodingUi/make_order_dialog.dart';
 
 class SingleSubServicesPage extends StatefulWidget {
   final Services subServiceDetails;
@@ -32,10 +32,12 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
         child: Container(
           margin: const EdgeInsets.only(top: 75),
           color: Colors.black.withOpacity(0.3),
-          child: Column(
-            children: [
-              buildServiceCard(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildServiceCard(),
+              ],
+            ),
           ),
         ),
       ),
@@ -98,9 +100,11 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
         ),
         onPressed: () {
           showDialog(
+            barrierDismissible: false,
             context: context,
-            builder: (context) =>
-                OrderPopup(subServiceDetails: widget.subServiceDetails),
+            builder: (context2) => MakeOrderDialog(
+                type: "Service",
+                orderId: int.parse(widget.subServiceDetails.id!)),
           );
         },
         child: const Text(

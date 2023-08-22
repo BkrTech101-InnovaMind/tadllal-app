@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:tadllal/model/real_estate.dart';
+import 'package:tadllal/widgets/LodingUi/make_order_dialog.dart';
 
 class RealEstateDetailsPage extends StatefulWidget {
   final RealEstate realEstate;
@@ -27,6 +28,18 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
           buildDetailsSection(),
           buildCommentsSection(),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xFF194706),
+        child: const Icon(Icons.add),
+        onPressed: () {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context2) => MakeOrderDialog(
+                type: "RealEstate", orderId: int.parse(widget.realEstate.id!)),
+          );
+        },
       ),
     );
   }

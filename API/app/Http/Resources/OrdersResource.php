@@ -23,7 +23,7 @@ class OrdersResource extends JsonResource
                 'name' => $this->user->name,
                 'email' => $this->user->email,
                 'phoneNumber' => $this->user->phone_number,
-                'userImage' => $this->user->avatar,
+                'userImage' => url($this->user->avatar),
 
             ],
             'real_estate' => new RealEstateResource($this->realEstate),

@@ -22,7 +22,7 @@ class SubConstructionServiceResource extends JsonResource
                 'attributes' => [
                     'name' => $this->name,
                     'description' => $this->description,
-                    'image' => $this->image,
+                    'image' => url($this->image),
                     'construction_service_id' => $this->construction_service_id,
                     'construction' => $this->constructionService->name,
                 ]
@@ -33,7 +33,7 @@ class SubConstructionServiceResource extends JsonResource
                 'attributes' => [
                     'name' => $this->name,
                     'description' => $this->description,
-                    'image' => $this->image,
+                    'image' => url($this->image),
                     'construction_service_id' => $this->construction_service_id,
                 ]
             ];

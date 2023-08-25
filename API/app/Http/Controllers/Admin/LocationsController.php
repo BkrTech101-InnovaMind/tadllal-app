@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LocatiosResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Rlocations;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
@@ -67,9 +69,23 @@ class LocationsController extends Controller
      */
     public function destroy(Rlocations $Location)
     {
-        $Location->delete();
-        return $this->success([
-            'message' => 'The real estate has been deleted successfully',
-        ]);
+        try {
+            if (!$Location) {
+                return $this->error('', 'Location not found', 404);
+            }
+            $Location->delete();
+
+            return $this->success([
+                'message' => 'The location has been deleted successfully',
+            ]);
+
+
+        } catch (\Exception $e) {
+            if (Str::contains($e->getMessage(), 'Integrity constraint violation')) {
+                return $this->error('Cannot delete this location due to foreign key constraints', '', 400);
+            }
+
+            return $this->error('An error occurred while deleting the location', '', 500);
+        }
     }
 }

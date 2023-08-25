@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TypesResource;
 use App\Models\Rtypes;
@@ -103,9 +104,11 @@ class TypesController extends Controller
      */
     public function destroy(Rtypes $type)
     {
-        if (!$type) {
-            return $this->error('', 'type not found', 404);
-        } else {
+        try {
+            if (!$type) {
+                return $this->error('', 'Type not found', 404);
+            }
+
             $imagePath = str_replace('storage/', 'public/', $type->image);
             Storage::delete($imagePath);
             $type->delete();
@@ -113,7 +116,12 @@ class TypesController extends Controller
             return $this->success([
                 'message' => 'The type has been deleted successfully',
             ]);
+        } catch (\Exception $e) {
+            if (Str::contains($e->getMessage(), 'Integrity constraint violation')) {
+                return $this->error('Cannot delete this type due to foreign key constraints', '', 400);
+            }
 
+            return $this->error('An error occurred while deleting the type', '', 500);
         }
     }
 }

@@ -14,37 +14,31 @@ import api from '@/api/api';
 
 export default function Index() {
     const [orders, setOrders] = useState([]);
+    const [sevices, setSevices] = useState([]);
     const [endpoint, setEndpoint] = useState('orders');
 
     async function fetchOrders() {
         const authToken = localStorage.getItem('authToken');
         try {
-            const ordersData = await api.get(endpoint, authToken);
-            setOrders(ordersData.orders);
+            if (endpoint == 'orders') {
+                const ordersData = await api.get(endpoint, authToken);
+                setOrders(ordersData.orders);
+            } else {
+                const ordersData = await api.get(endpoint, authToken);
+                setSevices(ordersData.orders);
+            }
             console.log(ordersData);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
     }
 
-    useEffect(() => {
-
-        fetchOrders();
-
-    }, [endpoint]);
 
 
 
 
-    const handleOptionSelect = (selectedId) => {
-        if (selectedId == 1) {
-            setEndpoint('orders');
-        } else if (selectedId == 2) {
-            setEndpoint('servicesOrders');
-        }
-        // fetchTypes();
-        console.log(`Selected ID: ${selectedId}`);
-    };
+
+
     const array = {
         "data": [
             {
@@ -81,53 +75,12 @@ export default function Index() {
         ]
     };
 
-    const columns2 = [
-        { key: 'id', label: 'الرقم' },
-        {
-            key: 'prop',
-            label: 'الخدمة',
-            render: (item) => (
-                <div className="flex items-center">
-                    <Image width={50} height={50} className="w-10 h-10 rounded-full ml-2" src={item.sub_construction_service.attributes.image} alt="Jese image" />
-                    <div className="pl-3">
-                        <div className="text-base font-semibold">{item.sub_construction_service.attributes.name}</div>
-                        <div className="font-normal text-gray-500">تابعة للخدمة : {item.sub_construction_service.attributes.construction}</div>
-                    </div>
-                </div>
-            ),
-        },
-        {
-            key: 'attributes',
-            label: 'مقدم الطلب',
-            render: (item) => (
-                <div className="flex items-center">
-                    <Image width={50} height={50} className="w-10 h-10 rounded-full ml-2" src={item.user.userImage} alt="Jese image" />
-                    <div className="pl-3">
-                        <div className="text-base font-semibold">{item.user.name}</div>
-                        <div className="font-normal text-gray-500">{item.user.email}</div>
-                        <div className="font-normal text-gray-500">{item.user.phoneNumber}</div>
-                    </div>
-                </div>
-            ),
-        },
-        {
-            key: 'attributes', label: 'نص الطلب',
-            render: (item) => (
-                <div>{item.message}</div>
-            ),
-        },
-        {
-            key: 'attributes', label: 'حالة الطلب',
-            render: (item) => (
-                <div>{item.status == "Under Review" ? "تحت المراجعة" : "تمت الموافقة عليه"}</div>
-            ),
-        },
-    ];
+
 
     const columns = [
         { key: 'id', label: 'الرقم' },
         {
-            key: 'attributes',
+            key: 'realEstate',
             label: 'العقار',
             render: (item) => (
                 <div className="flex items-center">
@@ -140,7 +93,7 @@ export default function Index() {
             ),
         },
         {
-            key: 'attributes',
+            key: 'user',
             label: 'مقدم الطلب',
             render: (item) => (
                 <div className="flex items-center">
@@ -154,19 +107,74 @@ export default function Index() {
             ),
         },
         {
-            key: 'attributes', label: 'نص الطلب',
+            key: 'message', label: 'نص الطلب',
             render: (item) => (
                 <div>{item.message}</div>
             ),
         },
         {
-            key: 'attributes', label: 'حالة الطلب',
+            key: 'status', label: 'حالة الطلب',
             render: (item) => (
                 <div>{item.status == "Under Review" ? "تحت المراجعة" : "تمت الموافقة عليه"}</div>
             ),
         },
     ];
 
+
+    const columns2 = [
+        { key: 'id', label: 'الرقم' },
+        {
+            key: 'service',
+            label: 'الخدمة',
+            render: (item) => (
+                <div className="flex items-center">
+                    <Image width={50} height={50} className="w-10 h-10 rounded-full ml-2" src={item.sub_construction_service.attributes.image} alt="Jese image" />
+                    <div className="pl-3">
+                        <div className="text-base font-semibold">{item.sub_construction_service.attributes.name}</div>
+                        <div className="font-normal text-gray-500">تابعة للخدمة : {item.sub_construction_service.attributes.construction}</div>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            key: 'user',
+            label: 'مقدم الطلب',
+            render: (item) => (
+                <div className="flex items-center">
+                    <Image width={50} height={50} className="w-10 h-10 rounded-full ml-2" src={item.user.userImage} alt="Jese image" />
+                    <div className="pl-3">
+                        <div className="text-base font-semibold">{item.user.name}</div>
+                        <div className="font-normal text-gray-500">{item.user.email}</div>
+                        <div className="font-normal text-gray-500">{item.user.phoneNumber}</div>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            key: 'message', label: 'نص الطلب',
+            render: (item) => (
+                <div>{item.message}</div>
+            ),
+        },
+        {
+            key: 'status', label: 'حالة الطلب',
+            render: (item) => (
+                <div>{item.status == "Under Review" ? "تحت المراجعة" : "تمت الموافقة عليه"}</div>
+            ),
+        },
+    ];
+    let dataTable;
+    const handleOptionSelect = (selectedId) => {
+        if (selectedId == 1) {
+
+            setEndpoint('orders');
+        } else if (selectedId == 2) {
+
+            setEndpoint('servicesOrders');
+        }
+
+        console.log(`Selected ID: ${selectedId}`);
+    };
     const handleSearch = (searchTerm) => {
         // يمكنك هنا تنفيذ البحث باستخدام searchTerm
         console.log('تم البحث عن:', searchTerm);
@@ -179,6 +187,11 @@ export default function Index() {
     const handleDelete = (item) => {
         console.log(item.id);
     };
+
+    useEffect(() => {
+
+        fetchOrders();
+    }, [endpoint]);
     return (
 
         <Layout>
@@ -259,8 +272,8 @@ export default function Index() {
                     onDelete={handleDelete} />
 
                     : <CustomTable
+                        data={sevices}
                         columns={columns2}
-                        data={orders}
                         onEdit={handleEdit}
                         onDelete={handleDelete} />
 

@@ -11,10 +11,12 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import api from '@/api/api';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { tableSearch } from '@/api/filtersData';
 export default function Index() {
     const router = useRouter();
     const [types, setTypes] = useState([]);
-
+    const [searchResults, setSearchResults] = useState([]);
     async function fetchTypes() {
         const authToken = localStorage.getItem('authToken');
         try {
@@ -26,109 +28,11 @@ export default function Index() {
     }
 
 
-    const handleOptionSelect = (selectedId) => {
-        console.log(`Selected ID: ${selectedId}`);
-    };
 
     useEffect(() => {
 
         fetchTypes();
     }, []);
-    const array = {
-        "data": [
-            {
-                "id": "1",
-                "attributes": {
-                    "name": "rerum",
-                    "image": "https://via.placeholder.com/640x480.png/0044ee?text=neque"
-                }
-            },
-            {
-                "id": "2",
-                "attributes": {
-                    "name": "porro",
-                    "image": "https://via.placeholder.com/640x480.png/007700?text=dolorum"
-                }
-            },
-            {
-                "id": "3",
-                "attributes": {
-                    "name": "dolorum",
-                    "image": "https://via.placeholder.com/640x480.png/0099cc?text=cupiditate"
-                }
-            },
-            {
-                "id": "4",
-                "attributes": {
-                    "name": "voluptatem",
-                    "image": "https://via.placeholder.com/640x480.png/0033cc?text=cumque"
-                }
-            },
-            {
-                "id": "6",
-                "attributes": {
-                    "name": "perferendis",
-                    "image": "https://via.placeholder.com/640x480.png/0033bb?text=ipsum"
-                }
-            },
-            {
-                "id": "7",
-                "attributes": {
-                    "name": "incidunt",
-                    "image": "https://via.placeholder.com/640x480.png/00bbaa?text=nobis"
-                }
-            },
-            {
-                "id": "8",
-                "attributes": {
-                    "name": "et",
-                    "image": "https://via.placeholder.com/640x480.png/00cc11?text=provident"
-                }
-            },
-            {
-                "id": "9",
-                "attributes": {
-                    "name": "vel",
-                    "image": "https://via.placeholder.com/640x480.png/00aaff?text=laudantium"
-                }
-            },
-            {
-                "id": "10",
-                "attributes": {
-                    "name": "delectus",
-                    "image": "https://via.placeholder.com/640x480.png/00aacc?text=omnis"
-                }
-            },
-            {
-                "id": "11",
-                "attributes": {
-                    "name": "maxime",
-                    "image": "https://via.placeholder.com/640x480.png/005522?text=consequatur"
-                }
-            },
-            {
-                "id": "12",
-                "attributes": {
-                    "name": "voluptates",
-                    "image": "https://via.placeholder.com/640x480.png/00cc66?text=velit"
-                }
-            },
-            {
-                "id": "13",
-                "attributes": {
-                    "name": "sequi",
-                    "image": "https://via.placeholder.com/640x480.png/004477?text=in"
-                }
-            },
-            {
-                "id": "14",
-                "attributes": {
-                    "name": "doloremque",
-                    "image": "https://via.placeholder.com/640x480.png/00ee11?text=ullam"
-                }
-            },
-        ]
-    };
 
     const columns = [
         { key: 'id', label: 'الرقم' },
@@ -149,41 +53,35 @@ export default function Index() {
 
     ];
 
-    const data = [
-        {
-            number: 1,
 
-            name: "فيلا",
-            property: {
-                imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
-            }
-
-
-
-        }, {
-            number: 2,
-
-            name: "فيلا",
-            property: {
-                imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
-            }
-
-
-
-        },
-
-    ];
     const handleSearch = (searchTerm) => {
-        // يمكنك هنا تنفيذ البحث باستخدام searchTerm
-        console.log('تم البحث عن:', searchTerm);
+        const searchedField = 'name'; // تعيين الحقل الذي ترغب في البحث فيه
+        const filteredResults = tableSearch(searchTerm, types, searchedField);
+        setSearchResults(filteredResults);
     };
 
     const handleEdit = (item) => {
         router.push(`Types/Edit?id=${item.id}`);
     };
 
-    const handleDelete = (item) => {
-        console.log(item);
+    const handleDelete = async (item) => {
+        const authToken = localStorage.getItem('authToken');
+        try {
+            await api.deleteFunc(`types/types/${item.id}`, authToken);
+
+            // إزالة العنصر المحذوف من القائمة
+            const updatedTypes = types.filter((type) => type.id !== item.id);
+            setTypes(updatedTypes);
+            toast.success('تم حذف النوع بنجاح');
+        } catch (error) {
+            if (error.response && error.response.data.data === "Cannot delete this type due to foreign key constraints") {
+                console.log(error);
+                toast.error('لا يمكن حذف هذا النوع لأنه مستخدم من قبل عقارات. قم بحذف العقارات المرتبطة به أولاً.');
+            } else {
+                console.log(error);
+                toast.error('خطأ أثناء حذف النوع');
+            }
+        }
     };
     return (
 
@@ -194,7 +92,7 @@ export default function Index() {
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
                     title="عدد أنواع العقارات"
-                    value="30"
+                    value={types.length}
                     label="العدد الاجمالي"
                 />
 
@@ -229,7 +127,7 @@ export default function Index() {
 
                 <CustomTable
                     columns={columns}
-                    data={types}
+                    data={searchResults.length > 0 ? searchResults : types}
                     onEdit={handleEdit}
                     onDelete={handleDelete} />
             </div>

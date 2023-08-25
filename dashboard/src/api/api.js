@@ -51,6 +51,20 @@ const api = {
             throw error;
         }
     },
+
+    deleteFunc: async (endpoint, authToken) => {
+        try {
+            const response = await instance.delete(endpoint, {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+            });
+            return response.data.data;
+        } catch (error) {
+            console.error('Error deleting data:', error);
+            throw error;
+        }
+    },
 };
 
 export default api;

@@ -23,7 +23,7 @@ class ServicesOrdersResource extends JsonResource
                 'name' => $this->user->name,
                 'email' => $this->user->email,
                 'phoneNumber' => $this->user->phone_number,
-                'userImage' => $this->user->avatar,
+                'userImage' => url($this->user->avatar),
             ],
             'sub_construction_service' => new SubConstructionServiceResource($this->subConstructionService),
         ];

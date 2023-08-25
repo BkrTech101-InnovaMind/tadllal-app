@@ -46,10 +46,13 @@ class RealEstateResource extends JsonResource
                 'state' => $this->state,
                 'secondType' => $this->type2,
                 'date' => $this->created_at,
-                'photo' => $this->image,
+                'photo' => url($this->image),
                 'ratings' => $ratings,
                 'isFavorite' => $this->isFavorite,
-                'images' => $this->images->pluck('image'),
+                'images' => $this->images->pluck('image')->map(function ($imageName) {
+                    return url($imageName);
+                })->toArray(),
+
             ]
         ];
     }

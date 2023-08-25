@@ -6,36 +6,25 @@ import Table from '@/Components/Table'
 import { BsHouseDoor, BsGraphUp, BsFillBarChartFill, BsChartSquare, BsArrowRight } from 'react-icons/bs';
 import Layout from '@/layout/Layout';
 import CustomTable from '@/Components/CustomTable';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
-const API_URL = "http://127.0.0.1:8000/api/dashboard/locations/";
+import { toast } from 'react-toastify';
+import api from '@/api/api';
+import { tableSearch } from '@/api/filtersData';
 export default function Index() {
     const router = useRouter();
-    const handleOptionSelect = (selectedId) => {
-        console.log(`Selected ID: ${selectedId}`);
-    };
     const [locations, setLocations] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+
+
     async function fetchLocations() {
-
+        const authToken = localStorage.getItem('authToken');
         try {
-            const response = await axios.get('location', {
-                baseURL: API_URL,
-                headers: {
-                    "Content-Type": `application/vnd.api+json`,
-                    "Accept": `application/vnd.api+json`,
-                    "Authorization": `Bearer ${localStorage.getItem('authToken')}`,
-                },
-            });
-
-            const LocationssData = response.data.data;
+            const LocationssData = await api.get('locations/location', authToken);
             setLocations(LocationssData);
-            console.log(LocationssData);
-
         } catch (error) {
-            console.error("Error fetching Locations:", error);
+            console.error('Error fetching Locations:', error);
         }
     }
 
@@ -48,101 +37,6 @@ export default function Index() {
         fetchLocations();
     }, []);
 
-    const array = {
-        "data": [
-            {
-                "id": "1",
-                "attributes": {
-                    "name": "rerum",
-                    "image": "https://via.placeholder.com/640x480.png/0044ee?text=neque"
-                }
-            },
-            {
-                "id": "2",
-                "attributes": {
-                    "name": "porro",
-                    "image": "https://via.placeholder.com/640x480.png/007700?text=dolorum"
-                }
-            },
-            {
-                "id": "3",
-                "attributes": {
-                    "name": "dolorum",
-                    "image": "https://via.placeholder.com/640x480.png/0099cc?text=cupiditate"
-                }
-            },
-            {
-                "id": "4",
-                "attributes": {
-                    "name": "voluptatem",
-                    "image": "https://via.placeholder.com/640x480.png/0033cc?text=cumque"
-                }
-            },
-            {
-                "id": "6",
-                "attributes": {
-                    "name": "perferendis",
-                    "image": "https://via.placeholder.com/640x480.png/0033bb?text=ipsum"
-                }
-            },
-            {
-                "id": "7",
-                "attributes": {
-                    "name": "incidunt",
-                    "image": "https://via.placeholder.com/640x480.png/00bbaa?text=nobis"
-                }
-            },
-            {
-                "id": "8",
-                "attributes": {
-                    "name": "et",
-                    "image": "https://via.placeholder.com/640x480.png/00cc11?text=provident"
-                }
-            },
-            {
-                "id": "9",
-                "attributes": {
-                    "name": "vel",
-                    "image": "https://via.placeholder.com/640x480.png/00aaff?text=laudantium"
-                }
-            },
-            {
-                "id": "10",
-                "attributes": {
-                    "name": "delectus",
-                    "image": "https://via.placeholder.com/640x480.png/00aacc?text=omnis"
-                }
-            },
-            {
-                "id": "11",
-                "attributes": {
-                    "name": "maxime",
-                    "image": "https://via.placeholder.com/640x480.png/005522?text=consequatur"
-                }
-            },
-            {
-                "id": "12",
-                "attributes": {
-                    "name": "voluptates",
-                    "image": "https://via.placeholder.com/640x480.png/00cc66?text=velit"
-                }
-            },
-            {
-                "id": "13",
-                "attributes": {
-                    "name": "sequi",
-                    "image": "https://via.placeholder.com/640x480.png/004477?text=in"
-                }
-            },
-            {
-                "id": "14",
-                "attributes": {
-                    "name": "doloremque",
-                    "image": "https://via.placeholder.com/640x480.png/00ee11?text=ullam"
-                }
-            },
-        ]
-    };
 
     const columns = [
         { key: 'id', label: 'الرقم' },
@@ -175,9 +69,11 @@ export default function Index() {
         },
 
     ];
+
     const handleSearch = (searchTerm) => {
-        // يمكنك هنا تنفيذ البحث باستخدام searchTerm
-        console.log('تم البحث عن:', searchTerm);
+        const searchedField = 'name'; // تعيين الحقل الذي ترغب في البحث فيه
+        const filteredResults = tableSearch(searchTerm, locations, searchedField);
+        setSearchResults(filteredResults);
     };
 
     const handleEdit = (item) => {
@@ -185,8 +81,24 @@ export default function Index() {
         console.log(item);
     };
 
-    const handleDelete = (item) => {
-        console.log(item);
+    const handleDelete = async (item) => {
+        const authToken = localStorage.getItem('authToken');
+        try {
+            await api.deleteFunc(`locations/location/${item.id}`, authToken);
+
+            // إزالة العنصر المحذوف من القائمة
+            const updatedLocations = locations.filter((location) => location.id !== item.id);
+            setLocations(updatedLocations);
+            toast.success('تم حذف الموقع بنجاح');
+        } catch (error) {
+            if (error.response && error.response.data.data === "Cannot delete this location due to foreign key constraints") {
+                console.log(error);
+                toast.error('لا يمكن حذف هذا الموقع لأنه مستخدم من قبل عقارات. قم بحذف العقارات المرتبطة به أولاً.');
+            } else {
+                console.log(error);
+                toast.error('خطأ أثناء حذف الموقع');
+            }
+        }
     };
     return (
 
@@ -197,7 +109,7 @@ export default function Index() {
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
                     title="عدد المواقع"
-                    value="30"
+                    value={locations.length}
                     label="العدد الاجمالي"
                 />
 
@@ -232,7 +144,7 @@ export default function Index() {
 
                 <CustomTable
                     columns={columns}
-                    data={locations}
+                    data={searchResults.length > 0 ? searchResults : locations}
                     onEdit={handleEdit}
                     onDelete={handleDelete} />
             </div>

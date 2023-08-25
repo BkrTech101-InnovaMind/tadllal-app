@@ -29,7 +29,7 @@ class UserResource extends JsonResource
                     'email' => $user->email,
                     'role' => $user->role,
                     'phone' => $user->phone_number,
-                    'avatar' => $user->avatar,
+                    'avatar' => url($user->avatar),
                 ]
             ];
         }
@@ -41,7 +41,7 @@ class UserResource extends JsonResource
                     'email' => $this->email,
                     'role' => $this->role,
                     'phone' => $this->phone_number,
-                    'avatar' => $this->avatar,
+                    'avatar' => url($this->avatar),
                     'activated' => $this->activated,
                     'registered_by' => $this->registered_by,
                 ]
@@ -54,7 +54,7 @@ class UserResource extends JsonResource
                     'email' => $this->email,
                     'role' => $this->role,
                     'phone' => $this->phone_number,
-                    'avatar' => $this->avatar,
+                    'avatar' => url($this->avatar),
                 ]
             ];
         }

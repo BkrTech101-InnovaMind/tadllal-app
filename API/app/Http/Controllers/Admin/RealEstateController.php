@@ -232,4 +232,103 @@ class RealEstateController extends Controller
         return new RealEstateResource($updatedRealEstate);
 
     }
+    public function getByLocation($locationId)
+    {
+
+        $realEstates = RealEstate::where('location_id', $locationId)
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        return new RealEstateResource($realEstates);
+    }
+
+
+    public function getByType($typeId)
+    {
+        $realEstates = RealEstate::where('type1_id', $typeId)
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        return new RealEstateResource($realEstates);
+    }
+
+
+    public function getByStateAvailable()
+    {
+        $realEstates = RealEstate::where('state', 'available')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        return new RealEstateResource($realEstates);
+    }
+
+    // Get all real estates that are unavailable
+    public function getByStateUnavailable()
+    {
+        $realEstates = RealEstate::where('state', 'unavailable')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+        return new RealEstateResource($realEstates);
+    }
+
+    public function getByType2ForSale()
+    {
+
+        $realEstates = RealEstate::where('type2', 'for sale')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+        return new RealEstateResource($realEstates);
+    }
+
+    // Get all real estates that are for rent
+    public function getByType2ForRent()
+    {
+
+        $realEstates = RealEstate::where('type2', 'for rent')
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+        return new RealEstateResource($realEstates);
+    }
+
+    public function search($query)
+    {
+
+        // Validate the query string
+        if (empty($query)) {
+            return $this->error('', 'The query string is empty.', 404);
+        }
+        // Sanitize the query string
+        $query = filter_var($query, FILTER_SANITIZE_STRING);
+        // // The query string can be empty
+
+
+        // Split the query string into an array of words
+        $words = explode(' ', $query);
+
+        // Create a query builder instance
+        $queryBuilder = RealEstate::query();
+
+        // Loop through the words and add them to the where clause
+        foreach ($words as $word) {
+            $queryBuilder->where(function ($query) use ($word) {
+                $query->where('name', 'like', '%' . $word . '%')
+                    ->orWhere('description', 'like', '%' . $word . '%')
+                    ->orWhere('type2', 'like', '%' . $word . '%')
+                    ->orWhereHas('locations', function ($query) use ($word) {
+                        $query->where('name', 'like', '%' . $word . '%');
+                    })
+                    ->orWhereHas('types', function ($query) use ($word) {
+                        $query->where('name', 'like', '%' . $word . '%');
+                    });
+            });
+        }
+
+        // Get the real estates that match the query
+        $realEstates = $queryBuilder
+            ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->get();
+
+        // Return the real estates as a resource
+        return new RealEstateResource($realEstates);
+    }
 }

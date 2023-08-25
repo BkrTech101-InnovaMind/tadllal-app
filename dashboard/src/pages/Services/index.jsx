@@ -10,34 +10,53 @@ import CustomTable from '@/Components/CustomTable';
 import Image from 'next/image';
 import Link from 'next/link';
 import api from '@/api/api';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import { tableSearch } from '@/api/filtersData';
 export default function Index() {
     const router = useRouter();
     const [services, setServices] = useState([]);
-    // const [showType, setShowType] = useState(1);
+    const [subServices, setSubServices] = useState([]);
+    const [data, setData] = useState([]);
+
+    const [searchResults, setSearchResults] = useState([]);
     const [endpoint, setEndpoint] = useState('services/services/');
+
     async function fetchTypes() {
         const authToken = localStorage.getItem('authToken');
 
         try {
             const servicesData = await api.get(endpoint, authToken);
             setServices(servicesData);
+            const subServicesData = await api.get('subServices/services/', authToken);
+            setSubServices(subServicesData);
 
         } catch (error) {
             console.error('Error fetching Types:', error);
         }
     }
 
+
+    useEffect(() => {
+
+        setData(services);
+
+    }, [services]);
     useEffect(() => {
 
         fetchTypes();
-    }, [endpoint]);
+
+    }, []);
 
     const handleOptionSelect = (selectedId) => {
         if (selectedId == 1) {
             setEndpoint('services/services/');
+            setSearchResults("");
+            setData(services);
         } else if (selectedId == 2) {
             setEndpoint('subServices/services/');
+            setSearchResults("");
+            setData(subServices);
         }
         // fetchTypes();
         console.log(`Selected ID: ${selectedId}`);
@@ -82,7 +101,13 @@ export default function Index() {
                 <div>{item.attributes.description}</div>
             ),
         },
-        { key: 'sub_services_count', label: 'عدد الخدمات الفرعية' },
+        {
+            key: 'sub_services_count', label: 'عدد الخدمات الفرعية',
+            render: (item) => (
+                // عرض الوصف إذا كان متوفرًا، وإلا عرض رسالة بدلاً منه
+                item.sub_services_count ? <div>{item.sub_services_count}</div> : 0
+            ),
+        },
 
     ];
     const columns2 = [
@@ -119,34 +144,10 @@ export default function Index() {
 
 
 
-    const data = [
-        {
-            number: 1,
-
-            name: "خدمه انشائية",
-            property: {
-                imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
-            },
-            count: 1,
-
-
-        }, {
-            number: 2,
-
-            name: "خدمة توريد",
-            property: {
-                imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
-            },
-            count: 6,
-
-
-
-        },
-
-    ];
     const handleSearch = (searchTerm) => {
-        // يمكنك هنا تنفيذ البحث باستخدام searchTerm
-        console.log('تم البحث عن:', searchTerm);
+        const searchedField = 'name'; // تعيين الحقل الذي ترغب في البحث فيه
+        const filteredResults = tableSearch(searchTerm, data, searchedField);
+        setSearchResults(filteredResults);
     };
 
     const handleEdit = (item) => {
@@ -158,8 +159,26 @@ export default function Index() {
         }
     };
 
-    const handleDelete = (item) => {
-        console.log(item);
+    const handleDelete = async (item) => {
+        const authToken = localStorage.getItem('authToken');
+
+        data
+        try {
+            await api.deleteFunc(`${endpoint}${item.id}`, authToken);
+
+            const updatedServices = data.filter((service) => service.id !== item.id);
+
+            setData(updatedServices);
+            if (endpoint == 'services/services/') {
+                setServices(updatedServices);
+            } else {
+                setSubServices(updatedServices);
+            }
+            toast.success('تم حذف الخدمة بنجاح');
+        } catch (error) {
+            console.log(error);
+            toast.error('خطأ أثناء حذف الخدمة');
+        }
     };
     return (
 
@@ -169,8 +188,15 @@ export default function Index() {
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
+                    title="عدد كل الخدمات"
+                    value={services.length + subServices.length}
+                    label="العدد الاجمالي"
+                />
+                <Card
+                    id="1"
+                    icon={<BsHouseDoor size={69} color='#f584' />}
                     title="عدد الخدمات الرئيسية"
-                    value="30"
+                    value={services.length}
                     label="العدد الاجمالي"
                 />
 
@@ -178,15 +204,7 @@ export default function Index() {
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
                     title="عدد الخدمات الفرعية"
-                    value="30"
-                    label="العدد الاجمالي"
-                />
-
-                <Card
-                    id="1"
-                    icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد كل الخدمات"
-                    value="30"
+                    value={subServices.length}
                     label="العدد الاجمالي"
                 />
             </div>
@@ -231,17 +249,16 @@ export default function Index() {
                 {/* <Table /> */}
                 {endpoint == 'services/services/' ? <CustomTable
                     columns={columns1}
-                    data={services}
+                    data={searchResults.length > 0 ? searchResults : data}
                     onEdit={handleEdit}
                     onDelete={handleDelete} />
-
                     : <CustomTable
                         columns={columns2}
-                        data={services}
+                        data={searchResults.length > 0 ? searchResults : data}
                         onEdit={handleEdit}
                         onDelete={handleDelete} />
-
                 }
+
 
             </div>
         </Layout>

@@ -12,128 +12,73 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import api from '@/api/api';
-
+import { countMatchingItems, tableFilters, tableSearch } from '@/api/filtersData';
+import { toast } from 'react-toastify';
+import { fetchLocations, fetchTypes } from '@/api/fetchData';
+import { realEstateTypes, status } from '@/data/arrays';
 
 export default function Index() {
     const router = useRouter();
     const [realEstates, setRealEstates] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+
+    const [typesOptions, setTypesOptions] = useState([]);
+    const [locationsOptions, setLocationsOptions] = useState([]);
+    const [statistics, setStatistics] = useState({
+        totalRealEstates: '',
+        availableRealEstates: '',
+        realEstatesForSale: '',
+        realEstatesForRent: ''
+    });
+
     async function fetchRealEstates() {
         const authToken = localStorage.getItem('authToken');
         try {
             const realEstatesData = await api.get('realEstate/realty', authToken);
             setRealEstates(realEstatesData);
+            const locations = await fetchLocations(authToken);
+            const types = await fetchTypes(authToken);
+
+            setTypesOptions(types);
+            setLocationsOptions(locations);
+
+            console.log(types, locations);
         } catch (error) {
             console.error('Error fetching real estates:', error);
         }
     }
 
+    async function myStatistics() {
+        const state = 'state';
+        const secondType = 'secondType';
+        setStatistics({
+            ...statistics,
+            totalRealEstates: realEstates.length,
+            availableRealEstates: countMatchingItems('available', realEstates, state, true),
+            realEstatesForSale: countMatchingItems('for sale', realEstates, secondType, true),
+            realEstatesForRent: countMatchingItems('for rent', realEstates, secondType, true),
+        })
+    }
     useEffect(() => {
 
 
         fetchRealEstates();
+        myStatistics();
+
     }, []);
 
+
+    useEffect(() => {
+        x();
+
+    }, [realEstates]);
 
 
 
     const handleOptionSelect = (selectedId) => {
         console.log(`Selected ID: ${selectedId}`);
     };
-    const array = {
-        "data": [
-            {
-                "id": "1",
-                "attributes": {
-                    "name": "rerum",
-                    "image": "https://via.placeholder.com/640x480.png/0044ee?text=neque"
-                }
-            },
-            {
-                "id": "2",
-                "attributes": {
-                    "name": "porro",
-                    "image": "https://via.placeholder.com/640x480.png/007700?text=dolorum"
-                }
-            },
-            {
-                "id": "3",
-                "attributes": {
-                    "name": "dolorum",
-                    "image": "https://via.placeholder.com/640x480.png/0099cc?text=cupiditate"
-                }
-            },
-            {
-                "id": "4",
-                "attributes": {
-                    "name": "voluptatem",
-                    "image": "https://via.placeholder.com/640x480.png/0033cc?text=cumque"
-                }
-            },
-            {
-                "id": "6",
-                "attributes": {
-                    "name": "perferendis",
-                    "image": "https://via.placeholder.com/640x480.png/0033bb?text=ipsum"
-                }
-            },
-            {
-                "id": "7",
-                "attributes": {
-                    "name": "incidunt",
-                    "image": "https://via.placeholder.com/640x480.png/00bbaa?text=nobis"
-                }
-            },
-            {
-                "id": "8",
-                "attributes": {
-                    "name": "et",
-                    "image": "https://via.placeholder.com/640x480.png/00cc11?text=provident"
-                }
-            },
-            {
-                "id": "9",
-                "attributes": {
-                    "name": "vel",
-                    "image": "https://via.placeholder.com/640x480.png/00aaff?text=laudantium"
-                }
-            },
-            {
-                "id": "10",
-                "attributes": {
-                    "name": "delectus",
-                    "image": "https://via.placeholder.com/640x480.png/00aacc?text=omnis"
-                }
-            },
-            {
-                "id": "11",
-                "attributes": {
-                    "name": "maxime",
-                    "image": "https://via.placeholder.com/640x480.png/005522?text=consequatur"
-                }
-            },
-            {
-                "id": "12",
-                "attributes": {
-                    "name": "voluptates",
-                    "image": "https://via.placeholder.com/640x480.png/00cc66?text=velit"
-                }
-            },
-            {
-                "id": "13",
-                "attributes": {
-                    "name": "sequi",
-                    "image": "https://via.placeholder.com/640x480.png/004477?text=in"
-                }
-            },
-            {
-                "id": "14",
-                "attributes": {
-                    "name": "doloremque",
-                    "image": "https://via.placeholder.com/640x480.png/00ee11?text=ullam"
-                }
-            },
-        ]
-    };
+
 
     const columns = [
         { key: 'id', label: 'الرقم' },
@@ -195,17 +140,61 @@ export default function Index() {
         }
     ];
     const handleSearch = (searchTerm) => {
-        // يمكنك هنا تنفيذ البحث باستخدام searchTerm
-        console.log('تم البحث عن:', searchTerm);
+        const searchedField = 'name'; // تعيين الحقل الذي ترغب في البحث فيه
+        const filteredResults = tableSearch(searchTerm, realEstates, searchedField);
+        setSearchResults(filteredResults);
     };
+
+    const handleTypeSelect = (selectedType) => {
+        const filterdField = 'firstType';
+        const filteredResults = tableFilters(selectedType, realEstates, filterdField);
+
+        setSearchResults(filteredResults);
+        // هنا يمكنك تنفيذ الفلترة باستخدام النوع المحدد
+    };
+
+    const handleLocationSelect = (selectedType) => {
+        const filterdField = 'location';
+        const filteredResults = tableFilters(selectedType, realEstates, filterdField);
+
+        setSearchResults(filteredResults);
+        // هنا يمكنك تنفيذ الفلترة باستخدام الموقع المحدد
+    };
+    const handleStatusSelect = (selectedType) => {
+        const filterdField = 'state';
+        const filteredResults = tableFilters(selectedType, realEstates, filterdField, true);
+
+        setSearchResults(filteredResults);
+        // هنا يمكنك تنفيذ الفلترة باستخدام النوع المحدد
+    };
+
+    const handleSeconTypeSelect = (selectedType) => {
+        const filterdField = 'secondType';
+        const filteredResults = tableFilters(selectedType, realEstates, filterdField, true);
+
+        setSearchResults(filteredResults);
+        // هنا يمكنك تنفيذ الفلترة باستخدام الموقع المحدد
+    };
+
 
     const handleEdit = (item) => {
         router.push(`RealEstate/Edit?id=${item.id}`)
     };
+    const handleDelete = async (item) => {
+        const authToken = localStorage.getItem('authToken');
+        try {
 
-    const handleDelete = (item) => {
-        console.log(item.id);
+            await api.deleteFunc(`realEstate/realty/${item.id}`, authToken);
+
+            // إزالة العنصر المحذوف من القائمة
+            const updatedRealEstates = realEstates.filter((estate) => estate.id !== item.id);
+            setRealEstates(updatedRealEstates);
+            toast.success('تم حذف العقار بنجاح');
+        } catch (error) {
+            toast.error('خطأ أثناء حذف العقار');
+        }
     };
+
     return (
 
         <Layout>
@@ -216,28 +205,28 @@ export default function Index() {
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
                     title="عدد العقارات"
-                    value="30"
+                    value={statistics.totalRealEstates}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id=""
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="العقارات المتاحة"
+                    value={statistics.availableRealEstates}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="عقارات للبيع"
+                    value={statistics.realEstatesForSale}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="عقارات للايجار"
+                    value={statistics.realEstatesForRent}
                     label="العدد الاجمالي"
                 />
             </div>
@@ -252,10 +241,10 @@ export default function Index() {
                             <p>خيارات البحث</p>
                         </div>
                         <div className='flex w-full '>
-                            <DropDownList title="اختر نوع العقار" options={array.data} onSelect={handleOptionSelect} />
-                            <DropDownList title="اختر موقع العقار" options={array.data} onSelect={handleOptionSelect} />
-                            <DropDownList title="اختر حالة العقار" options={array.data} onSelect={handleOptionSelect} />
-                            <DropDownList title="اختر الاتاحة" options={array.data} onSelect={handleOptionSelect} />
+                            <DropDownList title="اختر نوع العقار" options={typesOptions} onSelect={handleTypeSelect} />
+                            <DropDownList title="اختر موقع العقار" options={locationsOptions} onSelect={handleLocationSelect} />
+                            <DropDownList title="اختر حالة العقار" options={realEstateTypes.data} onSelect={handleSeconTypeSelect} />
+                            <DropDownList title="اختر الاتاحة" options={status.data} onSelect={handleStatusSelect} />
                             {/* <DropDownList />
                             <DropDownList />
                             <DropDownList /> */}
@@ -282,7 +271,7 @@ export default function Index() {
 
                 <CustomTable
                     columns={columns}
-                    data={realEstates}
+                    data={searchResults.length > 0 ? searchResults : realEstates}
                     onEdit={handleEdit}
                     onDelete={handleDelete} />
             </div>

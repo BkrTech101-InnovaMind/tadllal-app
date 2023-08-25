@@ -236,6 +236,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'registered_by' => $user->id,
+            'activated' => true,
+            'activation_code' => null,
         ]);
 
         return $this->generateAndSendActivationCode($newUser->email, 'New User account created successfully & Activation code has been generated and sent successfully.');

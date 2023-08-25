@@ -12,31 +12,24 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import avatar from "@/images/user.png"
-import axios from 'axios';
-const API_URL = "http://127.0.0.1:8000/api/dashboard/users/";
+
+import api from '@/api/api';
+import { toast } from 'react-toastify';
+
 
 export default function Index() {
     const router = useRouter();
     const [users, setUsers] = useState([]);
+
     async function fetchUsers() {
+        const authToken = localStorage.getItem('authToken');
 
         try {
-            const response = await axios.get('users', {
-                baseURL: API_URL,
-                headers: {
-                    "Content-Type": `application/vnd.api+json`,
-                    "Accept": `application/vnd.api+json`,
-                    "Authorization": `Bearer ${localStorage.getItem('authToken')}`,
-                },
-            });
-
-            const usersData = response.data.data;
+            const usersData = await api.get('users/users/', authToken);
             setUsers(usersData);
-            console.log(usersData);
 
         } catch (error) {
-            alert("error");
-            console.error("Error fetching Users:", error);
+            console.error('Error fetching Users:', error);
         }
     }
 
@@ -235,8 +228,18 @@ export default function Index() {
         router.push(`Users/Edit?id=${item.id}`);
     };
 
-    const handleDelete = (item) => {
-        console.log(item.id);
+    const handleDelete = async (item) => {
+        const authToken = localStorage.getItem('authToken');
+        try {
+            await api.deleteFunc(`users/users/${item.id}`, authToken);
+
+            const updatedUsers = users.filter((user) => user.id !== item.id);
+            setUsers(updatedUsers);
+            toast.success('تم حذف المستخدم بنجاح');
+        } catch (error) {
+            console.log(error);
+            toast.error('خطأ أثناء حذف المستخدم');
+        }
     };
     return (
 
@@ -316,7 +319,9 @@ export default function Index() {
                     columns={columns}
                     data={users}
                     onEdit={handleEdit}
-                    onDelete={handleDelete} />
+                    onDelete={handleDelete}
+                    extraButtonType='cancel'
+                    myFunction={handleDelete} />
             </div>
         </Layout>
     )

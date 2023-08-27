@@ -25,7 +25,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   void initState() {
-    _userNameController.text = "ابوبكر صديق";
+    _userNameController.text = "أبوبكر صديق محمد مهدي";
     _phoneController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77920";
     super.initState();
@@ -44,7 +44,11 @@ class _SignUpFormState extends State<SignUpForm> {
       "device_name": "mobile",
     };
 
-    setBaseUrl(APP_API_URI);
+    await setBaseUrl(APP_API_URI);
+    _showTheDialog(form);
+  }
+
+  void _showTheDialog(form) {
     SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest.fromJson(form);
     showDialog(
       barrierDismissible: false,

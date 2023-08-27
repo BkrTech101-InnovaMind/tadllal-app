@@ -62,20 +62,23 @@ class _NextPageState extends State<NextPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (Config().token.isEmpty) {
-      if (isLoggedIn == true && starterHasShown == true) {
+    if (starterHasShown == true && isLoggedIn == true) {
+      if (Config().token.isNotEmpty) {
         return const NavigationPage();
-      } else if (isLoggedIn == false && starterHasShown == false) {
+      } else {
+        return CodeAuthenticationPage(
+          email: Config().user.attributes!.email!,
+        );
+      }
+    } else {
+      if (starterHasShown == true && isLoggedIn == false) {
+        return const AuthenticationPage();
+      } else if (starterHasShown == false &&
+          (isLoggedIn == false || isLoggedIn == true)) {
         return const OnBoardingScreen();
       } else {
         return const AuthenticationPage();
       }
-    } else if (Config().token.isNotEmpty && isLoggedIn == false) {
-      return CodeAuthenticationPage(
-        email: Config().user.attributes!.email!,
-      );
-    } else {
-      return const AuthenticationPage();
     }
   }
 }

@@ -25,7 +25,7 @@ class SinInSinUpDialog extends StatefulWidget {
 class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
   final DioApi dioApi = DioApi();
   String statue = "يرجى الانتظار";
-  late Future data;
+  late Future<LoginResponse> data;
   @override
   void initState() {
     _getData();

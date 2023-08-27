@@ -5,7 +5,7 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-  String? id;
+  String? id="";
   Attributes? attributes;
 
   User({
@@ -14,7 +14,7 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"].toString(),
+        id: json["id"],
         attributes: json["attributes"] == null
             ? null
             : Attributes.fromJson(json["attributes"]),

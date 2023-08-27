@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
 
 final List realEstates = [
   {
@@ -102,16 +101,7 @@ class _NotificationPageState extends State<NotificationPage> {
               return Container(
                 margin: const EdgeInsets.only(top: 15),
                 child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RealEstateDetailsPage(
-                          realEstate: realEstates[index],
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                   title: Text(
                     realEstates[index]['title'],
                     maxLines: 1,

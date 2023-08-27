@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tadllal/config/global.dart';
 import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/pages/forget_password_page/forget_password_page.dart';
+import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tadllal/services/helpers.dart';
 import 'package:tadllal/services/http.dart';
+import 'package:tadllal/widgets/forget_password_dialog.dart';
 import 'package:tadllal/widgets/sinin_sinup_dialog.dart';
 
 class SignInForm extends StatefulWidget {
@@ -23,7 +24,7 @@ class _SignInFormState extends State<SignInForm> {
   @override
   void initState() {
     _phoneController.text = "zabobaker7355@gmail.com";
-    _passwordController.text = "@Abo77927";
+    _passwordController.text = "@Abo77920";
     super.initState();
   }
 
@@ -51,11 +52,20 @@ class _SignInFormState extends State<SignInForm> {
         sinInSinUpRequest: sinInSinUpRequest,
         type: SININ_TYPE,
         onLogin: (response) async {
-          await updateUserDetails(
-                  response: response, sinInSinUpRequest: sinInSinUpRequest)
-              .whenComplete(
-            () => _navigateToNavigationPage(),
-          );
+          if (response.message ==
+              "Account is not activated Please check your email for activation instructions.") {
+            await updateUserDetails(
+                    response: response, sinInSinUpRequest: sinInSinUpRequest)
+                .whenComplete(
+              () => _navigateToAouthCode(),
+            );
+          } else {
+            await updateUserDetails(
+                    response: response, sinInSinUpRequest: sinInSinUpRequest)
+                .whenComplete(
+              () => _navigateToNavigationPage(),
+            );
+          }
         },
       ),
     );
@@ -64,6 +74,16 @@ class _SignInFormState extends State<SignInForm> {
   void _navigateToNavigationPage() {
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/navigationPage', (route) => false);
+  }
+
+  void _navigateToAouthCode() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CodeAuthenticationPage(
+                email: _phoneController.text.trim(),
+              )),
+    );
   }
 
   @override
@@ -136,11 +156,12 @@ class _SignInFormState extends State<SignInForm> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ForgetPasswordPage(),
-                    ),
+                  setBaseUrl(APP_API_URI);
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context2) => ForgetPasswordDialog(
+                        email: _phoneController.text.trim()),
                   );
                 },
                 child: const Text(

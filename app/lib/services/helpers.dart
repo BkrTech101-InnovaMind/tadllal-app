@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tadllal/config/config.dart';
 import 'package:tadllal/config/login_info.dart';
 import 'package:tadllal/model/api_molels/login_response.dart';
@@ -147,4 +149,41 @@ on_logOut({required BuildContext context}) {
       },
     ),
   );
+}
+
+Future<bool> checkPermission({required ImageSource source}) async {
+  bool permissionIsGranted = false;
+  if (Platform.isAndroid || Platform.isIOS || Platform.isWindows) {
+    if (source == ImageSource.camera) {
+      PermissionStatus status = await Permission.camera.status;
+      print("============$status");
+      if (!status.isGranted) {
+        PermissionStatus requestStatus = await Permission.camera.request();
+        if (requestStatus == PermissionStatus.permanentlyDenied) {
+          openAppSettings();
+        } else {
+          permissionIsGranted = await Permission.camera.status.isGranted;
+        }
+      } else {
+        permissionIsGranted = true;
+      }
+    } else if (source == ImageSource.gallery) {
+      PermissionStatus status = await Permission.storage.status;
+
+      if (!status.isGranted) {
+        PermissionStatus requestStatus = await Permission.storage.request();
+        if (requestStatus == PermissionStatus.permanentlyDenied) {
+          openAppSettings();
+        } else {
+          permissionIsGranted = await Permission.storage.status.isGranted;
+        }
+      } else {
+        permissionIsGranted = true;
+      }
+    }
+  } else {
+    permissionIsGranted = true;
+  }
+
+  return permissionIsGranted;
 }

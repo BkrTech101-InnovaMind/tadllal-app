@@ -15,7 +15,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   final _confirmPasswordController = TextEditingController();
   bool showSuccessPopup = false;
 
-  String verifyingEmailEx = 'zzz@zzz.zzz';
+  String verifyingEmailEx = 'zabobaker7355@gmail.com';
   Map<String, dynamic> passwordValues = {};
 
   void verifyingSubmit() {

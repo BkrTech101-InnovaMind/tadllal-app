@@ -107,16 +107,9 @@ class DioApi {
           statusCode: response.statusCode,
         );
       }
-    } on ErrorResponse catch (e, s) {
-      print("==========ErrorResponse=========\n");
-
-      print('Exception details:\n ${e.statusMessage}');
-      print('Stack trace:\n $s');
-      // print("${e.userMessage}");
+    } on ErrorResponse {
       rethrow;
     } on DioException catch (e) {
-      print("==========DioException=========\n");
-
       if ((e.response != null) &&
           (e.response!.statusCode == HttpStatus.found)) {
         throw ErrorResponse(
@@ -133,13 +126,11 @@ class DioApi {
         rethrow;
       }
     } on SocketException catch (e) {
-      print("==========SocketException=========\n");
       throw ErrorResponse(
         statusCode: HttpStatus.serviceUnavailable,
         statusMessage: e.message,
       );
     } on HandshakeException {
-      print("==========HandshakeException=========\n");
       throw ErrorResponse(
         statusCode: HttpStatus.serviceUnavailable,
         statusMessage: "Cannot connect securely to server."
@@ -148,6 +139,23 @@ class DioApi {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Response> postForgetPassword(String path,
+      {dynamic myData,
+      Map<String, dynamic>? queryParameters,
+      Options? options}) async {
+    Options requestOptions = options ??
+        Options(
+            // contentType: Headers.formUrlEncodedContentType,
+            );
+
+    var response = await DioHelper.dio!.post(path,
+        data: myData,
+        queryParameters: queryParameters,
+        options: requestOptions);
+
+    return response;
   }
 
   Future<Response> postCodeAuthentication(String path,
@@ -167,11 +175,21 @@ class DioApi {
       {dynamic myData,
       Map<String, dynamic>? queryParameters,
       Options? options}) async {
-    Options requestOptions = options ??
-        Options(
-            // contentType: Headers.formUrlEncodedContentType,
-            );
-    requestOptions.headers = requestOptions.headers ?? {};
+    Options requestOptions = options ?? Options();
+    if (requestOptions.headers == null &&
+        DioHelper.dio!.options.headers.isEmpty) {
+      requestOptions.headers = {};
+    } else if (requestOptions.headers != null &&
+        DioHelper.dio!.options.headers.isEmpty) {
+      requestOptions.headers = requestOptions.headers;
+    } else if (requestOptions.headers == null &&
+        DioHelper.dio!.options.headers.isNotEmpty) {
+      requestOptions.headers = DioHelper.dio!.options.headers;
+    } else if (requestOptions.headers != null &&
+        DioHelper.dio!.options.headers.isNotEmpty) {
+      requestOptions.headers!.addAll(DioHelper.dio!.options.headers);
+    }
+
     Map<String, dynamic>? authorization = DioHelper.getAuthorizationHeader();
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
@@ -225,5 +243,23 @@ class DioApi {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Response> put(String path,
+      {dynamic myData,
+      Map<String, dynamic>? queryParameters,
+      Options? options}) async {
+    Options requestOptions = options ?? Options();
+    requestOptions.headers = requestOptions.headers ?? {};
+    Map<String, dynamic>? authorization = DioHelper.getAuthorizationHeader();
+    if (authorization != null) {
+      requestOptions.headers!.addAll(authorization);
+    }
+    var response = await DioHelper.dio!.put(path,
+        data: myData,
+        queryParameters: queryParameters,
+        options: requestOptions);
+
+    return response;
   }
 }

@@ -16,8 +16,8 @@ class DioHelper {
       BaseOptions(
         baseUrl: "$baseUrl/api/app",
         receiveDataWhenStatusError: true,
-        connectTimeout: const Duration(seconds: 20),
-        receiveTimeout: const Duration(seconds: 20),
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 30),
       ),
     )..interceptors.add(
         CookieManager(cookieJar),

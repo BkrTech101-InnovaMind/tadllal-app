@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tadllal/model/services.dart';
-import 'package:tadllal/widgets/LodingUi/make_order_dialog.dart';
+import 'package:tadllal/widgets/make_order_dialog.dart';
 
 class SingleSubServicesPage extends StatefulWidget {
   final Services subServiceDetails;

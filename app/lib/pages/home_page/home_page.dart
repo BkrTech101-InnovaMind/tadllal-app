@@ -73,82 +73,6 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  _syncData() {
-    _setRealEstateData();
-    setState(() {
-      servicesDataList = _getServicesData();
-      locationDataList = _getLocationData();
-      typeDataList = _getTypeData();
-      subServicesDataList = _getSubServicesData();
-    });
-  }
-
-  Future<List<Services>> _getServicesData() async {
-    var rowData = await dioApi.get("/services");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-
-    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
-  }
-
-  Future<List<Services>> _getSubServicesData() async {
-    var rowData = await dioApi.get("/services/sub-services");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-
-    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
-  }
-
-  Future<void> _setRealEstateData() async {
-    var rowData = await dioApi.get("/realEstate/realty");
-    // log("rowData ${rowData}");
-    String jsonString = json.encode(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-
-    // log("data ${data}");
-    List<RealEstate> realEstate =
-        (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
-
-    Provider.of<AppProvider>(context, listen: false)
-        .addRealEstateList(listData: realEstate);
-  }
-
-  Future<List<Location>> _getLocationData() async {
-    var rowData = await dioApi.get("/locations");
-    // log("rowData ${rowData}");
-    String jsonString = json.encode(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-    // log("rowData ${data[0]}");
-    List<Location> locationList =
-        (data).map((itemWord) => Location.fromJson(itemWord)).toList();
-    locationList.insert(0, Location.fromJson(allLocationAndType));
-    return locationList;
-  }
-
-  Future<List<RealEstateType>> _getTypeData() async {
-    var rowData = await dioApi.get("/types");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-
-    List<RealEstateType> typeList =
-        (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
-
-    typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
-    return typeList;
-  }
-
   Future<void> refresh() async {
     _syncData();
   }
@@ -305,157 +229,165 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                   Expanded(
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [
-                        buildService(),
-                        buildMostRequest(),
-                        FutureBuilder<List<Location>>(
-                            future: locationDataList,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<Location>> snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                if (snapshot.hasData &&
-                                    snapshot.hasError == false) {
-                                  return LocationFilter(
-                                    locationList: snapshot.data!,
-                                    onLocationPressed: (Location location) {
-                                      Provider.of<AppProvider>(context,
-                                              listen: false)
-                                          .filterRealEstateListByLocation(
-                                              location: location);
-                                    },
-                                  );
-                                } else if (snapshot.hasError) {
+                    child: RefreshIndicator(
+                      onRefresh: refresh,
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          buildService(),
+                          buildMostRequest(),
+                          FutureBuilder<List<Location>>(
+                              future: locationDataList,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<List<Location>> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  if (snapshot.hasData &&
+                                      snapshot.hasError == false) {
+                                    return LocationFilter(
+                                      locationList: snapshot.data!,
+                                      onLocationPressed: (Location location) {
+                                        Provider.of<AppProvider>(context,
+                                                listen: false)
+                                            .filterRealEstateListByLocation(
+                                                location: location);
+                                      },
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return const Center(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Text(ERROR_WHILE_GET_DATA),
+                                    ));
+                                  } else {
+                                    return const Center(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Text(NO_DATA),
+                                    ));
+                                  }
+                                } else if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return const Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(ERROR_WHILE_GET_DATA),
-                                  ));
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 60,
+                                          height: 60,
+                                          child: ColorLoader2(),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                        )
+                                      ],
+                                    ),
+                                  );
                                 } else {
                                   return const Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(NO_DATA),
-                                  ));
-                                }
-                              } else if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 60,
-                                        height: 60,
-                                        child: ColorLoader2(),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 16),
-                                        child: Text(LOADING_DATA_FROM_SERVER),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                return const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 60,
-                                        height: 60,
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 16),
-                                        child: Text(LOADING_DATA_FROM_SERVER),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }
-                            }),
-                        FutureBuilder<List<RealEstateType>>(
-                            future: typeDataList,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<RealEstateType>> snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                if (snapshot.hasData &&
-                                    snapshot.hasError == false) {
-                                  return TypeFilter(
-                                    typeList: snapshot.data!,
-                                    onTypePressed: (RealEstateType type) {
-                                      Provider.of<AppProvider>(context,
-                                              listen: false)
-                                          .filterRealEstateListByType(
-                                              type: type);
-                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 60,
+                                          height: 60,
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                        )
+                                      ],
+                                    ),
                                   );
-                                } else if (snapshot.hasError) {
+                                }
+                              }),
+                          FutureBuilder<List<RealEstateType>>(
+                              future: typeDataList,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<List<RealEstateType>>
+                                      snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  if (snapshot.hasData &&
+                                      snapshot.hasError == false) {
+                                    return TypeFilter(
+                                      typeList: snapshot.data!,
+                                      onTypePressed: (RealEstateType type) {
+                                        Provider.of<AppProvider>(context,
+                                                listen: false)
+                                            .filterRealEstateListByType(
+                                                type: type);
+                                      },
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return const Center(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Text(ERROR_WHILE_GET_DATA),
+                                    ));
+                                  } else {
+                                    return const Center(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(top: 16),
+                                      child: Text(NO_DATA),
+                                    ));
+                                  }
+                                } else if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return const Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(ERROR_WHILE_GET_DATA),
-                                  ));
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 60,
+                                          height: 60,
+                                          child: ColorLoader2(),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                        )
+                                      ],
+                                    ),
+                                  );
                                 } else {
                                   return const Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(NO_DATA),
-                                  ));
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: 60,
+                                          height: 60,
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                        )
+                                      ],
+                                    ),
+                                  );
                                 }
-                              } else if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 60,
-                                        height: 60,
-                                        child: ColorLoader2(),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 16),
-                                        child: Text(LOADING_DATA_FROM_SERVER),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                return const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 60,
-                                        height: 60,
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 16),
-                                        child: Text(LOADING_DATA_FROM_SERVER),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }
-                            }),
-                        const SizedBox(height: 20),
-                        const RealEstateCard(),
-                      ],
+                              }),
+                          const SizedBox(height: 20),
+                          const RealEstateCard(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -465,6 +397,85 @@ class _HomePageState extends State<HomePage>
         ),
       ),
     );
+  }
+
+  _syncData() {
+    _setRealEstateData();
+    setState(() {
+      servicesDataList = _getServicesData();
+      locationDataList = _getLocationData();
+      typeDataList = _getTypeData();
+      subServicesDataList = _getSubServicesData();
+    });
+  }
+
+  Future<List<Services>> _getServicesData() async {
+    var rowData = await dioApi.get("/services");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
+  }
+
+  Future<List<Services>> _getSubServicesData() async {
+    var rowData = await dioApi.get("/services/sub-services");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
+  }
+
+  Future<void> _setRealEstateData() async {
+    var rowData = await dioApi.get("/realEstate/filters/by-Preference");
+    // var rowData = await dioApi.get("/realEstate/realty");
+    // log("rowData ${rowData}");
+    String jsonString = json.encode(rowData.data["data"]);
+    // log("jsonString ${jsonString}");
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    // log("data ${data}");
+    List<RealEstate> realEstate =
+        (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
+    for (var element in realEstate) {
+      print(element.toJson());
+    }
+    Provider.of<AppProvider>(context, listen: false)
+        .addRealEstateList(listData: realEstate);
+  }
+
+  Future<List<Location>> _getLocationData() async {
+    var rowData = await dioApi.get("/locations");
+    // log("rowData ${rowData}");
+    String jsonString = json.encode(rowData.data["data"]);
+    // log("jsonString ${jsonString}");
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+    // log("rowData ${data[0]}");
+    List<Location> locationList =
+        (data).map((itemWord) => Location.fromJson(itemWord)).toList();
+    locationList.insert(0, Location.fromJson(allLocationAndType));
+    return locationList;
+  }
+
+  Future<List<RealEstateType>> _getTypeData() async {
+    var rowData = await dioApi.get("/types");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    List<RealEstateType> typeList =
+        (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
+
+    typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
+    return typeList;
   }
 
 // User image widget
@@ -482,7 +493,6 @@ class _HomePageState extends State<HomePage>
               imageBuilder: (context, imageProvider) {
                 return Container(
                   padding: const EdgeInsets.all(5),
-                  margin: const EdgeInsets.only(left: 5),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border:
@@ -506,7 +516,6 @@ class _HomePageState extends State<HomePage>
               placeholder: (context, url) {
                 return Container(
                     padding: const EdgeInsets.all(5),
-                    margin: const EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border:
@@ -529,7 +538,6 @@ class _HomePageState extends State<HomePage>
               errorWidget: (context, url, error) {
                 return Container(
                   padding: const EdgeInsets.all(5),
-                  margin: const EdgeInsets.only(left: 5),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border:

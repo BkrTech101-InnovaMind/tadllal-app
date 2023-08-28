@@ -69,7 +69,7 @@ export default function Index() {
 
 
     useEffect(() => {
-        x();
+        myStatistics();
 
     }, [realEstates]);
 

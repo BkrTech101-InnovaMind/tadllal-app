@@ -1,4 +1,4 @@
-import Nav from '@/Components/Nav';
+import Nav from '@/Components/Navbar';
 import Sidebar from '@/Components/Sidebar';
 import '@/styles/globals.css'
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import axios from 'axios';
 const API_URL = "http://127.0.0.1:8000/api/";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LoadingProvider } from '@/Context API/LoadingContext';
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null);
   const router = useRouter();
@@ -55,9 +56,9 @@ export default function App({ Component, pageProps }) {
 
 
   return (
-    <>
+    <LoadingProvider>
       <Component {...pageProps} />
       <ToastContainer />
-    </>);
+    </LoadingProvider>);
 
 }

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\ServicesOrdersController;
 use App\Http\Controllers\Admin\UserManagementController;
-use App\Http\Controllers\admin\UsersController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ConstructionServiceController;

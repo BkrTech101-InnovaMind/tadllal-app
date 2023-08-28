@@ -3,7 +3,7 @@ import CardList from '@/Components/CardList'
 import Sidebar from '@/Components/Sidebar'
 import Table from '@/Components/Table'
 import UserTable from '@/Components/UserTable'
-import Nav from '@/Components/nav'
+import Nav from '@/Components/Navbar'
 import Image from 'next/image'
 import React from "react";
 import Dashboard from "@/pages/Dashboard"

@@ -42,7 +42,7 @@ class UserResource extends JsonResource
                     'role' => $this->role,
                     'phone' => $this->phone_number,
                     'avatar' => $this->avatar ? url($this->avatar) : null,
-                    'activated' => $this->activated,
+                    'activated' => $this->activated == 0 ? 'no' : 'yes',
                     'registered_by' => $this->registered_by,
                 ]
             ];

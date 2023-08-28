@@ -15,12 +15,22 @@ import avatar from "@/images/user.png"
 
 import api from '@/api/api';
 import { toast } from 'react-toastify';
+import { usersFiltersArray } from '@/data/arrays';
+import { countMatchingItems, tableFilters, tableSearch } from '@/api/filtersData';
+import { useLoading } from '@/Context API/LoadingContext';
 
 
 export default function Index() {
     const router = useRouter();
     const [users, setUsers] = useState([]);
-
+    const [searchResults, setSearchResults] = useState([]);
+    const [statistics, setStatistics] = useState({
+        totalUsers: '',
+        totalMarketers: '',
+        totalCompany: '',
+        usersNotActive: ''
+    });
+    const { isLoading, setIsLoading } = useLoading();
     async function fetchUsers() {
         const authToken = localStorage.getItem('authToken');
 
@@ -32,16 +42,26 @@ export default function Index() {
             console.error('Error fetching Users:', error);
         }
     }
-
+    async function myStatistics() {
+        const type = 'role';
+        const status = 'activated';
+        setStatistics({
+            ...statistics,
+            totalUsers: users.length,
+            totalCompany: countMatchingItems('company', users, type, true),
+            totalMarketers: countMatchingItems('marketer', users, type, true),
+            usersNotActive: countMatchingItems('no', users, status, true),
+        })
+    }
 
     useEffect(() => {
-        // قم بإجراء طلب HTTP لجلب العقارات
-
-
-        // استدعاء الدالة لجلب البيانات
         fetchUsers();
-    }, []);
 
+    }, []);
+    useEffect(() => {
+
+        myStatistics();
+    }, [users]);
 
     const getUserType = (userType) => {
         switch (userType) {
@@ -61,102 +81,21 @@ export default function Index() {
     const handleOptionSelect = (selectedId) => {
         console.log(`Selected ID: ${selectedId}`);
     };
-    const array = {
-        "data": [
-            {
-                "id": "1",
-                "attributes": {
-                    "name": "rerum",
-                    "image": "https://via.placeholder.com/640x480.png/0044ee?text=neque"
-                }
-            },
-            {
-                "id": "2",
-                "attributes": {
-                    "name": "porro",
-                    "image": "https://via.placeholder.com/640x480.png/007700?text=dolorum"
-                }
-            },
-            {
-                "id": "3",
-                "attributes": {
-                    "name": "dolorum",
-                    "image": "https://via.placeholder.com/640x480.png/0099cc?text=cupiditate"
-                }
-            },
-            {
-                "id": "4",
-                "attributes": {
-                    "name": "voluptatem",
-                    "image": "https://via.placeholder.com/640x480.png/0033cc?text=cumque"
-                }
-            },
-            {
-                "id": "6",
-                "attributes": {
-                    "name": "perferendis",
-                    "image": "https://via.placeholder.com/640x480.png/0033bb?text=ipsum"
-                }
-            },
-            {
-                "id": "7",
-                "attributes": {
-                    "name": "incidunt",
-                    "image": "https://via.placeholder.com/640x480.png/00bbaa?text=nobis"
-                }
-            },
-            {
-                "id": "8",
-                "attributes": {
-                    "name": "et",
-                    "image": "https://via.placeholder.com/640x480.png/00cc11?text=provident"
-                }
-            },
-            {
-                "id": "9",
-                "attributes": {
-                    "name": "vel",
-                    "image": "https://via.placeholder.com/640x480.png/00aaff?text=laudantium"
-                }
-            },
-            {
-                "id": "10",
-                "attributes": {
-                    "name": "delectus",
-                    "image": "https://via.placeholder.com/640x480.png/00aacc?text=omnis"
-                }
-            },
-            {
-                "id": "11",
-                "attributes": {
-                    "name": "maxime",
-                    "image": "https://via.placeholder.com/640x480.png/005522?text=consequatur"
-                }
-            },
-            {
-                "id": "12",
-                "attributes": {
-                    "name": "voluptates",
-                    "image": "https://via.placeholder.com/640x480.png/00cc66?text=velit"
-                }
-            },
-            {
-                "id": "13",
-                "attributes": {
-                    "name": "sequi",
-                    "image": "https://via.placeholder.com/640x480.png/004477?text=in"
-                }
-            },
-            {
-                "id": "14",
-                "attributes": {
-                    "name": "doloremque",
-                    "image": "https://via.placeholder.com/640x480.png/00ee11?text=ullam"
-                }
-            },
-        ]
+    const handleUserTypeSelect = (selectedType) => {
+        const filterdField = 'role';
+        const filteredResults = tableFilters(selectedType, users, filterdField, true);
+
+        setSearchResults(filteredResults);
+        // هنا يمكنك تنفيذ الفلترة باستخدام النوع المحدد
     };
 
+    const handleUserStatusSelect = (selectedType) => {
+        const filterdField = 'activated';
+        const filteredResults = tableFilters(selectedType, users, filterdField, true);
+
+        setSearchResults(filteredResults);
+        // هنا يمكنك تنفيذ الفلترة باستخدام النوع المحدد
+    };
     const columns = [
         { key: 'id', label: 'الرقم' },
         {
@@ -190,7 +129,7 @@ export default function Index() {
         {
             key: 'attributes', label: 'الحالة',
             render: (item) => (
-                <div>{item.attributes.activated ? "مفعل" : "غير مفعل"}</div>
+                <div className={item.attributes.activated == 'yes' ? 'text-green-600' : 'text-red-700'}>{item.attributes.activated == 'yes' ? "مفعل" : "غير مفعل"}</div>
             ),
         },
     ];
@@ -220,8 +159,9 @@ export default function Index() {
         }
     ];
     const handleSearch = (searchTerm) => {
-        // يمكنك هنا تنفيذ البحث باستخدام searchTerm
-        console.log('تم البحث عن:', searchTerm);
+        const searchedField = 'name';
+        const filteredResults = tableSearch(searchTerm, users, searchedField);
+        setSearchResults(filteredResults);
     };
 
     const handleEdit = (item) => {
@@ -250,29 +190,29 @@ export default function Index() {
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="عدد المستخدمين"
+                    value={statistics.totalUsers}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id=""
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="عدد الشركات"
+                    value={statistics.totalCompany}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="عدد المسوقين"
+                    value={statistics.totalMarketers}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="عدد المستخدمين المفعلين"
+                    value={statistics.usersNotActive}
                     label="العدد الاجمالي"
                 />
             </div>
@@ -287,10 +227,8 @@ export default function Index() {
                             <p>خيارات البحث</p>
                         </div>
                         <div className='flex w-full '>
-                            <DropDownList title="اختر نوع العقار" options={array.data} onSelect={handleOptionSelect} />
-                            <DropDownList title="اختر موقع العقار" options={array.data} onSelect={handleOptionSelect} />
-                            <DropDownList title="اختر حالة العقار" options={array.data} onSelect={handleOptionSelect} />
-                            <DropDownList title="اختر الاتاحة" options={array.data} onSelect={handleOptionSelect} />
+                            <DropDownList title="اختر نوع المستخدم" options={usersFiltersArray.userType} onSelect={handleUserTypeSelect} />
+                            <DropDownList title="اختر حالة المستخدم" options={usersFiltersArray.userStatues} onSelect={handleUserStatusSelect} />
                             {/* <DropDownList />
                             <DropDownList />
                             <DropDownList /> */}
@@ -317,10 +255,10 @@ export default function Index() {
 
                 <CustomTable
                     columns={columns}
-                    data={users}
+                    data={searchResults.length > 0 ? searchResults : users}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
-                    extraButtonType='cancel'
+                    extraButtonType='view'
                     myFunction={handleDelete} />
             </div>
         </Layout>

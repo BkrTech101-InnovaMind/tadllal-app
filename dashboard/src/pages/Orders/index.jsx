@@ -11,32 +11,103 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import api from '@/api/api';
+import { searchOrders, tableFilters, tableSearch } from '@/api/filtersData';
 
 export default function Index() {
     const [orders, setOrders] = useState([]);
     const [sevices, setSevices] = useState([]);
+    const [data, setData] = useState([]);
+
     const [endpoint, setEndpoint] = useState('orders');
+    const [searchResults, setSearchResults] = useState([]);
 
     async function fetchOrders() {
         const authToken = localStorage.getItem('authToken');
         try {
-            if (endpoint == 'orders') {
-                const ordersData = await api.get(endpoint, authToken);
-                setOrders(ordersData.orders);
-            } else {
-                const ordersData = await api.get(endpoint, authToken);
-                setSevices(ordersData.orders);
-            }
+
+            const ordersData = await api.get(endpoint, authToken);
+            setOrders(ordersData.orders);
+
+            const servicesOrdersData = await api.get('servicesOrders', authToken);
+            setSevices(servicesOrdersData.orders);
+
             console.log(ordersData);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
     }
 
+    useEffect(() => {
+
+        fetchOrders();
+    }, []);
+
+    useEffect(() => {
+
+        setData(orders);
+    }, [orders]);
 
 
 
+    const handleOptionSelect = (selectedId) => {
+        if (selectedId == 1) {
+            setEndpoint('orders');
+            setSearchResults("");
+            setData(orders);
+        } else if (selectedId == 2) {
+            setEndpoint('servicesOrders');
+            setSearchResults("");
+            setData(sevices);
+        }
 
+        console.log(`Selected ID: ${selectedId}`);
+    };
+
+    const handleStatusSelect = (selectedId) => {
+        const filteredResults = data.filter((item) =>
+            item.status === selectedId
+
+        );
+        setSearchResults(filteredResults);
+    };
+
+    const getApprovedServicesCount = () => {
+        const approvedServicesCount = sevices.filter(item => item.status === 'Approved').length;
+        return approvedServicesCount;
+    };
+
+    // حساب عدد الطلبات بحالة "Under Review" في جدول الخدمات
+    const getUnderReviewServicesCount = () => {
+        const underReviewServicesCount = sevices.filter(item => item.status === 'Under Review').length;
+        return underReviewServicesCount;
+    };
+
+    // حساب عدد الطلبات بحالة "Approved" في جدول العقارات
+    const getApprovedOrdersCount = () => {
+        const approvedOrdersCount = orders.filter(item => item.status === 'Approved').length;
+        return approvedOrdersCount;
+    };
+
+    // حساب عدد الطلبات بحالة "Under Review" في جدول العقارات
+    const getUnderReviewOrdersCount = () => {
+        const underReviewOrdersCount = orders.filter(item => item.status === 'Under Review').length;
+        return underReviewOrdersCount;
+    };
+
+    const handleSearch = (searchTerm) => {
+
+        const filteredResults = searchOrders(searchTerm, data, endpoint);
+        setSearchResults(filteredResults);
+        console.log('تم البحث عن:', searchTerm);
+    };
+
+    const handleEdit = (item) => {
+        console.log(item.id);
+    };
+
+    const handleDelete = (item) => {
+        console.log(item.id);
+    };
 
 
     const array = {
@@ -60,13 +131,13 @@ export default function Index() {
     const array2 = {
         "data": [
             {
-                "id": "1",
+                "id": "Under Review",
                 "attributes": {
                     "name": "تحت المراجعة",
                 }
             },
             {
-                "id": "2",
+                "id": "Approved",
                 "attributes": {
                     "name": "تمت الموافقة علية",
                 }
@@ -163,35 +234,8 @@ export default function Index() {
             ),
         },
     ];
-    let dataTable;
-    const handleOptionSelect = (selectedId) => {
-        if (selectedId == 1) {
 
-            setEndpoint('orders');
-        } else if (selectedId == 2) {
 
-            setEndpoint('servicesOrders');
-        }
-
-        console.log(`Selected ID: ${selectedId}`);
-    };
-    const handleSearch = (searchTerm) => {
-        // يمكنك هنا تنفيذ البحث باستخدام searchTerm
-        console.log('تم البحث عن:', searchTerm);
-    };
-
-    const handleEdit = (item) => {
-        console.log(item.id);
-    };
-
-    const handleDelete = (item) => {
-        console.log(item.id);
-    };
-
-    useEffect(() => {
-
-        fetchOrders();
-    }, [endpoint]);
     return (
 
         <Layout>
@@ -201,29 +245,29 @@ export default function Index() {
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="طلبات العقارات"
+                    value={orders.length}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id=""
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="طلبات الخدمات"
+                    value={sevices.length}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="الموافق عليها"
+                    value={getApprovedServicesCount() + getApprovedOrdersCount()}
                     label="العدد الاجمالي"
                 />
                 <Card
                     id="1"
                     icon={<BsHouseDoor size={69} color='#f584' />}
-                    title="عدد العقارات"
-                    value="30"
+                    title="تحت المراجعه"
+                    value={getUnderReviewServicesCount() + getUnderReviewOrdersCount()}
                     label="العدد الاجمالي"
                 />
             </div>
@@ -239,7 +283,7 @@ export default function Index() {
                         </div>
                         <div className='flex w-full '>
                             <DropDownList title="اختر نوع الطلب" options={array.data} onSelect={handleOptionSelect} />
-                            {/* <DropDownList title="اختر حالة الطلب" options={array2.data} onSelect={handleOptionSelect} /> */}
+                            <DropDownList title="اختر حالة الطلب" options={array2.data} onSelect={handleStatusSelect} />
 
                             {/* <DropDownList />
                             <DropDownList />
@@ -267,12 +311,12 @@ export default function Index() {
 
                 {endpoint == 'orders' ? <CustomTable
                     columns={columns}
-                    data={orders}
+                    data={searchResults.length > 0 ? searchResults : data}
                     onEdit={handleEdit}
                     onDelete={handleDelete} />
 
                     : <CustomTable
-                        data={sevices}
+                        data={searchResults.length > 0 ? searchResults : data}
                         columns={columns2}
                         onEdit={handleEdit}
                         onDelete={handleDelete} />

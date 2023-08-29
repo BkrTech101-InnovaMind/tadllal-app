@@ -45,7 +45,7 @@ export default function Index() {
       setTypesOptions(types)
       setLocationsOptions(locations)
 
-      // console.log(types, locations)
+
     } catch (error) {
       console.error("Error fetching real estates:", error)
     }
@@ -86,9 +86,29 @@ export default function Index() {
     myStatistics()
   }, [realEstates])
 
-  const handleOptionSelect = (selectedId) => {
-    console.log(`Selected ID: ${selectedId}`)
-  }
+  const handleDropdownChange = async (e, itemId) => {
+    const authToken = localStorage.getItem("authToken")
+    try {
+      const formDataForApi = new FormData()
+      formDataForApi.append("state", e)
+      const response = await api.post(
+        `realEstate/${itemId}/edit`,
+        formDataForApi,
+        authToken
+      )
+      toast.success("تم تحديث حالة العقار بنجاح")
+      const updatedRealEstates = realEstates.map((estate) => {
+        if (estate.id === itemId) {
+          return { ...estate, attributes: { ...estate.attributes, state: e } }
+        }
+        return estate
+      })
+      setRealEstates(updatedRealEstates)
+    } catch (error) {
+      console.error("Error updating realty data:", error)
+      toast.error("حدث خطأ أثناء تحديث البيانات.")
+    }
+
 
   const columns = [
     { key: "id", label: "الرقم" },
@@ -111,9 +131,11 @@ export default function Index() {
           <div className='pl-3'>
             <div className='text-base font-semibold'>
               {item.attributes.name}
+
             </div>
             <div className='font-normal text-gray-500'>
-              {item.attributes.firstType.name}/{item.attributes.secondType}
+              {item.attributes.firstType.name}/
+              {item.attributes.secondType == "for rent" ? "للايجار" : "للبيع"}
             </div>
           </div>
         </div>
@@ -137,11 +159,75 @@ export default function Index() {
       key: "attributes",
       label: "الحالة",
       render: (item) => (
-        <div>{item.attributes.state == "available" ? "متاح" : "غير متاح"}</div>
+        <div className='flex items-center'>
+          <select
+            className={
+              item.attributes.state === "available"
+                ? "text-green-700"
+                : "text-red-700"
+            }
+            value={item.attributes.state}
+            onChange={(e) => handleDropdownChange(e.target.value, item.id)}
+          >
+            {item.attributes.state === "available" ? (
+              <>
+                <option value='available' style={{ color: "#34D399" }} disabled>
+                  متاح
+                </option>
+                <option value='Unavailable' style={{ color: "#EF4444" }}>
+                  غير متاح
+                </option>
+              </>
+            ) : (
+              <>
+                <option
+                  value='Unavailable'
+                  style={{ color: "#EF4444" }}
+                  disabled
+                >
+                  غير متاح
+                </option>
+                <option value='available' style={{ color: "#34D399" }}>
+                  متاح
+                </option>
+              </>
+            )}
+          </select>
+        </div>
       ),
     },
   ]
+  const handleView = (item) => {
+    router.push({
+      pathname: `/RealEstate/${item.id}`,
+      query: { jsonData: JSON.stringify(item) },
+    })
+  }
 
+  const data = [
+    {
+      number: 1,
+      property: {
+        name: "بيت للبيع في شارع القصر",
+        imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
+        type: "بيت / بيع",
+      },
+      location: "عدن/ المنصورة / بلوك5",
+      price: "$2999",
+      status: "متاح",
+    },
+    {
+      number: 2,
+      property: {
+        name: "بيت للبيع في شارع القصر",
+        imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
+        type: "بيت / بيع",
+      },
+      location: "عدن/ المنصورة / بلوك5",
+      price: "$2999",
+      status: "متاح",
+    },
+  ]
   const handleSearch = (searchTerm) => {
     const searchedField = "name" // تعيين الحقل الذي ترغب في البحث فيه
     const filteredResults = tableSearch(searchTerm, realEstates, searchedField)
@@ -216,13 +302,6 @@ export default function Index() {
     }
   }
 
-  const handleView = (item) => {
-    router.push({
-      pathname: `/RealEstate/${item.id}`,
-      query: { jsonData: JSON.stringify(item) },
-    })
-  }
-
   return (
     <Layout>
       {/* // page container */}
@@ -288,7 +367,11 @@ export default function Index() {
                 options={status.data}
                 onSelect={handleStatusSelect}
               />
+              {/* <DropDownList />
+                            <DropDownList />
+                            <DropDownList /> */}
             </div>
+
             <div className='flex justify-between border-t-2 pt-5'>
               <div>
                 {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
@@ -313,6 +396,7 @@ export default function Index() {
           onDelete={handleDelete}
           extraButtonType={"view"}
           myFunction={handleView}
+
         />
       </div>
     </Layout>

@@ -74,9 +74,9 @@ const CustomTable = ({
                                         <FaXmark size={20} />
                                     </button>
                                 )}
-                                <button className="font-medium text-yellow-500 dark:text-yellow-500 hover:underline" onClick={() => onEdit(item)}>
+                                {!onEdit ? '' : <button className="font-medium text-yellow-500 dark:text-yellow-500 hover:underline" onClick={() => onEdit(item)}>
                                     <FaRegPenToSquare size={20} />
-                                </button>
+                                </button>}
 
                                 <button className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => onDelete(item)}>
                                     <FaRegTrashCan size={20} />

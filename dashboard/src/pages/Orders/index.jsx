@@ -12,6 +12,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import api from '@/api/api';
 import { searchOrders, tableFilters, tableSearch } from '@/api/filtersData';
+import { toast } from 'react-toastify';
 
 export default function Index() {
     const [orders, setOrders] = useState([]);
@@ -105,8 +106,23 @@ export default function Index() {
         console.log(item.id);
     };
 
-    const handleDelete = (item) => {
-        console.log(item.id);
+    const handleDelete = async (item) => {
+        const authToken = localStorage.getItem('authToken');
+
+        try {
+            await api.post(`${endpoint}/delete/${item.id}`, null, authToken);
+            // إزالة العنصر المحذوف من القائمة
+            const updatedOrders = data.filter((odrer) => odrer.id !== item.id);
+            setData(updatedOrders);
+            if (endpoint == 'orders') {
+                setOrders(updatedOrders);
+            } else {
+                setSevices(updatedOrders);
+            }
+            toast.success('تم حذف الطلب بنجاح');
+        } catch (error) {
+            toast.error('خطأ أثناء حذف الطلب');
+        }
     };
 
 
@@ -145,8 +161,48 @@ export default function Index() {
 
         ]
     };
+    const status = (item, type) => {
+        if (item.status == "Under Review") {
+            return (
+                <div className='flex flex-row'>
+                    <p className='text-red-700 ml-5'>تحت المراجعه</p>
+                    [<button className='text-blue-600' onClick={() => { changeOrderStatus(item.id, type) }}>الموافقه على الطلب</button>]
+                </div>
+            )
+        } else {
+            return (
+                <div className='flex flex-row'>
+                    <p className='text-green-700 ml-5'>تمت الموافقة </p>
+                    [<button className='text-red-600' onClick={() => { changeOrderStatus(item.id, type) }}>الغاء  الموافقة</button>]
+                </div>
+            )
+        }
+    }
+    const changeOrderStatus = async (itemId, type) => {
+        const authToken = localStorage.getItem('authToken');
+        let approveLink;
+        if (type == 'realEstate') {
+            approveLink = '/orders/approve/';
+        } if (type == 'service') {
+            approveLink = 'servicesOrders/approve/';
+        }
+        try {
+            const formDataForApi = new FormData();
+            const response = await api.put(`${approveLink}${itemId}`, null, authToken);
+            toast.success('تم تحديث حالة الطلب بنجاح');
+            const updatedOrders = data.map((order) => {
+                if (order.id === itemId) {
+                    return { ...order, status: order.status == 'Under Review' ? 'Approved' : 'Under Review' };
+                }
+                return order;
+            });
+            setData(updatedOrders);
 
-
+        } catch (error) {
+            console.error('Error updating realty data:', error);
+            toast.error('حدث خطأ أثناء تحديث البيانات.');
+        }
+    };
 
     const columns = [
         { key: 'id', label: 'الرقم' },
@@ -186,7 +242,9 @@ export default function Index() {
         {
             key: 'status', label: 'حالة الطلب',
             render: (item) => (
-                <div>{item.status == "Under Review" ? "تحت المراجعة" : "تمت الموافقة عليه"}</div>
+                <div>
+                    {status(item, 'realEstate')}
+                </div>
             ),
         },
     ];
@@ -230,7 +288,7 @@ export default function Index() {
         {
             key: 'status', label: 'حالة الطلب',
             render: (item) => (
-                <div>{item.status == "Under Review" ? "تحت المراجعة" : "تمت الموافقة عليه"}</div>
+                <div>   {status(item, 'service')}</div>
             ),
         },
     ];
@@ -312,13 +370,13 @@ export default function Index() {
                 {endpoint == 'orders' ? <CustomTable
                     columns={columns}
                     data={searchResults.length > 0 ? searchResults : data}
-                    onEdit={handleEdit}
+                    onEdit={null}
                     onDelete={handleDelete} />
 
                     : <CustomTable
                         data={searchResults.length > 0 ? searchResults : data}
                         columns={columns2}
-                        onEdit={handleEdit}
+                        onEdit={null}
                         onDelete={handleDelete} />
 
                 }

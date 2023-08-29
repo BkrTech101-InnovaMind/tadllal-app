@@ -4,6 +4,7 @@ import PrimaryBt from "@/Components/FormsComponents/Buttons/PrimaryBt"
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
 import api from "@/api/api"
+import { fetchSubServices } from "@/api/fetchData"
 import { tableSearch } from "@/api/filtersData"
 import Layout from "@/layout/Layout"
 import Image from "next/image"
@@ -11,6 +12,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsHouseDoor } from "react-icons/bs"
+import Modal from "react-modal"
 import { toast } from "react-toastify"
 export default function Index() {
   const router = useRouter()
@@ -20,6 +22,9 @@ export default function Index() {
 
   const [searchResults, setSearchResults] = useState([])
   const [endpoint, setEndpoint] = useState("services/services/")
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [currentService, setCurrentService] = useState(null)
+  const [subServicesById, setSubServicesById] = useState([])
 
   async function fetchTypes() {
     const authToken = localStorage.getItem("authToken")
@@ -188,8 +193,20 @@ export default function Index() {
     }
   }
 
-  function handleView(items) {}
+  async function handleView(item) {
+    const authToken = localStorage.getItem("authToken")
 
+    try {
+      const subServicesById = await fetchSubServices(authToken, item.id)
+      setSubServicesById(subServicesById)
+    } catch (error) {
+      console.error("Error fetching Types:", error)
+    }
+    setCurrentService(item)
+    setModalIsOpen(true)
+  }
+
+  console.log(`currentService: ${currentService}`)
   return (
     <Layout>
       {/* // page container */}
@@ -276,6 +293,29 @@ export default function Index() {
           />
         )}
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel='تفاصيل الخدمة'
+      >
+        {currentService && (
+          <div className='text-black text-center'>
+            <div className='font-bold text-xl mb-6'>
+              <h1 className='mb-2'>الخدمة</h1>
+              <p className='text-2xl'>{currentService.attributes.name}</p>
+            </div>
+            <div className='font-bold text-xl mb-6'>
+              <h1 className='mb-2'>ألوصف</h1>
+              <p className='text-2xl'>
+                {currentService.attributes.description}
+              </p>
+            </div>
+            <div>
+              <CustomTable columns={columns2} data={subServicesById} />
+            </div>
+          </div>
+        )}
+      </Modal>
     </Layout>
   )
 }

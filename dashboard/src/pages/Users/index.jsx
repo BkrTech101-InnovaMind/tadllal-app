@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import { usersFiltersArray } from '@/data/arrays';
 import { countMatchingItems, tableFilters, tableSearch } from '@/api/filtersData';
 import { useLoading } from '@/Context API/LoadingContext';
-
+import qs from 'qs';
 
 export default function Index() {
     const router = useRouter();
@@ -62,21 +62,64 @@ export default function Index() {
 
         myStatistics();
     }, [users]);
+    const handleDropdownChange = async (e, itemId) => {
+        const authToken = localStorage.getItem('authToken');
+        try {
 
-    const getUserType = (userType) => {
-        switch (userType) {
-            case 'user':
-                return 'مستخدم';
-            case 'marketer':
-                return 'مسوق';
-            case 'company':
-                return 'شركة';
-            case 'admin':
-                return 'مدير';
-            default:
-                return 'غير معروف';
+
+            const formDataForApi = {
+                role: e,
+            };
+            const encodedData = qs.stringify(formDataForApi);
+            const response = await api.put(`users/changeType/${itemId}`, encodedData, authToken);
+            toast.success('تم تحديث نوع المستخدم بنجاح');
+            const updatedUser = users.map((user) => {
+                if (user.id === itemId) {
+                    return { ...user, attributes: { ...user.attributes, role: e } };
+                }
+                return user;
+            });
+            setUsers(updatedUser);
+
+        } catch (error) {
+            console.error('Error updating realty data:', error);
+            toast.error('حدث خطأ أثناء تحديث البيانات.');
         }
-    }
+
+        // toast.success(`${e} ${itemId}`);
+    };
+
+    const getUserType = (item) => {
+        const textColor = () => {
+            switch (item.attributes.role) {
+                case 'user':
+                    return '#2980b9';
+                case 'marketer':
+                    return '#f39c12';
+                case 'company':
+                    return '#2ecc71';
+                case 'admin':
+                    return '#EA2027';
+                default:
+                    return '';
+            }
+        }
+        return (
+            <div className="flex items-center">
+                <select
+                    style={{ color: textColor() }}
+                    value={item.attributes.role}
+                    onChange={(e) => handleDropdownChange(e.target.value, item.id)}
+                >
+                    <option value="user" style={{ color: '#2980b9' }} disabled={item.attributes.role == 'user'}>مستخدم</option>
+                    <option value="marketer" style={{ color: '#f39c12' }} disabled={item.attributes.role == 'marketer'}>مسوق</option>
+                    <option value="company" style={{ color: '#2ecc71' }} disabled={item.attributes.role == 'company'}>شركة</option>
+                    <option value="admin" style={{ color: '#EA2027' }} disabled={item.attributes.role == 'admin'}>مدير</option>
+                </select>
+            </div>
+        );
+    };
+
 
     const handleOptionSelect = (selectedId) => {
         console.log(`Selected ID: ${selectedId}`);
@@ -95,6 +138,11 @@ export default function Index() {
 
         setSearchResults(filteredResults);
         // هنا يمكنك تنفيذ الفلترة باستخدام النوع المحدد
+    };
+    const findUserById = (userId) => {
+        const foundUser = users.find(user => user.id == userId);
+        return foundUser ? foundUser.attributes.name : '';
+
     };
     const columns = [
         { key: 'id', label: 'الرقم' },
@@ -117,13 +165,22 @@ export default function Index() {
         {
             key: 'attributes', label: 'نوع المستخدم',
             render: (item) => (
-                <div>{getUserType(item.attributes.role)}</div>
+                // <div>{getUserType(item.attributes.role)}</div> 
+                getUserType(item)
             ),
         },
         {
             key: 'attributes', label: 'رقم الهاتف',
             render: (item) => (
                 <div>{!item.attributes.phone ? "لايوجد" : item.attributes.phone}</div>
+            ),
+        },
+        {
+            key: 'attributes', label: 'التسجيل عبر',
+            render: (item) => (
+                <div className={item.attributes.registered_by == null ? 'text-green-600' : 'text-red-700'}>
+                    {item.attributes.registered_by == null ? "عبر التطبيق" : findUserById(item.attributes.registered_by)}
+                </div>
             ),
         },
         {

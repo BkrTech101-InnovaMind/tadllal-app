@@ -16,7 +16,7 @@ import { countMatchingItems, tableFilters, tableSearch } from '@/api/filtersData
 import { toast } from 'react-toastify';
 import { fetchLocations, fetchTypes } from '@/api/fetchData';
 import { realEstateTypes, status } from '@/data/arrays';
-
+import Select from 'react-select';
 export default function Index() {
     const router = useRouter();
     const [realEstates, setRealEstates] = useState([]);
@@ -72,12 +72,27 @@ export default function Index() {
         myStatistics();
 
     }, [realEstates]);
+    const handleDropdownChange = async (e, itemId) => {
+        const authToken = localStorage.getItem('authToken');
+        try {
+            const formDataForApi = new FormData();
+            formDataForApi.append('state', e);
+            const response = await api.post(`realEstate/${itemId}/edit`, formDataForApi, authToken);
+            toast.success('تم تحديث حالة العقار بنجاح');
+            const updatedRealEstates = realEstates.map((estate) => {
+                if (estate.id === itemId) {
+                    return { ...estate, attributes: { ...estate.attributes, state: e } };
+                }
+                return estate;
+            });
+            setRealEstates(updatedRealEstates);
 
-
-
-    const handleOptionSelect = (selectedId) => {
-        console.log(`Selected ID: ${selectedId}`);
+        } catch (error) {
+            console.error('Error updating realty data:', error);
+            toast.error('حدث خطأ أثناء تحديث البيانات.');
+        }
     };
+
 
 
     const columns = [
@@ -90,7 +105,10 @@ export default function Index() {
                     <Image width={50} height={50} className="w-10 h-10 rounded-full ml-2" src={item.attributes.photo.startsWith('storage') ? `http://127.0.0.1:8000/${item.attributes.photo}` : item.attributes.photo} alt="Jese image" />
                     <div className="pl-3">
                         <div className="text-base font-semibold">{item.attributes.name}</div>
-                        <div className="font-normal text-gray-500">{item.attributes.firstType.name}/{item.attributes.secondType}</div>
+                        <div className="font-normal text-gray-500">
+                            {item.attributes.firstType.name}/
+                            {item.attributes.secondType == 'for rent' ? 'للايجار' : 'للبيع'}
+                        </div>
                     </div>
                 </div>
             ),
@@ -110,7 +128,26 @@ export default function Index() {
         {
             key: 'attributes', label: 'الحالة',
             render: (item) => (
-                <div>{item.attributes.state == "available" ? "متاح" : "غير متاح"}</div>
+                <div className="flex items-center">
+                    <select
+                        className={item.attributes.state === "available" ? 'text-green-700' : 'text-red-700'}
+                        value={item.attributes.state}
+                        onChange={(e) => handleDropdownChange(e.target.value, item.id)}
+                    >
+                        {item.attributes.state === "available" ? (
+                            <>
+                                <option value="available" style={{ color: '#34D399' }} disabled>متاح</option>
+                                <option value="Unavailable" style={{ color: '#EF4444' }}>غير متاح</option>
+                            </>
+                        ) : (
+                            <>
+                                <option value="Unavailable" style={{ color: '#EF4444' }} disabled>غير متاح</option>
+                                <option value="available" style={{ color: '#34D399' }}>متاح</option>
+                            </>
+                        )}
+                    </select>
+
+                </div>
             ),
         },
     ];

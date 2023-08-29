@@ -121,6 +121,9 @@ export default function EditRealty() {
             if (formData.secondType && formData.secondType !== oldFormData.secondType) {
                 formDataForApi.append('secondType', formData.secondType);
             }
+            if (formData.state && formData.state !== oldFormData.state) {
+                formDataForApi.append('state', formData.state);
+            }
             if (formData.photo) {
                 if (formData.photo instanceof File && formData.photo.type.startsWith('image/')) {
                     formDataForApi.append('photo', formData.photo);

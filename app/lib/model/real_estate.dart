@@ -10,7 +10,7 @@ String realEstateToJson(RealEstate data) => json.encode(data.toJson());
 
 class RealEstate {
   String? id;
-  Attributes? attributes;
+  RealEstateAttributes? attributes;
 
   RealEstate({
     this.id,
@@ -19,7 +19,7 @@ class RealEstate {
 
   factory RealEstate.fromJson(Map<String, dynamic> json) => RealEstate(
     id: json["id"],
-    attributes: json["attributes"] == null ? null : Attributes.fromJson(json["attributes"]),
+    attributes: json["attributes"] == null ? null : RealEstateAttributes.fromJson(json["attributes"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -28,7 +28,7 @@ class RealEstate {
   };
 }
 
-class Attributes {
+class RealEstateAttributes {
   String? name;
   String? description;
   int? price;
@@ -42,8 +42,9 @@ class Attributes {
   Ratings? ratings;
   bool? isFavorite;
   List<String>? images;
+  List<Comment>? comments;
 
-  Attributes({
+  RealEstateAttributes({
     this.name,
     this.description,
     this.price,
@@ -57,9 +58,10 @@ class Attributes {
     this.ratings,
     this.isFavorite,
     this.images,
+    this.comments,
   });
 
-  factory Attributes.fromJson(Map<String, dynamic> json) => Attributes(
+  factory RealEstateAttributes.fromJson(Map<String, dynamic> json) => RealEstateAttributes(
     name: json["name"],
     description: json["description"],
     price: json["price"],
@@ -73,6 +75,7 @@ class Attributes {
     ratings: json["ratings"] == null ? null : Ratings.fromJson(json["ratings"]),
     isFavorite: json["isFavorite"],
     images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
+    comments: json["comments"] == null ? [] : List<Comment>.from(json["comments"]!.map((x) => Comment.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,6 +92,55 @@ class Attributes {
     "ratings": ratings?.toJson(),
     "isFavorite": isFavorite,
     "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "comments": comments == null ? [] : List<dynamic>.from(comments!.map((x) => x.toJson())),
+  };
+}
+
+class Comment {
+  String? id;
+  CommentAttributes? attributes;
+
+  Comment({
+    this.id,
+    this.attributes,
+  });
+
+  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+    id: json["id"],
+    attributes: json["attributes"] == null ? null : CommentAttributes.fromJson(json["attributes"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "attributes": attributes?.toJson(),
+  };
+}
+
+class CommentAttributes {
+  int? userId;
+  String? userName;
+  String? userImage;
+  String? comment;
+
+  CommentAttributes({
+    this.userId,
+    this.userName,
+    this.userImage,
+    this.comment,
+  });
+
+  factory CommentAttributes.fromJson(Map<String, dynamic> json) => CommentAttributes(
+    userId: json["user_id"],
+    userName: json["user_name"],
+    userImage: json["user_image"],
+    comment: json["comment"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "user_id": userId,
+    "user_name": userName,
+    "user_image": userImage,
+    "comment": comment,
   };
 }
 

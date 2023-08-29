@@ -19,6 +19,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsHouseDoor } from "react-icons/bs"
 import { toast } from "react-toastify"
+
 export default function Index() {
   const router = useRouter()
   const [realEstates, setRealEstates] = useState([])
@@ -44,7 +45,7 @@ export default function Index() {
       setTypesOptions(types)
       setLocationsOptions(locations)
 
-      console.log(types, locations)
+
     } catch (error) {
       console.error("Error fetching real estates:", error)
     }
@@ -84,6 +85,7 @@ export default function Index() {
   useEffect(() => {
     myStatistics()
   }, [realEstates])
+
   const handleDropdownChange = async (e, itemId) => {
     const authToken = localStorage.getItem("authToken")
     try {
@@ -106,7 +108,7 @@ export default function Index() {
       console.error("Error updating realty data:", error)
       toast.error("حدث خطأ أثناء تحديث البيانات.")
     }
-  }
+
 
   const columns = [
     { key: "id", label: "الرقم" },
@@ -129,6 +131,7 @@ export default function Index() {
           <div className='pl-3'>
             <div className='text-base font-semibold'>
               {item.attributes.name}
+
             </div>
             <div className='font-normal text-gray-500'>
               {item.attributes.firstType.name}/
@@ -194,6 +197,12 @@ export default function Index() {
       ),
     },
   ]
+  const handleView = (item) => {
+    router.push({
+      pathname: `/RealEstate/${item.id}`,
+      query: { jsonData: JSON.stringify(item) },
+    })
+  }
 
   const data = [
     {
@@ -362,6 +371,7 @@ export default function Index() {
                             <DropDownList />
                             <DropDownList /> */}
             </div>
+
             <div className='flex justify-between border-t-2 pt-5'>
               <div>
                 {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
@@ -384,6 +394,9 @@ export default function Index() {
           data={searchResults.length > 0 ? searchResults : realEstates}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          extraButtonType={"view"}
+          myFunction={handleView}
+
         />
       </div>
     </Layout>

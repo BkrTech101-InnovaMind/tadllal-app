@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tadllal/config/config.dart';
+import 'package:tadllal/services/helpers.dart';
 
 class CompleteProfilePage extends StatefulWidget {
   const CompleteProfilePage(
@@ -11,6 +12,7 @@ class CompleteProfilePage extends StatefulWidget {
       required this.userNameController,
       required this.emailController,
       required this.phoneNumberController});
+
   final Function(File) onImageChanged;
   final TextEditingController userNameController;
   final TextEditingController emailController;
@@ -26,12 +28,25 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   String userImage = "";
 
   void _pickImage(ImageSource source) async {
-    final pickedImage = await ImagePicker().pickImage(source: source);
-    if (pickedImage != null) {
-      setState(() {
-        selectedImage = File(pickedImage.path);
-        widget.onImageChanged(selectedImage!);
-      });
+    if (await checkPermission(source: source) == true) {
+      final pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
+        setState(() {
+          selectedImage = File(pickedImage.path);
+          widget.onImageChanged(selectedImage!);
+        });
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Text(
+            source == ImageSource.camera
+                ? "تم رفض الوصول الى الكاميرا"
+                : "تم رفض الوصول الى معرض الصور",
+          ),
+        ),
+      );
     }
   }
 
@@ -41,7 +56,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     widget.userNameController.text = Config().user.attributes!.name!;
     widget.emailController.text = Config().user.attributes!.email!;
     widget.phoneNumberController.text = Config().user.attributes!.phone!;
-    userImage = Config().user.attributes!.avatar!;
+    userImage = Config().user.attributes!.avatar ?? "";
   }
 
   @override

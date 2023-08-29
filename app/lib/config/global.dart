@@ -36,12 +36,12 @@ class Consts {
 const TextStyle lightDetailsTextFieldTheme = TextStyle(
     fontFamily: "Cairo",
     fontSize: 11,
-    color: Colors.white,
+    color: Color(0xFF8BC83F),
     fontWeight: FontWeight.bold);
 
 const TextStyle lightDetailsLabelTextFieldTheme = TextStyle(
     fontFamily: "Cairo",
     fontSize: 15,
     fontWeight: FontWeight.bold,
-    color: Color(0xfff48923),
+    color: Color(0xFF1F4C6B),
     decoration: TextDecoration.underline);

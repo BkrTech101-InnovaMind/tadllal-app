@@ -8,7 +8,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:tadllal/config/global.dart';
 import 'package:tadllal/services/api/dio_api.dart';
 
-enum ForgetPasswordStatus{
+enum ForgetPasswordStatus {
   emailVerification,
   resetCodeVerification,
   resetPassword,
@@ -55,7 +55,6 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
     return AlertDialog(
       insetPadding: const EdgeInsets.all(10),
       contentPadding: EdgeInsets.zero,
-      // clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.padding),
       ),
@@ -68,7 +67,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
               const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: const Color(0xff103c5b),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(Consts.padding),
             boxShadow: const [
               BoxShadow(
@@ -80,17 +79,15 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
           ),
           child: SingleChildScrollView(
             child: Column(
-              // mainAxisSize: MainAxisSize.min,
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("تغيير كلمة المرور",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontFamily: "Cairo",
-                        color: Color(0xfff48923),
+                        color: Color(0xFF8BC83F),
                         fontWeight: FontWeight.bold,
                         fontSize: 15)),
                 const Divider(
@@ -112,7 +109,6 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                         if (snapshot.hasData && !snapshot.hasError) {
                           return FormBuilder(
                             key: _formKey,
-                            // initialValue: {_emailKeyName: widget.email},
                             child: formWidget(),
                           );
                         } else {
@@ -125,7 +121,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: "Cairo",
-                                        color: Color(0xfff48923),
+                                        color: Colors.redAccent,
                                         fontWeight: FontWeight.normal,
                                         fontSize: 12)),
                               ),
@@ -136,7 +132,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                                   MaterialButton(
                                     height: 30.0,
                                     minWidth: 50.0,
-                                    color: const Color(0xFFBD6611),
+                                    color: Colors.redAccent,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
@@ -156,7 +152,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                                   MaterialButton(
                                     height: 30.0,
                                     minWidth: 50.0,
-                                    color: const Color(0xFFBD6611),
+                                    color: const Color(0xFF8BC83F),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
@@ -164,7 +160,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                                     onPressed: () {
                                       _getData();
                                     },
-                                    splashColor: Colors.redAccent,
+                                    splashColor: const Color(0xFF8BC83F),
                                     child: const Text(
                                       'إعادة المحاولة',
                                       style: TextStyle(fontSize: 12),
@@ -183,7 +179,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         );
@@ -220,10 +216,9 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
           child: Text("جاري حفظ البيانات يرجى الانتظار",
               textAlign: TextAlign.center,
               softWrap: true,
-              // overflow: TextOverflow.fade,
               style: TextStyle(
                   fontFamily: "Cairo",
-                  color: Color(0xfff48923),
+                  color: Color(0xFF8BC83F),
                   fontWeight: FontWeight.normal,
                   fontSize: 12)),
         ),
@@ -250,10 +245,9 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                       "لكي تتم إعادة تعيين كلمة المرور الخاصة بك يجب ان يطابق البريد الالكتروني المدخل او رقم الهاتف الذي قمت بتسجيل الدخول من خلاله",
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      // overflow: TextOverflow.fade,
                       style: TextStyle(
                           fontFamily: "Cairo",
-                          color: Color(0xfff48923),
+                          color: Color(0xFF8BC83F),
                           fontWeight: FontWeight.normal,
                           fontSize: 12)),
                 ),
@@ -270,7 +264,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
               children: [
                 Icon(
                   Icons.info_outline,
-                  color: Color(0xfff48923),
+                  color: Color(0xFF8BC83F),
                 ),
                 Flexible(
                   fit: FlexFit.loose,
@@ -281,7 +275,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                       // overflow: TextOverflow.fade,
                       style: TextStyle(
                           fontFamily: "Cairo",
-                          color: Color(0xfff48923),
+                          color: Color(0xFF8BC83F),
                           fontWeight: FontWeight.normal,
                           fontSize: 12)),
                 ),
@@ -309,7 +303,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                       // overflow: TextOverflow.fade,
                       style: TextStyle(
                           fontFamily: "Cairo",
-                          color: Color(0xfff48923),
+                          color: Color(0xFF8BC83F),
                           fontWeight: FontWeight.normal,
                           fontSize: 12)),
                 ),
@@ -334,10 +328,9 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   child: Text("تهانينا تم تغيير كلمة المرور الخاصة بك",
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      // overflow: TextOverflow.fade,
                       style: TextStyle(
                           fontFamily: "Cairo",
-                          color: Color(0xfff48923),
+                          color: Color(0xFF8BC83F),
                           fontWeight: FontWeight.normal,
                           fontSize: 15)),
                 ),
@@ -366,25 +359,24 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
             decoration: InputDecoration(
               labelText: 'البريد الالكتروني',
               labelStyle: lightDetailsLabelTextFieldTheme,
-              // floatingLabelAlignment: FloatingLabelAlignment.center,
               filled: true,
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-              fillColor: const Color(0xff375c77),
+              fillColor: const Color(0xFFF5F4F8),
               //<-- SEE HERE
               enabledBorder: OutlineInputBorder(
                 borderSide:
-                    const BorderSide(width: 1, color: Color(0xff707070)),
+                    const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                 //<-- SEE HERE
                 borderRadius: BorderRadius.circular(10.0),
               ),
               focusedBorder: const OutlineInputBorder(
                   gapPadding: 1,
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: Color(0xfff48923))),
+                  borderSide: BorderSide(color: Color(0xFFF5F4F8))),
               disabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                borderSide: BorderSide(width: 1, color: Color(0xFFF5F4F8)),
               ),
             ),
           );
@@ -410,25 +402,24 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 decoration: InputDecoration(
                   labelText: 'البريد الالكتروني',
                   labelStyle: lightDetailsLabelTextFieldTheme,
-                  // floatingLabelAlignment: FloatingLabelAlignment.center,
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xff375c77),
+                  fillColor: const Color(0xFFF5F4F8),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xff707070)),
+                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xfff48923))),
+                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                   ),
                 ),
               ),
@@ -448,25 +439,24 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 decoration: InputDecoration(
                   labelText: 'كود التحقق',
                   labelStyle: lightDetailsLabelTextFieldTheme,
-                  // floatingLabelAlignment: FloatingLabelAlignment.center,
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xff375c77),
+                  fillColor: const Color(0xFFF5F4F8),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xff707070)),
+                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xfff48923))),
+                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                   ),
                 ),
               )
@@ -494,25 +484,23 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 decoration: InputDecoration(
                   labelText: 'البريد الالكتروني',
                   labelStyle: lightDetailsLabelTextFieldTheme,
-                  // floatingLabelAlignment: FloatingLabelAlignment.center,
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xff375c77),
-
+                  fillColor: const Color(0xFFF5F4F8),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xff707070)),
+                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xfff48923))),
+                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                    borderSide: BorderSide(width: 1, color: Color(0xFF1F4C6B)),
                   ),
                 ),
               ),
@@ -532,31 +520,28 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 decoration: InputDecoration(
                   labelText: 'كود التحقق',
                   labelStyle: lightDetailsLabelTextFieldTheme,
-                  // floatingLabelAlignment: FloatingLabelAlignment.center,
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xff375c77),
+                  fillColor: const Color(0xFFF5F4F8),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xff707070)),
+                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xfff48923))),
+                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               FormBuilderTextField(
                 name: _newPasswordKeyName,
                 obscureText: _passwordIsObscure,
@@ -570,27 +555,24 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 decoration: InputDecoration(
                   labelText: 'كلمة المرور',
                   labelStyle: lightDetailsLabelTextFieldTheme,
-                  // floatingLabelAlignment: FloatingLabelAlignment.center,
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xff375c77),
-
+                  fillColor: const Color(0xFFF5F4F8),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xff707070)),
+                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xfff48923))),
+                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                   ),
-
                   suffixIcon: IconButton(
                       icon: Icon(
                           color: _passwordIsObscure
@@ -622,25 +604,24 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 decoration: InputDecoration(
                   labelText: 'كلمة المرور',
                   labelStyle: lightDetailsLabelTextFieldTheme,
-                  // floatingLabelAlignment: FloatingLabelAlignment.center,
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xff375c77),
+                  fillColor: const Color(0xFFF5F4F8),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xff707070)),
+                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xfff48923))),
+                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(width: 1, color: Color(0xff235175)),
+                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F4F8)),
                   ),
 
                   suffixIcon: IconButton(
@@ -681,7 +662,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -701,7 +682,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: const Color(0xFF8BC83F),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -709,7 +690,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   onPressed: () {
                     _getData();
                   },
-                  splashColor: Colors.redAccent,
+                  splashColor: const Color(0xFF8BC83F),
                   child: const Text(
                     'التالي',
                     style: TextStyle(fontSize: 12),
@@ -729,7 +710,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -749,7 +730,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: const Color(0xFF8BC83F),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -757,7 +738,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   onPressed: () {
                     _getData();
                   },
-                  splashColor: Colors.redAccent,
+                  splashColor: const Color(0xFF8BC83F),
                   child: const Text(
                     'التالي',
                     style: TextStyle(fontSize: 12),
@@ -777,7 +758,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -797,7 +778,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: const Color(0xFF8BC83F),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -805,7 +786,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   onPressed: () {
                     _getData();
                   },
-                  splashColor: Colors.redAccent,
+                  splashColor: const Color(0xFF8BC83F),
                   child: const Text(
                     'تغيير',
                     style: TextStyle(fontSize: 12),
@@ -825,7 +806,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                 child: MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),

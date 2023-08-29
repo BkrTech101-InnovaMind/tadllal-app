@@ -47,7 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     originalUserData = {
       "name": nameController.text,
-      "email": emailController.text,
       "phone": phoneNumberController.text,
       "avatar": userImage,
     };
@@ -64,7 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void handleSubmit() {
     final editedForm = {
       "name": nameController.text,
-      // "email": emailController.text,
       "phone": phoneNumberController.text,
       "avatar": userImage,
     };
@@ -119,7 +117,6 @@ class _ProfilePageState extends State<ProfilePage> {
       formData = FormData.fromMap({
         "name": nameController.text.trim(),
         "phone": phoneNumberController.text.trim(),
-        // "email": emailController.text.trim(),
       });
     }
     _showSaveDialog();
@@ -147,7 +144,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Stack(
-              // fit: StackFit.expand,
               children: [
                 Positioned(
                   top: 30,

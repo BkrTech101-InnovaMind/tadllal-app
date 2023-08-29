@@ -3,22 +3,6 @@ import PrimaryBt from "@/Components/FormsComponents/Buttons/PrimaryBt"
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
 
-import CustomTable from "@/Components/CustomTable"
-import api from "@/api/api"
-import { fetchLocations, fetchTypes } from "@/api/fetchData"
-import {
-  countMatchingItems,
-  tableFilters,
-  tableSearch,
-} from "@/api/filtersData"
-import { realEstateTypes, status } from "@/data/arrays"
-import Layout from "@/layout/Layout"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
-import { toast } from "react-toastify"
 export default function Index() {
   const router = useRouter()
   const [realEstates, setRealEstates] = useState([])
@@ -43,8 +27,6 @@ export default function Index() {
 
       setTypesOptions(types)
       setLocationsOptions(locations)
-
-      console.log(types, locations)
     } catch (error) {
       console.error("Error fetching real estates:", error)
     }
@@ -107,7 +89,6 @@ export default function Index() {
       toast.error("حدث خطأ أثناء تحديث البيانات.")
     }
   }
-
   const columns = [
     { key: "id", label: "الرقم" },
     {

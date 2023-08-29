@@ -8,6 +8,7 @@ import { fetchLocations, fetchTypes } from "@/api/fetchData"
 import { countMatchingItems } from "@/api/filtersData"
 import { realEstateTypes, status } from "@/data/arrays"
 import Layout from "@/layout/Layout"
+import LoadingIndicator from "@/utils/LoadingIndicator "
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -15,6 +16,7 @@ import { useEffect, useState } from "react"
 import { BsHouseDoor } from "react-icons/bs"
 import { toast } from "react-toastify"
 export default function Index() {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const [realEstates, setRealEstates] = useState([])
   const [searchResults, setSearchResults] = useState([])
@@ -41,6 +43,7 @@ export default function Index() {
     } catch (error) {
       console.error("Error fetching real estates:", error)
     }
+    setLoading(true)
   }
 
   async function myStatistics() {
@@ -292,99 +295,105 @@ export default function Index() {
     })
   }
   return (
-    <Layout>
-      <div
-        className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
-        dir='rtl'
-      >
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عدد العقارات'
-          value={statistics.totalRealEstates}
-          label='العدد الاجمالي'
-        />
-        <Card
-          id=''
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='العقارات المتاحة'
-          value={statistics.availableRealEstates}
-          label='العدد الاجمالي'
-        />
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عقارات للبيع'
-          value={statistics.realEstatesForSale}
-          label='العدد الاجمالي'
-        />
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عقارات للايجار'
-          value={statistics.realEstatesForRent}
-          label='العدد الاجمالي'
-        />
-      </div>
-      <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
-        {/* filter container */}
+    <>
+      {!loading ? (
+        <LoadingIndicator />
+      ) : (
+        <Layout>
+          <div
+            className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
+            dir='rtl'
+          >
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عدد العقارات'
+              value={statistics.totalRealEstates}
+              label='العدد الاجمالي'
+            />
+            <Card
+              id=''
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='العقارات المتاحة'
+              value={statistics.availableRealEstates}
+              label='العدد الاجمالي'
+            />
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عقارات للبيع'
+              value={statistics.realEstatesForSale}
+              label='العدد الاجمالي'
+            />
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عقارات للايجار'
+              value={statistics.realEstatesForRent}
+              label='العدد الاجمالي'
+            />
+          </div>
+          <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
+            {/* filter container */}
 
-        <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
-          <div className='flex flex-col gap-y-4 w-full'>
-            <div>
-              <p>خيارات البحث</p>
-            </div>
-            <div className='flex w-full '>
-              <DropDownList
-                title='اختر نوع العقار'
-                options={typesOptions}
-                onSelect={handleTypeSelect}
-              />
-              <DropDownList
-                title='اختر موقع العقار'
-                options={locationsOptions}
-                onSelect={handleLocationSelect}
-              />
-              <DropDownList
-                title='اختر حالة العقار'
-                options={realEstateTypes.data}
-                onSelect={handleSeconTypeSelect}
-              />
-              <DropDownList
-                title='اختر الاتاحة'
-                options={status.data}
-                onSelect={handleStatusSelect}
-              />
-              {/* <DropDownList />
+            <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
+              <div className='flex flex-col gap-y-4 w-full'>
+                <div>
+                  <p>خيارات البحث</p>
+                </div>
+                <div className='flex w-full '>
+                  <DropDownList
+                    title='اختر نوع العقار'
+                    options={typesOptions}
+                    onSelect={handleTypeSelect}
+                  />
+                  <DropDownList
+                    title='اختر موقع العقار'
+                    options={locationsOptions}
+                    onSelect={handleLocationSelect}
+                  />
+                  <DropDownList
+                    title='اختر حالة العقار'
+                    options={realEstateTypes.data}
+                    onSelect={handleSeconTypeSelect}
+                  />
+                  <DropDownList
+                    title='اختر الاتاحة'
+                    options={status.data}
+                    onSelect={handleStatusSelect}
+                  />
+                  {/* <DropDownList />
                             <DropDownList />
                             <DropDownList /> */}
-            </div>
-            <div className='flex justify-between border-t-2 pt-5'>
-              <div>
-                {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
-                <Link href='/RealEstate/New'>
-                  <PrimaryBt type='add' name='إضافة عقار جديد' />
-                </Link>
-                <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
-              </div>
+                </div>
+                <div className='flex justify-between border-t-2 pt-5'>
+                  <div>
+                    {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
+                    <Link href='/RealEstate/New'>
+                      <PrimaryBt type='add' name='إضافة عقار جديد' />
+                    </Link>
+                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                  </div>
 
-              <div>
-                <Search onSearch={handleSearch} />
+                  <div>
+                    <Search onSearch={handleSearch} />
+                  </div>
+                </div>
               </div>
             </div>
+            {/* <Table /> */}
+
+            <CustomTable
+              columns={columns}
+              data={searchResults.length > 0 ? searchResults : realEstates}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              extraButtonType={"view"}
+              myFunction={handleView}
+            />
           </div>
-        </div>
-        {/* <Table /> */}
-
-        <CustomTable
-          columns={columns}
-          data={searchResults.length > 0 ? searchResults : realEstates}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          extraButtonType={"view"}
-          myFunction={handleView}
-        />
-      </div>
-    </Layout>
+        </Layout>
+      )}
+    </>
   )
 }

@@ -7,6 +7,7 @@ import api from "@/api/api"
 import { fetchSubServices } from "@/api/fetchData"
 import { tableSearch } from "@/api/filtersData"
 import Layout from "@/layout/Layout"
+import LoadingIndicator from "@/utils/LoadingIndicator "
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -15,6 +16,7 @@ import { BsHouseDoor } from "react-icons/bs"
 import Modal from "react-modal"
 import { toast } from "react-toastify"
 export default function Index() {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const [services, setServices] = useState([])
   const [subServices, setSubServices] = useState([])
@@ -37,6 +39,7 @@ export default function Index() {
     } catch (error) {
       console.error("Error fetching Types:", error)
     }
+    setLoading(true)
   }
 
   useEffect(() => {
@@ -207,114 +210,120 @@ export default function Index() {
 
   console.log(`currentService: ${currentService}`)
   return (
-    <Layout>
-      {/* // page container */}
-      <div
-        className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
-        dir='rtl'
-      >
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عدد كل الخدمات'
-          value={services.length + subServices.length}
-          label='العدد الاجمالي'
-        />
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عدد الخدمات الرئيسية'
-          value={services.length}
-          label='العدد الاجمالي'
-        />
+    <>
+      {!loading ? (
+        <LoadingIndicator />
+      ) : (
+        <Layout>
+          {/* // page container */}
+          <div
+            className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
+            dir='rtl'
+          >
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عدد كل الخدمات'
+              value={services.length + subServices.length}
+              label='العدد الاجمالي'
+            />
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عدد الخدمات الرئيسية'
+              value={services.length}
+              label='العدد الاجمالي'
+            />
 
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عدد الخدمات الفرعية'
-          value={subServices.length}
-          label='العدد الاجمالي'
-        />
-      </div>
-      <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
-        {/* filter container */}
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عدد الخدمات الفرعية'
+              value={subServices.length}
+              label='العدد الاجمالي'
+            />
+          </div>
+          <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
+            {/* filter container */}
 
-        <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
-          <div className='flex flex-col gap-y-4 w-full'>
-            <div>
-              <p>خيارات العرض</p>
-            </div>
-            <div className='flex w-full '>
-              <DropDownList
-                title='عرض الخدمات'
-                options={array.data}
-                onSelect={handleOptionSelect}
-              />
+            <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
+              <div className='flex flex-col gap-y-4 w-full'>
+                <div>
+                  <p>خيارات العرض</p>
+                </div>
+                <div className='flex w-full '>
+                  <DropDownList
+                    title='عرض الخدمات'
+                    options={array.data}
+                    onSelect={handleOptionSelect}
+                  />
 
-              {/* <DropDownList />
+                  {/* <DropDownList />
 							<DropDownList />
 							<DropDownList /> */}
-            </div>
-            <div className='flex justify-between border-t-2 pt-5'>
-              <div>
-                {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
-                <Link href='/Services/New'>
-                  <PrimaryBt type='add' name='إضافة خدمة رئيسية جديدة' />
-                </Link>
-                <Link href='/Services/Sub/New'>
-                  <PrimaryBt type='add' name='إضافة خدمة فرعية جديدة' />
-                </Link>
-                <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
-              </div>
+                </div>
+                <div className='flex justify-between border-t-2 pt-5'>
+                  <div>
+                    {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
+                    <Link href='/Services/New'>
+                      <PrimaryBt type='add' name='إضافة خدمة رئيسية جديدة' />
+                    </Link>
+                    <Link href='/Services/Sub/New'>
+                      <PrimaryBt type='add' name='إضافة خدمة فرعية جديدة' />
+                    </Link>
+                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                  </div>
 
-              <div>
-                <Search onSearch={handleSearch} />
+                  <div>
+                    <Search onSearch={handleSearch} />
+                  </div>
+                </div>
               </div>
             </div>
+            {/* <Table /> */}
+            {endpoint == "services/services/" ? (
+              <CustomTable
+                columns={columns1}
+                data={searchResults.length > 0 ? searchResults : data}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                extraButtonType={"view"}
+                myFunction={handleView}
+              />
+            ) : (
+              <CustomTable
+                columns={columns2}
+                data={searchResults.length > 0 ? searchResults : data}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            )}
           </div>
-        </div>
-        {/* <Table /> */}
-        {endpoint == "services/services/" ? (
-          <CustomTable
-            columns={columns1}
-            data={searchResults.length > 0 ? searchResults : data}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            extraButtonType={"view"}
-            myFunction={handleView}
-          />
-        ) : (
-          <CustomTable
-            columns={columns2}
-            data={searchResults.length > 0 ? searchResults : data}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        )}
-      </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        contentLabel='تفاصيل الخدمة'
-      >
-        {currentService && (
-          <div className='text-black text-center'>
-            <div className='font-bold text-xl mb-6'>
-              <h1 className='mb-2'>الخدمة</h1>
-              <p className='text-2xl'>{currentService.attributes.name}</p>
-            </div>
-            <div className='font-bold text-xl mb-6'>
-              <h1 className='mb-2'>ألوصف</h1>
-              <p className='text-2xl'>
-                {currentService.attributes.description}
-              </p>
-            </div>
-            <div>
-              <CustomTable columns={columns2} data={subServicesById} />
-            </div>
-          </div>
-        )}
-      </Modal>
-    </Layout>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={() => setModalIsOpen(false)}
+            contentLabel='تفاصيل الخدمة'
+          >
+            {currentService && (
+              <div className='text-black text-center'>
+                <div className='font-bold text-xl mb-6'>
+                  <h1 className='mb-2'>الخدمة</h1>
+                  <p className='text-2xl'>{currentService.attributes.name}</p>
+                </div>
+                <div className='font-bold text-xl mb-6'>
+                  <h1 className='mb-2'>ألوصف</h1>
+                  <p className='text-2xl'>
+                    {currentService.attributes.description}
+                  </p>
+                </div>
+                <div>
+                  <CustomTable columns={columns2} data={subServicesById} />
+                </div>
+              </div>
+            )}
+          </Modal>
+        </Layout>
+      )}
+    </>
   )
 }

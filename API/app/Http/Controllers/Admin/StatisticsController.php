@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrdersResource;
 use App\Http\Resources\RealEstateResource;
 use App\Http\Resources\ServicesOrdersResource;
+use App\Http\Resources\StatisticsResource;
 use App\Models\Orders;
 use App\Models\RealEstate;
 use App\Models\ServicesOrders;
 use App\Models\SubConstructionService;
-
+use App\Traits\HttpResponses;
 class StatisticsController extends Controller
 {
+    use HttpResponses;
     public function getStatistics()
     {
         $realEstatesCount = RealEstate::count();
@@ -28,19 +30,22 @@ class StatisticsController extends Controller
         $latestRealEstates = RealEstateResource::collection(RealEstate::orderBy('created_at', 'desc')->take(10)->get());
 
         $statistics = [
+
             'realEstatesCount' => $realEstatesCount,
             'mainServicesCount' => $mainServicesCount,
             'subServicesCount' => $subServicesCount,
             'realEstateOrdersCount' => $realEstateOrdersCount,
             'serviceOrdersCount' => $serviceOrdersCount,
-            'totalServices'=>$totalServices,
-            'totalOrders'=>$totalOrders,
+            'totalServices' => $totalServices,
+            'totalOrders' => $totalOrders,
             'latestRealEstateOrders' => $latestRealEstateOrders,
             'latestServiceOrders' => $latestServiceOrders,
             'latestRealEstates' => $latestRealEstates,
           
-        ];
+                ];
 
-        return response()->json($statistics);
-    }
+           return new StatisticsResource($statistics);
+        }
+        // return response()->json($statistics);
+    
 }

@@ -5,9 +5,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:tadllal/components/forget_password_status.dart';
 import 'package:tadllal/config/global.dart';
 import 'package:tadllal/services/api/dio_api.dart';
+
+enum ForgetPasswordStatus{
+  emailVerification,
+  resetCodeVerification,
+  resetPassword,
+  done
+}
 
 class ForgetPasswordDialog extends StatefulWidget {
   const ForgetPasswordDialog({super.key, this.email});

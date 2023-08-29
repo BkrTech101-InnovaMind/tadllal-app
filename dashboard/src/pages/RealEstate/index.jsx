@@ -1,8 +1,19 @@
 import Card from "@/Components/Card"
+import CustomTable from "@/Components/CustomTable"
 import PrimaryBt from "@/Components/FormsComponents/Buttons/PrimaryBt"
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
-
+import api from "@/api/api"
+import { fetchLocations, fetchTypes } from "@/api/fetchData"
+import { countMatchingItems } from "@/api/filtersData"
+import { realEstateTypes, status } from "@/data/arrays"
+import Layout from "@/layout/Layout"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { BsHouseDoor } from "react-icons/bs"
+import { toast } from "react-toastify"
 export default function Index() {
   const router = useRouter()
   const [realEstates, setRealEstates] = useState([])
@@ -282,7 +293,6 @@ export default function Index() {
   }
   return (
     <Layout>
-      {/* // page container */}
       <div
         className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
         dir='rtl'

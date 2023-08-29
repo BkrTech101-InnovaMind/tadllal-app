@@ -131,7 +131,7 @@ export default function Index() {
       ),
     },
     {
-      key: "attributes",
+      key: "location",
       label: "الموقع",
       render: (item) => (
         <div>
@@ -140,12 +140,12 @@ export default function Index() {
       ),
     },
     {
-      key: "attributes",
+      key: "price",
       label: "السعر",
       render: (item) => <div>{item.attributes.price}</div>,
     },
     {
-      key: "attributes",
+      key: "statues",
       label: "الحالة",
       render: (item) => (
         <div className='flex items-center'>

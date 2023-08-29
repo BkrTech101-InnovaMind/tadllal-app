@@ -5,14 +5,14 @@ import 'package:tadllal/config/global.dart';
 import 'package:tadllal/config/login_info.dart';
 import 'package:tadllal/widgets/save_dialog.dart';
 
-class ChangePasswordPopUp extends StatefulWidget {
-  const ChangePasswordPopUp({super.key});
+class ChangePasswordDialog extends StatefulWidget {
+  const ChangePasswordDialog({super.key});
 
   @override
-  State<ChangePasswordPopUp> createState() => _ChangePasswordPopUpState();
+  State<ChangePasswordDialog> createState() => _ChangePasswordPopUpState();
 }
 
-class _ChangePasswordPopUpState extends State<ChangePasswordPopUp> {
+class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
   final _formKey = GlobalKey<FormState>();
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();

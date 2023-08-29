@@ -23,7 +23,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
         padding: const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: const Color(0xff103c5b),
+          color: const Color(0xFFF5F4F8),
           borderRadius: BorderRadius.circular(Consts.padding),
           boxShadow: const [
             BoxShadow(
@@ -41,7 +41,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: "Cairo",
-                    color: Color(0xfff48923),
+                    color: Colors.redAccent,
                     fontWeight: FontWeight.bold,
                     fontSize: 15)),
             const Divider(
@@ -64,7 +64,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontFamily: "Cairo",
-                        color: Color(0xfff48923),
+                        color: Colors.redAccent,
                         fontWeight: FontWeight.normal,
                         fontSize: 12)),
               ],
@@ -76,7 +76,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                 MaterialButton(
                   height: 30.0,
                   minWidth: 50.0,
-                  color: const Color(0xFFBD6611),
+                  color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),

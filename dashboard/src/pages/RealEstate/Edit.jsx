@@ -4,12 +4,13 @@ import TextErea from "@/Components/FormsComponents/Inputs/TextErea"
 import api from "@/api/api"
 import { fetchLocations, fetchTypes } from "@/api/fetchData"
 import Layout from "@/layout/Layout"
+import LoadingIndicator from "@/utils/LoadingIndicator "
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
-
 export default function EditRealty() {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { id } = router.query
 
@@ -52,6 +53,7 @@ export default function EditRealty() {
       } catch (error) {
         console.error("Error fetching data first:", error)
       }
+      setLoading(true)
     }
     if (id) {
       fetchData()
@@ -193,143 +195,149 @@ export default function EditRealty() {
   }
 
   return (
-    <Layout>
-      <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
-        <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
-          <form className='w-full'>
-            <TextBox
-              type='text'
-              id='name'
-              label='اسم العقار'
-              name='name'
-              placeholder='ادخل اسم العقار'
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-            <TextBox
-              type='number'
-              id='price'
-              label='سعر العقار'
-              name='price'
-              placeholder='ادخل سعر العقار'
-              value={formData.price}
-              onChange={(e) =>
-                setFormData({ ...formData, price: e.target.value })
-              }
-            />
-            <TextErea
-              id='description'
-              label='وصف العقار'
-              name='description'
-              placeholder='ادخل وصف العقار'
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-            <DropDownList
-              title='موقع العقار'
-              options={locations}
-              selectedValue={formData.location}
-              onSelect={(e) => setFormData({ ...formData, location: e })}
-            />
-            <TextBox
-              type='text'
-              id='locationInfo'
-              label='عنوان العقار'
-              name='locationInfo'
-              placeholder='ادخل عنوان العقار'
-              value={formData.locationInfo}
-              onChange={(e) =>
-                setFormData({ ...formData, locationInfo: e.target.value })
-              }
-            />
-            <DropDownList
-              title='نوع العقار'
-              options={types}
-              selectedValue={formData.firstType}
-              onSelect={(e) => setFormData({ ...formData, firstType: e })}
-            />
-            <DropDownList
-              title='طبيعة العقار'
-              options={array.data}
-              selectedValue={formData.secondType}
-              onSelect={(e) => setFormData({ ...formData, secondType: e })}
-            />
-            <div className='flex flex-col'>
-              <label className='text-right mb-2'>الصورة الرئيسية</label>
-              {formData.photo && (
-                <Image
-                  width={500}
-                  height={500}
-                  src={formData.photo}
-                  alt='صورة الخدمة'
-                  className='w-40 h-40 object-cover rounded'
+    <>
+      {!loading ? (
+        <LoadingIndicator />
+      ) : (
+        <Layout>
+          <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
+            <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
+              <form className='w-full'>
+                <TextBox
+                  type='text'
+                  id='name'
+                  label='اسم العقار'
+                  name='name'
+                  placeholder='ادخل اسم العقار'
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                 />
-              )}
-            </div>
-            <div className='flex flex-col w-full'>
-              <label className='text-right mb-2'>بقية الصور</label>
-              {formData.images && formData.images.length > 0 && (
-                <div className='flex space-x-2 first-of-type:ml-4'>
-                  {formData.images.map((image, index) => (
+                <TextBox
+                  type='number'
+                  id='price'
+                  label='سعر العقار'
+                  name='price'
+                  placeholder='ادخل سعر العقار'
+                  value={formData.price}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: e.target.value })
+                  }
+                />
+                <TextErea
+                  id='description'
+                  label='وصف العقار'
+                  name='description'
+                  placeholder='ادخل وصف العقار'
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                />
+                <DropDownList
+                  title='موقع العقار'
+                  options={locations}
+                  selectedValue={formData.location}
+                  onSelect={(e) => setFormData({ ...formData, location: e })}
+                />
+                <TextBox
+                  type='text'
+                  id='locationInfo'
+                  label='عنوان العقار'
+                  name='locationInfo'
+                  placeholder='ادخل عنوان العقار'
+                  value={formData.locationInfo}
+                  onChange={(e) =>
+                    setFormData({ ...formData, locationInfo: e.target.value })
+                  }
+                />
+                <DropDownList
+                  title='نوع العقار'
+                  options={types}
+                  selectedValue={formData.firstType}
+                  onSelect={(e) => setFormData({ ...formData, firstType: e })}
+                />
+                <DropDownList
+                  title='طبيعة العقار'
+                  options={array.data}
+                  selectedValue={formData.secondType}
+                  onSelect={(e) => setFormData({ ...formData, secondType: e })}
+                />
+                <div className='flex flex-col'>
+                  <label className='text-right mb-2'>الصورة الرئيسية</label>
+                  {formData.photo && (
                     <Image
-                      key={index}
-                      width={100}
-                      height={100}
-                      src={image}
-                      alt={`صورة ${index}`}
-                      className='w-20 h-20 object-cover rounded'
+                      width={500}
+                      height={500}
+                      src={formData.photo}
+                      alt='صورة الخدمة'
+                      className='w-40 h-40 object-cover rounded'
                     />
-                  ))}
+                  )}
                 </div>
-              )}
+                <div className='flex flex-col w-full'>
+                  <label className='text-right mb-2'>بقية الصور</label>
+                  {formData.images && formData.images.length > 0 && (
+                    <div className='flex space-x-2 first-of-type:ml-4'>
+                      {formData.images.map((image, index) => (
+                        <Image
+                          key={index}
+                          width={100}
+                          height={100}
+                          src={image}
+                          alt={`صورة ${index}`}
+                          className='w-20 h-20 object-cover rounded'
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <TextBox
+                  type='file'
+                  id='photo'
+                  label='صورة العقار الرئيسية'
+                  name='photo'
+                  onChange={(e) =>
+                    setFormData({ ...formData, photo: e.target.files[0] })
+                  }
+                />
+
+                <TextBox
+                  type='file'
+                  id='images'
+                  label=' صور العقار '
+                  name='images'
+                  placeholder='ادخل صور العقار'
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      images: Array.from(e.target.files),
+                    })
+                  }
+                  multiple
+                />
+
+                <DropDownList
+                  title='حالة العقار'
+                  options={statuesArray.data}
+                  selectedValue={formData.state}
+                  onSelect={(e) => setFormData({ ...formData, state: e })}
+                />
+                {/* Add image editing fields here */}
+                <button
+                  className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600`}
+                  type='button'
+                  onClick={handleUpdate}
+                >
+                  تحديث
+                </button>
+              </form>
             </div>
-
-            <TextBox
-              type='file'
-              id='photo'
-              label='صورة العقار الرئيسية'
-              name='photo'
-              onChange={(e) =>
-                setFormData({ ...formData, photo: e.target.files[0] })
-              }
-            />
-
-            <TextBox
-              type='file'
-              id='images'
-              label=' صور العقار '
-              name='images'
-              placeholder='ادخل صور العقار'
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  images: Array.from(e.target.files),
-                })
-              }
-              multiple
-            />
-
-            <DropDownList
-              title='حالة العقار'
-              options={statuesArray.data}
-              selectedValue={formData.state}
-              onSelect={(e) => setFormData({ ...formData, state: e })}
-            />
-            {/* Add image editing fields here */}
-            <button
-              className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600`}
-              type='button'
-              onClick={handleUpdate}
-            >
-              تحديث
-            </button>
-          </form>
-        </div>
-      </div>
-    </Layout>
+          </div>
+        </Layout>
+      )}
+    </>
   )
 }

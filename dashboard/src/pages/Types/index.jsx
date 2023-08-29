@@ -5,6 +5,7 @@ import Search from "@/Components/FormsComponents/Inputs/Search"
 import api from "@/api/api"
 import { tableSearch } from "@/api/filtersData"
 import Layout from "@/layout/Layout"
+import LoadingIndicator from "@/utils/LoadingIndicator "
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -12,6 +13,7 @@ import { useEffect, useState } from "react"
 import { BsHouseDoor } from "react-icons/bs"
 import { toast } from "react-toastify"
 export default function Index() {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const [types, setTypes] = useState([])
   const [searchResults, setSearchResults] = useState([])
@@ -23,6 +25,7 @@ export default function Index() {
     } catch (error) {
       console.error("Error fetching Types:", error)
     }
+    setLoading(true)
   }
 
   useEffect(() => {
@@ -95,49 +98,55 @@ export default function Index() {
     }
   }
   return (
-    <Layout>
-      {/* // page container */}
-      <div
-        className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
-        dir='rtl'
-      >
-        <Card
-          id='1'
-          icon={<BsHouseDoor size={69} color='#f584' />}
-          title='عدد أنواع العقارات'
-          value={types.length}
-          label='العدد الاجمالي'
-        />
-      </div>
-      <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
-        {/* filter container */}
+    <>
+      {!loading ? (
+        <LoadingIndicator />
+      ) : (
+        <Layout>
+          {/* // page container */}
+          <div
+            className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
+            dir='rtl'
+          >
+            <Card
+              id='1'
+              icon={<BsHouseDoor size={69} color='#f584' />}
+              title='عدد أنواع العقارات'
+              value={types.length}
+              label='العدد الاجمالي'
+            />
+          </div>
+          <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
+            {/* filter container */}
 
-        <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
-          <div className='flex flex-col gap-y-4 w-full'>
-            <div className='flex justify-between border-t-2 pt-5'>
-              <div>
-                {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
-                <Link href='/Types/New'>
-                  <PrimaryBt type='add' name='إضافة نوع جديد' />
-                </Link>
-                <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
-              </div>
+            <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
+              <div className='flex flex-col gap-y-4 w-full'>
+                <div className='flex justify-between border-t-2 pt-5'>
+                  <div>
+                    {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
+                    <Link href='/Types/New'>
+                      <PrimaryBt type='add' name='إضافة نوع جديد' />
+                    </Link>
+                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                  </div>
 
-              <div>
-                <Search onSearch={handleSearch} />
+                  <div>
+                    <Search onSearch={handleSearch} />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        {/* <Table /> */}
+            {/* <Table /> */}
 
-        <CustomTable
-          columns={columns}
-          data={searchResults.length > 0 ? searchResults : types}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      </div>
-    </Layout>
+            <CustomTable
+              columns={columns}
+              data={searchResults.length > 0 ? searchResults : types}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          </div>
+        </Layout>
+      )}
+    </>
   )
 }

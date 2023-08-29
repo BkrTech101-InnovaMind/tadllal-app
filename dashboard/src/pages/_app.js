@@ -1,5 +1,5 @@
-import { LoadingProvider } from "@/Context API/LoadingContext"
 import "@/styles/globals.css"
+import LoadingIndicator from "@/utils/LoadingIndicator "
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -9,7 +9,7 @@ const API_URL = "http://127.0.0.1:8000/api/"
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null)
   const router = useRouter()
-
+  const [loading, setLoading] = useState(false)
   async function checkUserStatus() {
     const headers = {
       "Content-Type": `application/vnd.api+json`,
@@ -26,6 +26,7 @@ export default function App({ Component, pageProps }) {
     } catch (error) {
       setUser(null)
     }
+    setLoading(true)
     if (
       !localStorage.getItem("authToken") &&
       !user &&
@@ -47,10 +48,16 @@ export default function App({ Component, pageProps }) {
   }, [router.pathname, router])
 
   return (
-    <LoadingProvider>
-      <Component {...pageProps} />
-      <ToastContainer />
-    </LoadingProvider>
+    <>
+      {!loading ? (
+        <LoadingIndicator />
+      ) : (
+        <>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </>
+      )}
+    </>
   )
 }
 

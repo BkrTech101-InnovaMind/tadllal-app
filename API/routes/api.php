@@ -1,7 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\ConstructionServiceController as AdminConstructionServiceController;
+use App\Http\Controllers\Admin\LocationsController as AdminLocationsController;
+use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
+use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
 use App\Http\Controllers\Admin\ServicesOrdersController;
-use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\StatisticsController;
+use App\Http\Controllers\Admin\SubConstructionServiceController as AdminSubConstructionServiceController;
+use App\Http\Controllers\Admin\TypesController as AdminTypesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
@@ -16,15 +23,6 @@ use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
-
-use App\Http\Controllers\Admin\AuthController as AdminAuthController;
-use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
-use App\Http\Controllers\Admin\TypesController as AdminTypesController;
-use App\Http\Controllers\Admin\LocationsController as AdminLocationsController;
-use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
-use App\Http\Controllers\Admin\ConstructionServiceController as AdminConstructionServiceController;
-use App\Http\Controllers\Admin\SubConstructionServiceController as AdminSubConstructionServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +61,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
     Route::get('/', function () {
         return "welcome Admin";
     });
-
+    Route::get('/statistics', [StatisticsController::class, 'getStatistics']);
     Route::prefix('realEstate')->group(function () {
         Route::resource('/realty', AdminRealEstateController::class);
         Route::post('/{id}/edit', [AdminRealEstateController::class, 'updateRealEstate']);

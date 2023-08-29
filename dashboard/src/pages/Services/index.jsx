@@ -174,7 +174,6 @@ export default function Index() {
   const handleDelete = async (item) => {
     const authToken = localStorage.getItem("authToken")
 
-    data
     try {
       await api.deleteFunc(`${endpoint}${item.id}`, authToken)
 

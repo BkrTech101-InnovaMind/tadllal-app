@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:tadllal/methods/api_provider.dart';
 import 'package:tadllal/pages/auth_pages/auth_pages.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        FormBuilderLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale("ar", "YE"), // OR Locale('ar', 'AE') OR Other RTL locales

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tadllal/widgets/save_dialog.dart';
 
 class AddUserPage extends StatefulWidget {
   const AddUserPage({super.key});
@@ -10,16 +11,33 @@ class AddUserPage extends StatefulWidget {
 class _AddUserPageState extends State<AddUserPage> {
   final _formKey = GlobalKey<FormState>();
   final _userNameController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   void handleSubmit() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     final form = {
-      "name": _userNameController.text,
-      "email": _phoneController.text,
+      "name": _userNameController.text.trim(),
+      "email": _emailController.text.trim(),
+      "password": _passwordController.text.trim(),
+      "password_confirmation": _passwordController.text.trim()
     };
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context2) => SaveDialog(
+        formValue: [
+          {"path": "/profile/register-other-user", "myData": form}
+        ],
+        onUrlChanged: (data) {
+          Navigator.of(context2).pop();
+          Navigator.of(context).pop();
+        },
+      ),
+    );
     print(form);
   }
 
@@ -104,9 +122,9 @@ class _AddUserPageState extends State<AddUserPage> {
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) => value == null || value.isEmpty
-                    ? "الرجاء ادخال رقم الهاتف"
+                    ? "الرجاء ادخال البريد الالكتروني"
                     : null,
-                controller: _phoneController,
+                controller: _emailController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.phone_iphone_outlined),
                   prefixIconColor: Colors.black,
@@ -114,7 +132,30 @@ class _AddUserPageState extends State<AddUserPage> {
                   focusedBorder:
                       UnderlineInputBorder(borderSide: BorderSide.none),
                   contentPadding: EdgeInsets.symmetric(vertical: 25),
-                  hintText: "رقم الهاتف",
+                  hintText: "البريد الالكتروني",
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 35),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F4F8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextFormField(
+                keyboardType: TextInputType.visiblePassword,
+                validator: (value) => value == null || value.isEmpty
+                    ? "يرجى ادخال كلمة المرور"
+                    : null,
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.password),
+                  prefixIconColor: Colors.black,
+                  border: UnderlineInputBorder(borderSide: BorderSide.none),
+                  focusedBorder:
+                      UnderlineInputBorder(borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.symmetric(vertical: 25),
+                  hintText: "كلمة المرور",
                 ),
               ),
             ),

@@ -293,6 +293,12 @@ export default function Index() {
     }
   }
 
+  const handleView = (item) => {
+    router.push({
+      pathname: `/RealEstate/${item.id}`,
+      query: { jsonData: JSON.stringify(item) },
+    })
+  }
   return (
     <Layout>
       {/* // page container */}
@@ -384,6 +390,8 @@ export default function Index() {
           data={searchResults.length > 0 ? searchResults : realEstates}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          extraButtonType={"view"}
+          myFunction={handleView}
         />
       </div>
     </Layout>

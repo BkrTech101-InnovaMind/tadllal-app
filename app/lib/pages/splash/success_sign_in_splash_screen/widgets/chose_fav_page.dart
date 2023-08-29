@@ -16,10 +16,12 @@ class ChoseFavPage extends StatefulWidget {
   State<ChoseFavPage> createState() => _ChoseFavPageState();
 }
 
-class _ChoseFavPageState extends State<ChoseFavPage> {
+class _ChoseFavPageState extends State<ChoseFavPage>
+    with AutomaticKeepAliveClientMixin<ChoseFavPage> {
   late Future<List<RealEstateType>> realEstateTypeList;
   final DioApi dioApi = DioApi();
-
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     setState(() {
@@ -39,6 +41,7 @@ class _ChoseFavPageState extends State<ChoseFavPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ListView(
       shrinkWrap: true,
       children: [

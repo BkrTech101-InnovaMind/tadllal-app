@@ -43,7 +43,7 @@ class _SaveDialogState extends State<SaveDialog> {
         padding: const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: const Color(0xff103c5b),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(Consts.padding),
           boxShadow: const [
             BoxShadow(
@@ -65,7 +65,7 @@ class _SaveDialogState extends State<SaveDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Color(0xFF1F4C6B),
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
@@ -78,7 +78,11 @@ class _SaveDialogState extends State<SaveDialog> {
                     Row(
                       children: [
                         const ColorfulCircularProgressIndicator(
-                          colors: [Color(0xfff48923), Colors.white, Colors.red],
+                          colors: [
+                            Color(0xfff48923),
+                            Colors.yellowAccent,
+                            Colors.red
+                          ],
                           strokeWidth: 5,
                           indicatorHeight: 40,
                           indicatorWidth: 40,
@@ -90,7 +94,7 @@ class _SaveDialogState extends State<SaveDialog> {
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 fontFamily: "Cairo",
-                                color: Color(0xfff48923),
+                                color: Color(0xFF8BC83F),
                                 fontWeight: FontWeight.normal,
                                 fontSize: 12)),
                       ],
@@ -107,7 +111,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Color(0xFF8BC83F),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
@@ -130,7 +134,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF8BC83F),
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         ],
@@ -142,7 +146,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -169,7 +173,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Colors.redAccent,
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
@@ -194,7 +198,7 @@ class _SaveDialogState extends State<SaveDialog> {
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Colors.redAccent,
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -207,7 +211,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -227,7 +231,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: const Color(0xFF8BC83F),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -235,7 +239,7 @@ class _SaveDialogState extends State<SaveDialog> {
                             onPressed: () {
                               _getData();
                             },
-                            splashColor: Colors.redAccent,
+                            splashColor: const Color(0xFF8BC83F),
                             child: const Text(
                               'إعادة المحاولة',
                               style: TextStyle(fontSize: 12),
@@ -254,7 +258,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Colors.redAccent,
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
@@ -283,7 +287,7 @@ class _SaveDialogState extends State<SaveDialog> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Colors.redAccent,
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -296,7 +300,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -316,7 +320,7 @@ class _SaveDialogState extends State<SaveDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: const Color(0xFF8BC83F),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -324,7 +328,7 @@ class _SaveDialogState extends State<SaveDialog> {
                             onPressed: () {
                               _getData();
                             },
-                            splashColor: Colors.redAccent,
+                            splashColor: const Color(0xFF8BC83F),
                             child: const Text(
                               'إعادة المحاولة',
                               style: TextStyle(fontSize: 12),
@@ -344,7 +348,7 @@ class _SaveDialogState extends State<SaveDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Colors.redAccent,
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
@@ -370,7 +374,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         ),
@@ -383,7 +387,7 @@ class _SaveDialogState extends State<SaveDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: Colors.redAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -403,7 +407,7 @@ class _SaveDialogState extends State<SaveDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: const Color(0xFF8BC83F),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),

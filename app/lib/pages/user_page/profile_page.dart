@@ -212,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             const SizedBox(height: 7),
                                             TextFormField(
                                               controller: emailController,
-                                              enabled: isEditeMode,
+                                              enabled: false,
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(

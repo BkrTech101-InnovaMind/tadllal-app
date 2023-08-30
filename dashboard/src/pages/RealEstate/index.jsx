@@ -13,7 +13,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
+import { GiCash, GiHouse, GiHouseKeys, GiKeyLock } from "react-icons/gi"
 import { toast } from "react-toastify"
 export default function Index() {
   const [loading, setLoading] = useState(false)
@@ -306,31 +306,35 @@ export default function Index() {
           >
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<GiHouse color='#f584' size={69} />}
               title='عدد العقارات'
               value={statistics.totalRealEstates}
               label='العدد الاجمالي'
+              color='#f584'
             />
             <Card
               id=''
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<GiKeyLock color='#2ecc71' size={69} />}
               title='العقارات المتاحة'
               value={statistics.availableRealEstates}
               label='العدد الاجمالي'
+              color='#2ecc71'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<GiCash color='#3498db' size={69} />}
               title='عقارات للبيع'
               value={statistics.realEstatesForSale}
               label='العدد الاجمالي'
+              color='#3498db'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<GiHouseKeys color='#e74c3c' size={69} />}
               title='عقارات للايجار'
               value={statistics.realEstatesForRent}
               label='العدد الاجمالي'
+              color='#e74c3c'
             />
           </div>
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>

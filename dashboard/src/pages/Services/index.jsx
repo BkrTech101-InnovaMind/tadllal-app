@@ -12,7 +12,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
+import { BsCardChecklist } from "react-icons/bs"
+import { FaCogs, FaToolbox } from "react-icons/fa"
 import Modal from "react-modal"
 import { toast } from "react-toastify"
 export default function Index() {
@@ -222,25 +223,28 @@ export default function Index() {
           >
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<BsCardChecklist size={69} color='#3498db' />} // أيقونة تمثيل خدمات مع لون أزرق ملائم
               title='عدد كل الخدمات'
               value={services.length + subServices.length}
               label='العدد الاجمالي'
+              color='#3498db'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FaCogs size={69} color='#27ae60' />} // أيقونة تمثيل خدمات رئيسية مع لون أخضر ملائم
               title='عدد الخدمات الرئيسية'
               value={services.length}
               label='العدد الاجمالي'
+              color='#27ae60'
             />
 
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FaToolbox size={69} color='#e67e22' />} // أيقونة تمثيل خدمات فرعية مع لون برتقالي ملائم
               title='عدد الخدمات الفرعية'
               value={subServices.length}
               label='العدد الاجمالي'
+              color='#e67e22'
             />
           </div>
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
@@ -303,16 +307,44 @@ export default function Index() {
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
             contentLabel='تفاصيل الخدمة'
+            overlayClassName='fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50'
           >
+            <div className='flex justify-between  m-0' dir='rtl'>
+              <h2 className='text-xl font-semibold text-black '>
+                تفاصيل الخدمة
+              </h2>
+              <button
+                onClick={() => setModalIsOpen(false)}
+                className='text-gray-600 hover:text-gray-800 focus:outline-none'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  className='w-6 h-6'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M5.293 5.293a1 1 0 0 1 1.414 0L10 8.586l3.293-3.293a1 1 0 0 1 1.414 1.414L11.414 10l3.293 3.293a1 1 0 0 1-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 0 1-1.414-1.414L8.586 10 5.293 6.707a1 1 0 0 1 0-1.414z'
+                  />
+                </svg>
+              </button>
+            </div>
+
             {currentService && (
-              <div className='text-black text-center'>
-                <div className='font-bold text-xl mb-6'>
-                  <h1 className='mb-2'>الخدمة</h1>
-                  <p className='text-2xl'>{currentService.attributes.name}</p>
+              <div className='text-black text-center '>
+                <div
+                  className=' my-6 flex flex-row items-center mt-9'
+                  dir='rtl'
+                >
+                  <h1 className='ml-2 font-semibold'>اسم الخدمة :</h1>
+                  <p className='font-medium'>
+                    {currentService.attributes.name}
+                  </p>
                 </div>
-                <div className='font-bold text-xl mb-6'>
-                  <h1 className='mb-2'>ألوصف</h1>
-                  <p className='text-2xl'>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'>الوصف</h1>
+                  <p className='font-medium'>
                     {currentService.attributes.description}
                   </p>
                 </div>

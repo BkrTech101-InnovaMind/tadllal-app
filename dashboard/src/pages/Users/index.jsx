@@ -3,14 +3,6 @@ import CustomTable from "@/Components/CustomTable"
 import PrimaryBt from "@/Components/FormsComponents/Buttons/PrimaryBt"
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
-import avatar from "@/images/user.png"
-import Layout from "@/layout/Layout"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
-
 import api from "@/api/api"
 import {
   countMatchingItems,
@@ -18,8 +10,17 @@ import {
   tableSearch,
 } from "@/api/filtersData"
 import { usersFiltersArray } from "@/data/arrays"
+import avatar from "@/images/user.png"
+import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator "
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/router"
 import qs from "qs"
+import { useEffect, useState } from "react"
+import { AiFillBank } from "react-icons/ai"
+import { FaUserTie } from "react-icons/fa"
+import { FiCheckCircle, FiUsers } from "react-icons/fi"
 import { toast } from "react-toastify"
 
 export default function Index() {
@@ -320,31 +321,35 @@ export default function Index() {
           >
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FiUsers size={69} color='#3498db' />} // أيقونة تمثيل عدد المستخدمين مع لون أزرق ملائم
               title='عدد المستخدمين'
               value={statistics.totalUsers}
               label='العدد الاجمالي'
+              color='#3498db'
             />
             <Card
               id=''
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<AiFillBank size={69} color='#e67e22' />} // أيقونة تمثيل عدد الشركات مع لون برتقالي ملائم
               title='عدد الشركات'
               value={statistics.totalCompany}
               label='العدد الاجمالي'
+              color='#e67e22'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FaUserTie size={69} color='#27ae60' />} // أيقونة تمثيل عدد المسوقين مع لون أخضر ملائم
               title='عدد المسوقين'
               value={statistics.totalMarketers}
               label='العدد الاجمالي'
+              color='#27ae60'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FiCheckCircle size={69} color='#f39c12' />} // أيقونة تمثيل عدد المستخدمين المفعلين مع لون أصفر ملائم
               title='عدد المستخدمين المفعلين'
               value={statistics.usersNotActive}
               label='العدد الاجمالي'
+              color='#f39c12'
             />
           </div>
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>

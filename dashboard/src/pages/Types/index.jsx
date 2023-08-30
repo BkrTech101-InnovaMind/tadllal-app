@@ -10,7 +10,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
+import { FaHome } from "react-icons/fa"
 import { toast } from "react-toastify"
 export default function Index() {
   const [loading, setLoading] = useState(false)
@@ -110,10 +110,11 @@ export default function Index() {
           >
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FaHome size={69} color='#e74c3c' />} // أيقونة منزل مع لون أحمر ملائم
               title='عدد أنواع العقارات'
               value={types.length}
               label='العدد الاجمالي'
+              color='#e74c3c'
             />
           </div>
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>

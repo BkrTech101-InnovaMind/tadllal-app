@@ -1,12 +1,16 @@
-import Avatar from "@/images/avatar2.png"
+import Avatar from "@/images/User.png"
 import Image from "next/image"
 import { useState } from "react"
-import { FaAngleDown } from "react-icons/fa"
-const Nav = () => {
+import { FaBars } from "react-icons/fa6"
+const Nav = ({ mainServicesOpen, setMainServicesOpen }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen)
+  }
+
+  const toggleSidebar = () => {
+    setMainServicesOpen(!mainServicesOpen) // تحديث حالة القائمة الجانبية
   }
 
   return (
@@ -24,28 +28,21 @@ const Nav = () => {
             />
             <p className='text-minueColor'>Admin</p>
           </div>
-
-          <button onClick={toggleDropdown} className=' focus:outline-none'>
-            <FaAngleDown className='text-minueColor' />
-          </button>
-          {dropdownOpen && (
-            <div className='absolute top-14 left-1 right-5 mt-1 w-40 bg-white border border-gray-300 rounded shadow'>
-              <ul className='py-1'>
-                <li>
-                  <a
-                    href='#'
-                    className='block px-4 py-2 hover:bg-gray-100 text-gray-800'
-                  >
-                    تسجيل الخروج
-                  </a>
-                </li>
-                {/* يمكنك إضافة المزيد من الخيارات هنا */}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
-      <h1 className='text-minueColor text-lg font-semibold'>لوحة التحكم</h1>
+      <div className='flex flex-row'>
+        <h1 className='text-minueColor text-lg font-semibold'>لوحة التحكم</h1>
+        <button
+          onClick={() => setMainServicesOpen(!mainServicesOpen)}
+          className='focus:outline-none text-black ml-2'
+        >
+          {mainServicesOpen ? (
+            <FaBars />
+          ) : (
+            <FaBars className='hamburger-icon-vertical' />
+          )}
+        </button>
+      </div>
     </div>
   )
 }

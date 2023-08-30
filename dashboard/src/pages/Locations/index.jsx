@@ -9,7 +9,7 @@ import LoadingIndicator from "@/utils/LoadingIndicator "
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
+import { FaMapMarkedAlt } from "react-icons/fa"
 import { toast } from "react-toastify"
 export default function Index() {
   const router = useRouter()
@@ -107,10 +107,11 @@ export default function Index() {
           >
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FaMapMarkedAlt size={69} color='#3498db' />} // أيقونة خريطة مع لون أزرق ملائم
               title='عدد المواقع'
               value={locations.length}
               label='العدد الاجمالي'
+              color='#3498db'
             />
           </div>
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>

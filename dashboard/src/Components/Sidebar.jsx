@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { FaSignOutAlt } from "react-icons/fa"
 import {
+  FaBars,
   FaBuilding,
   FaHouse,
   FaInbox,
@@ -13,8 +14,8 @@ import {
   FaToolbox,
   FaUsers,
 } from "react-icons/fa6"
-export default function Sidebar() {
-  const [mainServicesOpen, setMainServicesOpen] = useState(false)
+export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
+  // const [mainServicesOpen, setMainServicesOpen] = useState(false)
   const [subServicesOpen, setSubServicesOpen] = useState(false)
   const router = useRouter()
   const isActiveLink = (link) => {
@@ -23,10 +24,31 @@ export default function Sidebar() {
   }
 
   return (
-    <div className='bg-minueBg w-1/4 h-screen text-minueColor p-4 sm:hidden text-right shadow-slate-50 '>
-      <div dir='ltr' className='flex flex-row-reverse items-center gap-5 mb-16'>
-        <Image src={Applogo} alt='وصف الصورة' width={50} height={50} />
-        <p className='font-bold text-4xl'>تدلل عقار</p>
+    <div
+      className={`${
+        mainServicesOpen
+          ? " bg-minueBg w-1/4 h-screen  text-minueColor p-4 text-right shadow-slate-50 show"
+          : "hidden hide"
+      } sm:hidden `}
+    >
+      <div
+        dir='ltr'
+        className='flex flex-row-reverse items-center gap-5 mb-16 align-middle justify-between'
+      >
+        <div dir='ltr' className='flex flex-row-reverse items-center gap-5 '>
+          <Image src={Applogo} alt='وصف الصورة' width={50} height={50} />
+          <p className='font-bold text-4xl'>تدلل عقار</p>
+        </div>
+        <button
+          onClick={() => setMainServicesOpen(!mainServicesOpen)}
+          className='focus:outline-none text-black ml-2 minue'
+        >
+          {mainServicesOpen ? (
+            <FaBars />
+          ) : (
+            <FaBars className='hamburger-icon-vertical' />
+          )}
+        </button>
       </div>
       <ul className='space-y-4 nav-item'>
         <li>

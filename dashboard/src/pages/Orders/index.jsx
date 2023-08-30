@@ -1,9 +1,8 @@
 import Card from "@/Components/Card"
+import CustomTable from "@/Components/CustomTable"
 import PrimaryBt from "@/Components/FormsComponents/Buttons/PrimaryBt"
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
-
-import CustomTable from "@/Components/CustomTable"
 import api from "@/api/api"
 import { searchOrders } from "@/api/filtersData"
 import Layout from "@/layout/Layout"
@@ -11,7 +10,10 @@ import LoadingIndicator from "@/utils/LoadingIndicator "
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { BsHouseDoor } from "react-icons/bs"
+import { BiHomeAlt } from "react-icons/bi"
+import { FaToolbox } from "react-icons/fa"
+import { HiOutlineClipboardCheck } from "react-icons/hi"
+import { IoMdCheckmarkCircle } from "react-icons/io"
 import { toast } from "react-toastify"
 export default function Index() {
   const [loading, setLoading] = useState(false)
@@ -354,33 +356,37 @@ export default function Index() {
           >
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<BiHomeAlt size={69} color='#3498db' />} // أيقونة تمثيل طلبات العقارات مع لون أزرق ملائم
               title='طلبات العقارات'
               value={orders.length}
               label='العدد الاجمالي'
+              color='#3498db'
             />
             <Card
               id=''
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<FaToolbox size={69} color='#e67e22' />} // أيقونة تمثيل طلبات الخدمات مع لون برتقالي ملائم
               title='طلبات الخدمات'
               value={sevices.length}
               label='العدد الاجمالي'
+              color='#e67e22'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
+              icon={<IoMdCheckmarkCircle size={69} color='#27ae60' />} // أيقونة تمثيل الموافق عليها مع لون أخضر ملائم
               title='الموافق عليها'
               value={getApprovedServicesCount() + getApprovedOrdersCount()}
               label='العدد الاجمالي'
+              color='#27ae60'
             />
             <Card
               id='1'
-              icon={<BsHouseDoor size={69} color='#f584' />}
-              title='تحت المراجعه'
+              icon={<HiOutlineClipboardCheck size={69} color='#f39c12' />} // أيقونة تمثيل تحت المراجعة مع لون أصفر ملائم
+              title='تحت المراجعة'
               value={
                 getUnderReviewServicesCount() + getUnderReviewOrdersCount()
               }
               label='العدد الاجمالي'
+              color='#f39c12'
             />
           </div>
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>

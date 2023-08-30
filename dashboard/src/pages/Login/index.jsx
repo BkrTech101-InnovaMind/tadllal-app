@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
-const API_URL = "http://127.0.0.1:8000/api/admin/"
+const API_URL = "http://tedallalapi.vercel.app/api/v1/admin/"
 export default function Index() {
   const router = useRouter()
 

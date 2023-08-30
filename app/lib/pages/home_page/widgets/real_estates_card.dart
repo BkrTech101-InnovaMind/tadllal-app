@@ -80,12 +80,23 @@ class _RealEstateCardState extends State<RealEstateCard> {
               appProvider.filteredRealEstateList[index].attributes!.isFavorite!;
           String secondType =
               appProvider.filteredRealEstateList[index].attributes!.secondType!;
+          String secondTypeText;
           Color backgroundColor;
-          if (secondType == "for rent") {
-            backgroundColor = const Color(0xFFA82727);
-          } else {
-            backgroundColor = const Color(0xFFFA712D);
-          }
+
+          // secondType == "for sale"
+          //     ?
+          //     : ;
+
+          secondType == "for rent"
+              ? {
+                  backgroundColor = const Color(0xFFA82727),
+                  secondTypeText = "للإيجار"
+                }
+              : {
+                  backgroundColor = const Color(0xFFFA712D),
+                  secondTypeText = "للبيع"
+                };
+
           return TextButton(
             style: TextButton.styleFrom(padding: const EdgeInsets.all(5)),
             onPressed: () {
@@ -172,7 +183,7 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(12))),
                                       child: Text(
-                                        secondType,
+                                        secondTypeText,
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),

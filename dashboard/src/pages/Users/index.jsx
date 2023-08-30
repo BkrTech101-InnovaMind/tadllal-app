@@ -12,7 +12,7 @@ import {
 import { usersFiltersArray } from "@/data/arrays"
 import avatar from "@/images/user.png"
 import Layout from "@/layout/Layout"
-import LoadingIndicator from "@/utils/LoadingIndicator "
+import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"

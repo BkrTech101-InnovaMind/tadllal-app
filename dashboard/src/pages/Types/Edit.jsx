@@ -1,7 +1,7 @@
 import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
 import api from "@/api/api"
 import Layout from "@/layout/Layout"
-import LoadingIndicator from "@/utils/LoadingIndicator "
+import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
-const API_URL = "http://tedallalapi.vercel.app/api/v1/admin/"
+const API_URL = "https://tadllal.alqatta.com/admin/"
 export default function Index() {
   const router = useRouter()
 

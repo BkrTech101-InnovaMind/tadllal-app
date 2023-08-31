@@ -11,7 +11,7 @@ const String PASSWORD = "password";
 
 // API endpoint URL
 const String APP_API_URI = "https://tadllal.alqatta.com";
-// const String APP_API_URI = "http://192.168.1.46:8080";
+// const String APP_API_URI = "http://192.168.1.251";
 // const String APP_API_URI="http://192.168.0.221";
 
 //Hero Tags

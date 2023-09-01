@@ -8,6 +8,7 @@ const nextConfig = {
       "tedallalapi.vercel.app",
       "tadllal.alqatta.com",
     ],
+
   },
 }
 

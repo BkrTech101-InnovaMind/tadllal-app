@@ -68,7 +68,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
         padding: const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: const Color(0xff103c5b),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(Consts.padding),
           boxShadow: const [
             BoxShadow(
@@ -92,7 +92,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         title,
                         style: const TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Color(0xFF1F4C6B),
                             fontWeight: FontWeight.bold,
                             fontSize: 15),
                       ),
@@ -126,7 +126,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             child: Text(progressDesc,
                                 style: const TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF8BC83F),
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -147,7 +147,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         Text(title,
                             style: const TextStyle(
                                 fontFamily: "Cairo",
-                                color: Color(0xfff48923),
+                                color: Color(0xFF8BC83F),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15)),
                         const Divider(
@@ -173,7 +173,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               child: Text("تم $title",
                                   style: const TextStyle(
                                       fontFamily: "Cairo",
-                                      color: Color(0xfff48923),
+                                      color: Color(0xFF8BC83F),
                                       fontWeight: FontWeight.normal,
                                       fontSize: 12)),
                             ),
@@ -194,7 +194,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                           Text(title,
                               style: const TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF8BC83F),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15)),
                           const Divider(
@@ -214,9 +214,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                   color: Color(0xfff48923),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              const SizedBox(width: 20),
                               Expanded(
                                 flex: 5,
                                 child: Column(
@@ -225,14 +223,14 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                     Text(e.statusMessage,
                                         style: const TextStyle(
                                             fontFamily: "Cairo",
-                                            color: Color(0xfff48923),
+                                            color: Colors.redAccent,
                                             fontWeight: FontWeight.normal,
                                             fontSize: 12)),
                                     Text(
                                       "رقم الخطأ: (${e.statusCode})",
                                       style: const TextStyle(
                                           fontFamily: "Cairo",
-                                          color: Color(0xfff48923),
+                                          color: Colors.redAccent,
                                           fontWeight: FontWeight.normal,
                                           fontSize: 12),
                                     ),
@@ -248,7 +246,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: Colors.redAccent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -268,7 +266,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: const Color(0xFF8BC83F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -297,7 +295,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                           Text(title,
                               style: const TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF8BC83F),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15)),
                           const Divider(
@@ -324,7 +322,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 child: Text("${snapshot.error}",
                                     style: const TextStyle(
                                         fontFamily: "Cairo",
-                                        color: Color(0xfff48923),
+                                        color: Colors.redAccent,
                                         fontWeight: FontWeight.normal,
                                         fontSize: 12)),
                               ),
@@ -337,7 +335,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: Colors.redAccent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -357,7 +355,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: const Color(0xFF8BC83F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -365,7 +363,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 onPressed: () {
                                   _getData();
                                 },
-                                splashColor: Colors.redAccent,
+                                splashColor: const Color(0xFF8BC83F),
                                 child: const Text(
                                   'إعادة المحاولة',
                                   style: TextStyle(fontSize: 12),
@@ -387,7 +385,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         Text(title,
                             style: const TextStyle(
                                 fontFamily: "Cairo",
-                                color: Color(0xfff48923),
+                                color: Color(0xFF8BC83F),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15)),
                         const Divider(
@@ -415,7 +413,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                   "حدث خطاء في $title يرجى إعادة المحاولة",
                                   style: const TextStyle(
                                       fontFamily: "Cairo",
-                                      color: Color(0xfff48923),
+                                      color: Colors.redAccent,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 12)),
                             ),
@@ -428,7 +426,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             MaterialButton(
                               height: 30.0,
                               minWidth: 50.0,
-                              color: const Color(0xFFBD6611),
+                              color: Colors.redAccent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -448,7 +446,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             MaterialButton(
                               height: 30.0,
                               minWidth: 50.0,
-                              color: const Color(0xFFBD6611),
+                              color: const Color(0xFF8BC83F),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -477,7 +475,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Colors.redAccent,
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
@@ -502,7 +500,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         ),
@@ -515,7 +513,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: Colors.redAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -535,7 +533,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: const Color(0xFF8BC83F),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),

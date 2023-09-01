@@ -5,14 +5,14 @@ import 'package:tadllal/config/global.dart';
 import 'package:tadllal/config/login_info.dart';
 import 'package:tadllal/widgets/save_dialog.dart';
 
-class ChangePasswordPopUp extends StatefulWidget {
-  const ChangePasswordPopUp({super.key});
+class ChangePasswordDialog extends StatefulWidget {
+  const ChangePasswordDialog({super.key});
 
   @override
-  State<ChangePasswordPopUp> createState() => _ChangePasswordPopUpState();
+  State<ChangePasswordDialog> createState() => _ChangePasswordPopUpState();
 }
 
-class _ChangePasswordPopUpState extends State<ChangePasswordPopUp> {
+class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
   final _formKey = GlobalKey<FormState>();
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
@@ -119,37 +119,78 @@ class _ChangePasswordPopUpState extends State<ChangePasswordPopUp> {
                 child: Column(
                   children: [
                     const SizedBox(height: 10),
-                    TextFormField(
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "" : null,
-                      controller: _currentPasswordController,
-                      decoration: const InputDecoration(
-                        labelText: 'كلمة المرور الحالية',
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.name,
+                        validator: (value) =>
+                            value == null || value.isEmpty ? "" : null,
+                        controller: _currentPasswordController,
+                        decoration: const InputDecoration(
+                          border:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          focusedBorder:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          labelText: "كلمة السر الحالية",
+                        ),
                       ),
                     ),
-                    TextFormField(
-                      controller: _newPasswordController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "";
-                        } else if (value.length < 6) {
-                          return "كلمة السر يجب أن لا تقل عن 8 أحرف";
-                        } else if (value.length > 24) {
-                          return "كلمة السر يجب أن لا تزيد عن 24 حرف";
-                        } else if (!_isValidPassword(value)) {
-                          return "كلمة السر يجب أن تحتوي على ألاقل حرفاً كبيراً وحرفاً صغيراً ورقماً وحرفاً خاص";
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'كلمة المرور الجديدة',
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.name,
+                        controller: _newPasswordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "";
+                          } else if (value.length < 6) {
+                            return "كلمة السر يجب أن لا تقل عن 8 أحرف";
+                          } else if (value.length > 24) {
+                            return "كلمة السر يجب أن لا تزيد عن 24 حرف";
+                          } else if (!_isValidPassword(value)) {
+                            return "كلمة السر يجب أن تحتوي على ألاقل حرفاً كبيراً وحرفاً صغيراً ورقماً وحرفاً خاص";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          border:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          focusedBorder:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          labelText: 'كلمة المرور الجديدة',
+                        ),
                       ),
                     ),
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      decoration: const InputDecoration(
-                        labelText: 'تأكيد كلمة المرور الجديدة',
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        controller: _newPasswordController,
+                        decoration: const InputDecoration(
+                          border:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          focusedBorder:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          labelText: 'تأكيد كلمة المرور الجديدة',
+                        ),
                       ),
                     ),
                   ],

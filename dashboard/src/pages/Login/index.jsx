@@ -4,7 +4,9 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
+
 const API_URL = "http://tadllal.alqatta.com/api/admin/"
+
 export default function Index() {
   const router = useRouter()
 

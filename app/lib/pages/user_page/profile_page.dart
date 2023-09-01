@@ -5,12 +5,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tadllal/components/change_password_pop_up.dart';
 import 'package:tadllal/config/config.dart';
 import 'package:tadllal/model/api_molels/user.dart';
 import 'package:tadllal/pages/add_user_page/add_user_page.dart';
 import 'package:tadllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
 import 'package:tadllal/services/helpers.dart';
+import 'package:tadllal/widgets/change_password_dialog.dart';
 import 'package:tadllal/widgets/logout_dialog.dart';
 import 'package:tadllal/widgets/save_dialog.dart';
 
@@ -47,7 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     originalUserData = {
       "name": nameController.text,
-      "email": emailController.text,
       "phone": phoneNumberController.text,
       "avatar": userImage,
     };
@@ -64,7 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void handleSubmit() {
     final editedForm = {
       "name": nameController.text,
-      // "email": emailController.text,
       "phone": phoneNumberController.text,
       "avatar": userImage,
     };
@@ -119,7 +117,6 @@ class _ProfilePageState extends State<ProfilePage> {
       formData = FormData.fromMap({
         "name": nameController.text.trim(),
         "phone": phoneNumberController.text.trim(),
-        // "email": emailController.text.trim(),
       });
     }
     _showSaveDialog();
@@ -147,7 +144,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Stack(
-              // fit: StackFit.expand,
               children: [
                 Positioned(
                   top: 30,
@@ -212,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             const SizedBox(height: 7),
                                             TextFormField(
                                               controller: emailController,
-                                              enabled: isEditeMode,
+                                              enabled: false,
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -304,7 +300,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return const ChangePasswordPopUp();
+                                                return const ChangePasswordDialog();
                                               },
                                             );
                                           },

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
-const API_URL = "http://tedallalapi.vercel.app/api/v1/admin/"
+const API_URL = "http://tadllal.alqatta.com/api/admin/"
 export default function Index() {
   const router = useRouter()
 
@@ -36,7 +36,11 @@ export default function Index() {
       toast.success("تم تسجيل الدخول بنجاح!")
       router.push("/")
     } catch (error) {
-      toast.error("  حدث خطأ أثناء تسجيل الدخول المدخلات ليست صحيحة")
+      if (error.response.data.message == "Credentials do not match") {
+        toast.error("  المدخلات ليست صحيحة")
+      } else {
+        toast.error("حدث خطأ أثناء تسجيل الدخول السيرفر لا يستجيب")
+      }
     }
   }
 

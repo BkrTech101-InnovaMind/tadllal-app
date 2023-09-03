@@ -262,21 +262,6 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                   ],
                 ),
               ),
-
-              // Availability Text
-              Text.rich(
-                TextSpan(
-                  text: "ألحالة: ",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "\n${realEstate.attributes!.state}",
-                      style: const TextStyle(fontWeight: FontWeight.normal),
-                    )
-                  ],
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 15),

@@ -164,27 +164,6 @@ class _HomePageState extends State<HomePage>
                                     }
                                     break;
                                   }
-                                case "متاح":
-                                  {
-                                    print(data.length);
-                                    print(element.isChecked);
-                                    if (element.isChecked == true) {
-                                      List<RealEstate> temp = data
-                                          .where((element2) =>
-                                              element2.attributes!.state ==
-                                              "available")
-                                          .toList();
-                                      setState(() {
-                                        Provider.of<AppProvider>(context,
-                                                listen: false)
-                                            .addFilteredRealEstateList(
-                                                listData: temp);
-                                      });
-
-                                      print(temp.length);
-                                    }
-                                    break;
-                                  }
                                 case "التقييم":
                                   {
                                     if (element.isChecked == true) {

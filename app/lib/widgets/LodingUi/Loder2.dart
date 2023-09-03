@@ -99,7 +99,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.amber,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -109,7 +109,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.deepOrangeAccent,
+                    color: Colors.amber,
                   ),
                 ),
                 Transform.translate(
@@ -119,7 +119,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.pinkAccent,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -129,7 +129,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.purple,
+                    color: Colors.amber,
                   ),
                 ),
                 Transform.translate(
@@ -139,7 +139,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.yellow,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -149,7 +149,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.lightGreen,
+                    color: Colors.amber,
                   ),
                 ),
                 Transform.translate(
@@ -159,7 +159,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.orangeAccent,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -169,7 +169,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.blueAccent,
+                    color: Colors.amber,
                   ),
                 ),
               ],

@@ -153,7 +153,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                 controller: widget.emailController,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.alternate_email_outlined),
+                  prefixIcon: Icon(Icons.email_outlined),
                   prefixIconColor: Colors.white,
                   border: UnderlineInputBorder(borderSide: BorderSide.none),
                   focusedBorder:

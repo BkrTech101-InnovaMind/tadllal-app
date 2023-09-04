@@ -82,11 +82,6 @@ class _RealEstateCardState extends State<RealEstateCard> {
               appProvider.filteredRealEstateList[index].attributes!.secondType!;
           String secondTypeText;
           Color backgroundColor;
-
-          // secondType == "for sale"
-          //     ?
-          //     : ;
-
           secondType == "for rent"
               ? {
                   backgroundColor = const Color(0xFFA82727).withOpacity(0.7),
@@ -150,7 +145,7 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                                   appProvider: appProvider);
                                             },
                                             child: Container(
-                                              padding: const EdgeInsets.all(15),
+                                              padding: const EdgeInsets.all(10),
                                               decoration: BoxDecoration(
                                                 color: favoriteColor
                                                     ? const Color(0xFF8BC83F)
@@ -162,7 +157,7 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                               ),
                                               child: SvgPicture.asset(
                                                 "assets/icons/favorites-icon.svg",
-                                                width: 20,
+                                                width: 17,
                                                 colorFilter: ColorFilter.mode(
                                                   favoriteColor
                                                       ? Colors.white

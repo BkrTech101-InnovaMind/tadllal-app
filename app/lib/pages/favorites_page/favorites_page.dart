@@ -58,11 +58,6 @@ class _FavoritesPageState extends State<FavoritesPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("مفضلاتي", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: Container(
         margin: const EdgeInsets.only(top: 30),
         child: RefreshIndicator(
@@ -71,9 +66,15 @@ class _FavoritesPageState extends State<FavoritesPage>
           },
           child: ListView(
             children: [
-              const Text(
-                "هنا يتم استعراض ماقمت بتفضيله من عناصر ",
-                style: TextStyle(fontSize: 18, color: Color(0xFF234F68)),
+              const Center(
+                child: Text(
+                  "مفضلاتي ",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color(0xFF234F68),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               FutureBuilder<List<RealEstate>>(
@@ -108,13 +109,36 @@ class _FavoritesPageState extends State<FavoritesPage>
                                             title: const Text(
                                                 'هل انت متأكد من الحذف ؟'),
                                             actions: [
-                                              TextButton(
+                                              MaterialButton(
+                                                height: 30.0,
+                                                minWidth: 50.0,
+                                                color: Colors.redAccent,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                                textColor: Colors.white,
                                                 onPressed: () {
-                                                  Navigator.pop(context);
+                                                  Navigator.of(context).pop();
                                                 },
-                                                child: const Text("لا"),
+                                                splashColor: Colors.redAccent,
+                                                child: const Text(
+                                                  'إلغاء',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
                                               ),
-                                              TextButton(
+                                              MaterialButton(
+                                                height: 30.0,
+                                                minWidth: 50.0,
+                                                color: const Color(0xFF8BC83F),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                                textColor: Colors.white,
                                                 onPressed: () {
                                                   dioApi
                                                       .delete(
@@ -149,8 +173,14 @@ class _FavoritesPageState extends State<FavoritesPage>
                                                     );
                                                   });
                                                 },
-                                                child: const Text("نعم"),
-                                              )
+                                                splashColor:
+                                                    const Color(0xFF8BC83F),
+                                                child: const Text(
+                                                  'تأكيد',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         );
@@ -218,10 +248,11 @@ class _FavoritesPageState extends State<FavoritesPage>
                         ));
                       } else {
                         return const Center(
-                            child: Padding(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Text(NO_DATA),
-                        ));
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text(NO_DATA),
+                          ),
+                        );
                       }
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {

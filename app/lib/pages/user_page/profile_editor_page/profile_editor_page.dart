@@ -133,10 +133,6 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("تعديل الملف الشخصي"),
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         child: ListView(

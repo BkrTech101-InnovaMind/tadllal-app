@@ -81,11 +81,6 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("الرئيسية"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: SafeArea(
         child: Stack(
           children: [

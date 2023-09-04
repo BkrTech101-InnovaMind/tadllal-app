@@ -133,11 +133,6 @@ class _ProfilePageState extends State<ProfilePage> {
       userRole = "مستخدم قياسي";
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("الملف الشخصي"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.only(top: 20),

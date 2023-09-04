@@ -8,6 +8,7 @@ import 'package:tadllal/config/global.dart';
 import 'package:tadllal/model/real_estate.dart';
 import 'package:tadllal/services/api/dio_api.dart';
 import 'package:tadllal/widgets/LodingUi/Loder1.dart';
+import 'package:tadllal/widgets/comment_dialog.dart';
 import 'package:tadllal/widgets/make_order_dialog.dart';
 
 class RealEstateDetailsPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   Future<RealEstate> realEstateData = Future(() => RealEstate());
   final TextEditingController _commentController = TextEditingController();
   String commentId = "";
+  double rating = 0;
 
   @override
   void initState() {
@@ -42,13 +44,23 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     });
   }
 
+  void _showRatingDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => CommentDialog(
+        commentController: _commentController,
+        commentId: commentId,
+        rating: rating,
+        realEstate: widget.realEstate,
+        syncData: _syncData,
+      ),
+    );
+  }
+
   Future<RealEstate> _getRealEstateData() async {
     var rowData =
         await dioApi.get("/realEstate/realty/${widget.realEstate.id}");
-    // log("rowData ${rowData}");
     RealEstate realEstate = RealEstate.fromJson(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
-
     return realEstate;
   }
 
@@ -136,7 +148,11 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               );
             }
           }),
-      bottomNavigationBar: _userAddComment(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showRatingDialog(),
+        backgroundColor: const Color(0xFF194706),
+        child: const Icon(Icons.add_comment_outlined),
+      ),
     );
   }
 
@@ -342,7 +358,6 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
       itemBuilder: (_, index) {
         return Container(
           width: double.infinity,
-          //height: 600.0,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -383,7 +398,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => const Icon(
-                      FontAwesomeIcons.userAlt,
+                      FontAwesomeIcons.userLarge,
                       color: Color(0xFFFF4700),
                       size: 35,
                     ),
@@ -414,13 +429,51 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            dioApi.delete(
-                                "/comments/comment/${realEstate.attributes!.comments![index].id!}",
-                                myData: {
-                                  "comment": _commentController.text.trim()
-                                }).then((value) {
-                              _syncData();
-                            });
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text("هل متأكد من حذف التعليق ؟"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            dioApi
+                                                .delete(
+                                                    "/comments/comment/${realEstate.attributes!.comments![index].id!}",
+                                                    myData: {
+                                                      "comment":
+                                                          _commentController
+                                                              .text
+                                                              .trim()
+                                                    })
+                                                .then((value) {
+                                                  _syncData();
+                                                })
+                                                .then((value) =>
+                                                    Navigator.pop(context))
+                                                .then(
+                                                  (value) =>
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        "تم الحذف بنجاح",
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                          },
+                                          child: const Text("حذف")),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("الغاء"))
+                                    ],
+                                  );
+                                });
                           },
                           child: const Icon(
                             FontAwesomeIcons.trash,
@@ -430,14 +483,11 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // dioApi.post("/comments/add/${widget.realEstate.id}", myData: {"comment":_commentController.text.trim()}).then((value) {
-                            //   _commentController.clear();
-                            //
-                            // });
                             commentId =
                                 realEstate.attributes!.comments![index].id!;
                             _commentController.text = realEstate.attributes!
                                 .comments![index].attributes!.comment!;
+                            _showRatingDialog();
                           },
                           child: const Icon(
                             FontAwesomeIcons.marker,
@@ -455,126 +505,6 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
           ),
         );
       },
-    );
-  }
-
-  Widget _userAddComment() {
-    return Transform.translate(
-      offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
-        //color: Colors.white,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(0, -10),
-              blurRadius: 6.0,
-            ),
-          ],
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 2, bottom: 12, right: 12, left: 12),
-          child: TextField(
-            controller: _commentController,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: const BorderSide(color: Colors.grey),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: const BorderSide(color: Colors.grey),
-              ),
-              contentPadding: const EdgeInsets.all(15.0),
-              hintText: 'اكتب تعليقك',
-              hintStyle: const TextStyle(color: Colors.black54, fontSize: 12),
-              prefixIcon: Container(
-                  margin: const EdgeInsets.all(4.0),
-                  width: 48.0,
-                  height: 48.0,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black45,
-                        offset: Offset(0, 2),
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: ClipOval(
-                        child: CachedNetworkImage(
-                      imageUrl: "${Config().user.attributes!.avatar}",
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => const Icon(
-                        FontAwesomeIcons.user,
-                        color: Color(0xFFFF4700),
-                        size: 35,
-                      ),
-                    )),
-                  )),
-              suffixIcon: Container(
-                margin: const EdgeInsets.only(left: 4.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black45,
-                      offset: Offset(1, 5),
-                      blurRadius: 8.0,
-                    ),
-                  ],
-                ),
-                width: 70.0,
-                child: TextButton(
-                  onPressed: () {
-                    if (commentId.isEmpty) {
-                      dioApi.post("/comments/add/${widget.realEstate.id}",
-                          myData: {
-                            "comment": _commentController.text.trim()
-                          }).then((value) {
-                        _commentController.clear();
-                        _syncData();
-                      });
-                    } else {
-                      dioApi.put("/comments/comment/$commentId", myData: {
-                        "comment": _commentController.text.trim()
-                      }).then((value) {
-                        _commentController.clear();
-                        commentId = "";
-                        _syncData();
-                      });
-                    }
-                  },
-                  child: const Icon(
-                    FontAwesomeIcons.paperPlane,
-                    size: 25.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

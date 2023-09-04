@@ -89,11 +89,11 @@ class _RealEstateCardState extends State<RealEstateCard> {
 
           secondType == "for rent"
               ? {
-                  backgroundColor = const Color(0xFFA82727),
+                  backgroundColor = const Color(0xFFA82727).withOpacity(0.7),
                   secondTypeText = "للإيجار"
                 }
               : {
-                  backgroundColor = const Color(0xFFFA712D),
+                  backgroundColor = const Color(0xFFFA712D).withOpacity(0.7),
                   secondTypeText = "للبيع"
                 };
 

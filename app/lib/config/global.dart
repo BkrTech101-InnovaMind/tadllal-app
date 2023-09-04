@@ -34,14 +34,16 @@ class Consts {
 }
 
 const TextStyle lightDetailsTextFieldTheme = TextStyle(
-    fontFamily: "Cairo",
-    fontSize: 11,
-    color: Color(0xFF8BC83F),
-    fontWeight: FontWeight.bold);
+  fontFamily: "Cairo",
+  fontSize: 11,
+  color: Color(0xFF234F68),
+  fontWeight: FontWeight.bold,
+);
 
 const TextStyle lightDetailsLabelTextFieldTheme = TextStyle(
-    fontFamily: "Cairo",
-    fontSize: 15,
-    fontWeight: FontWeight.bold,
-    color: Color(0xFF1F4C6B),
-    decoration: TextDecoration.underline);
+  fontFamily: "Cairo",
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+  color: Color(0xFF1F4C6B),
+  decoration: TextDecoration.underline,
+);

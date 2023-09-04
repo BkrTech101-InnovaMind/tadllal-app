@@ -41,12 +41,12 @@ class _ErrorDialogState extends State<ErrorDialog> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: "Cairo",
-                    color: Colors.redAccent,
+                    color: Color(0xFF234F68),
                     fontWeight: FontWeight.bold,
                     fontSize: 15)),
             const Divider(
                 height: 10,
-                color: Colors.white,
+                color: Colors.black,
                 thickness: 1.5,
                 indent: 1,
                 endIndent: 1),
@@ -55,7 +55,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
               children: [
                 const Icon(
                   Icons.error_outline,
-                  color: Color(0xfff48923),
+                  color: Colors.redAccent,
                 ),
                 const SizedBox(
                   width: 30,
@@ -64,7 +64,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontFamily: "Cairo",
-                        color: Colors.redAccent,
+                        color: Color(0xFF234F68),
                         fontWeight: FontWeight.normal,
                         fontSize: 12)),
               ],

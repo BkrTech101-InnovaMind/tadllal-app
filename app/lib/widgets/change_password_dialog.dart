@@ -78,11 +78,6 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
           {"path": "/profile/change-password", "myData": passwordValues}
         ],
         onUrlChanged: (data) {
-          for (var element in data) {
-            // if(element.data.)
-            print("element ====> $element");
-          }
-
           LoginInfo.set_USERNAME_PASSWORD(
               user_name: jsonDecode(LoginInfo().login_info!)[USERNAME],
               password: _newPasswordController.text.trim());

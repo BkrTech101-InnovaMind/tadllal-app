@@ -42,7 +42,7 @@ class LogoutDialog extends StatelessWidget {
                       fontSize: 15)),
               const Divider(
                   height: 10,
-                  color: Colors.white,
+                  color: Colors.black,
                   thickness: 1.5,
                   indent: 1,
                   endIndent: 1),
@@ -77,9 +77,7 @@ class LogoutDialog extends StatelessWidget {
                       style: TextStyle(fontSize: 12),
                     ),
                   ),
-                  const SizedBox(
-                    width: 30,
-                  ),
+                  const SizedBox(width: 30),
                   MaterialButton(
                     height: 30.0,
                     minWidth: 50.0,

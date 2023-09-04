@@ -70,7 +70,7 @@ class _SaveDialogState extends State<SaveDialog> {
                             fontSize: 15)),
                     const Divider(
                         height: 10,
-                        color: Colors.white,
+                        color: Colors.black,
                         thickness: 1.5,
                         indent: 1,
                         endIndent: 1),
@@ -90,13 +90,16 @@ class _SaveDialogState extends State<SaveDialog> {
                         const SizedBox(
                           width: 30,
                         ),
-                        Text(statue,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontFamily: "Cairo",
-                                color: Color(0xFF8BC83F),
-                                fontWeight: FontWeight.normal,
-                                fontSize: 12)),
+                        Text(
+                          statue,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: "Cairo",
+                            color: Color(0xFF234F68),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -111,12 +114,12 @@ class _SaveDialogState extends State<SaveDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xFF8BC83F),
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
                           height: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           thickness: 1.5,
                           indent: 1,
                           endIndent: 1),
@@ -125,18 +128,21 @@ class _SaveDialogState extends State<SaveDialog> {
                         children: [
                           Icon(
                             Icons.done_outline_outlined,
-                            color: Color(0xfff48923),
+                            color: Color(0xFF8BC83F),
                           ),
                           SizedBox(
                             width: 30,
                           ),
-                          Text("تم الحفظ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "Cairo",
-                                  color: Color(0xFF8BC83F),
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12)),
+                          Text(
+                            "تم الحفظ",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Cairo",
+                              color: Color(0xFF234F68),
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 15.0),
@@ -173,12 +179,12 @@ class _SaveDialogState extends State<SaveDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Colors.redAccent,
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
                           height: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           thickness: 1.5,
                           indent: 1,
                           endIndent: 1),
@@ -187,7 +193,7 @@ class _SaveDialogState extends State<SaveDialog> {
                         children: [
                           const Icon(
                             Icons.error_outline,
-                            color: Color(0xfff48923),
+                            color: Colors.redAccent,
                           ),
                           const SizedBox(
                             width: 30,
@@ -198,7 +204,7 @@ class _SaveDialogState extends State<SaveDialog> {
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Colors.redAccent,
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -258,12 +264,12 @@ class _SaveDialogState extends State<SaveDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Colors.redAccent,
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
                           height: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           thickness: 1.5,
                           indent: 1,
                           endIndent: 1),
@@ -274,22 +280,22 @@ class _SaveDialogState extends State<SaveDialog> {
                             flex: 1,
                             child: Icon(
                               Icons.error_outline,
-                              color: Color(0xfff48923),
+                              color: Colors.redAccent,
                             ),
                           ),
-                          SizedBox(
-                            width: 30,
-                          ),
+                          SizedBox(width: 30),
                           Expanded(
                             flex: 9,
                             child: Text(
-                                "حدث خطاء اثناء الحفظ يرجى إعادة المحاولة",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontFamily: "Cairo",
-                                    color: Colors.redAccent,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12)),
+                              "حدث خطاء اثناء الحفظ يرجى إعادة المحاولة",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Cairo",
+                                color: Color(0xFF234F68),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -348,7 +354,7 @@ class _SaveDialogState extends State<SaveDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Colors.redAccent,
+                            color: Color(0xFF234F68),
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
@@ -362,7 +368,7 @@ class _SaveDialogState extends State<SaveDialog> {
                       children: [
                         Icon(
                           Icons.error_outline,
-                          color: Color(0xfff48923),
+                          color: Colors.redAccent,
                         ),
                         SizedBox(
                           width: 30,
@@ -374,7 +380,7 @@ class _SaveDialogState extends State<SaveDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Colors.redAccent,
+                                  color: Color(0xFF234F68),
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         ),

@@ -31,6 +31,16 @@ class UpdateRealEstateRequest extends FormRequest
             'photo' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
             'locationInfo' => ['string', 'max:255'],
             'secondType' => ['string', Rule::in(['for sale', 'for rent'])],
+            'rooms' => ['nullable', 'string'],
+            // عدد الغرف
+            'floors' => ['nullable', 'string'],
+            // عدد الادوار
+            'vision' => ['nullable', 'string'],
+            // البصيرة
+            'baptism' => ['nullable', 'string'],
+            // التعميد
+            'area' => ['nullable', 'string'],
+            // المساحة
             'state' => ['string', Rule::in(['available', 'Unavailable'])],
             'images.*' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];

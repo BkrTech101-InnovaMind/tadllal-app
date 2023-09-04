@@ -22,11 +22,11 @@ return new class extends Migration {
             $table->boolean('activated')->default(false);
             $table->string('activation_code')->nullable();
             $table->string('reset_code')->nullable();
-            $table->unsignedBigInteger('registered_by')->nullable();
+            // $table->unsignedBigInteger('registered_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('registered_by')->references('id')->on('users');
+            // $table->foreign('registered_by')->references('id')->on('users');
         });
     }
 

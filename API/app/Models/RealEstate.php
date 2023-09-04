@@ -18,6 +18,15 @@ class RealEstate extends Model
         'location_info',
         'state',
         'type2',
+        'rooms',
+        // عدد الغرف
+        'floors',
+        // عدد الادوار
+        'vision',
+        // البصيرة
+        'baptism',
+        // التعميد
+        'area', // المساحة
     ];
 
     public function comments()

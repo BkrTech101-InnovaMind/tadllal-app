@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ConstructionServiceController;
+use App\Http\Controllers\CustomerRequestController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\OrdersController;
@@ -58,6 +59,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //admin dashboard
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']], function () {
     //admin test
+
+    Route::prefix('customerRequests')->group(function () {
+        Route::get('/getAllCustomerRequests', [CustomerRequestController::class, 'getAllCustomerRequests']);
+        Route::get('/getAllCustomers', [CustomerRequestController::class, 'getCustomersWithUsers']);
+        Route::put('/editDetails/{id}', [CustomerRequestController::class, 'updateCustomerRequestDetails']);
+        Route::put('/editRequestStatus/{id}', [CustomerRequestController::class, 'updateFirstRequestStatus']);
+        Route::put('/editCommunicationStatus/{id}', [CustomerRequestController::class, 'updateSecondRequestStatus']);
+    });
     Route::get('/', function () {
         return "welcome Admin";
     });
@@ -122,7 +131,8 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
     Route::prefix('profile')->group(function () {
         Route::post('update', [AuthController::class, 'updateProfile']);
         Route::post('change-password', [AuthController::class, 'changePassword']);
-        Route::post('/register-other-user', [AuthController::class, 'registerNormalUser']);
+        // Route::post('/register-other-user', [AuthController::class, 'registerNormalUser']);
+        Route::post('/customerRequest', [CustomerRequestController::class, 'createCustomer']);
     });
 
     Route::prefix('realEstate')->group(function () {

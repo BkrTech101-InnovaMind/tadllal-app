@@ -23,7 +23,7 @@ class RealEstateController extends Controller
         return RealEstateResource::collection(
             RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
                 ->withCount('ratings') // Load the number of ratings
-                ->withAvg('ratings', 'rating') // Load the average rating
+                ->withAvg('ratings', 'rating')
                 ->get()
         );
     }
@@ -57,6 +57,15 @@ class RealEstateController extends Controller
             'type1_id' => $request->firstType,
             'location_info' => $request->locationInfo,
             'type2' => $request->secondType,
+            'rooms' => $request->rooms,
+            // عدد الغرف
+            'floors' => $request->floors,
+            // عدد الادوار
+            'vision' => $request->vision,
+            // البصيرة
+            'baptism' => $request->baptism,
+            // التعميد
+            'area' => $request->area, // المساحة
         ]);
 
         // Associate the images with the real estate
@@ -163,6 +172,16 @@ class RealEstateController extends Controller
             'photo' => 'image',
             'locationInfo' => 'location_info',
             'secondType' => 'type2',
+            'rooms' => 'rooms',
+            // عدد الغرف
+            'floors' => 'floors',
+            // عدد الادوار
+            'vision' => 'vision',
+            // البصيرة
+            'baptism' => 'baptism',
+            // التعميد
+            'area' => 'area',
+            // المساحة
             'state' => 'state',
         ];
         // Find the real estate record by its ID

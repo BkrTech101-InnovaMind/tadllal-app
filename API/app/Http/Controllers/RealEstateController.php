@@ -32,6 +32,7 @@ class RealEstateController extends Controller
         $realEstates = RealEstate::with(['locations:id,name', 'types:id,name', 'ratings', 'images'])
             ->withCount('ratings') // Load the number of ratings
             ->withAvg('ratings', 'rating') // Load the average rating
+            ->where('state', 'available')
             ->get();
 
         return $this->WithIsFavority($realEstates);
@@ -72,6 +73,7 @@ class RealEstateController extends Controller
     {
 
         $realEstates = RealEstate::where('location_id', $locationId)
+            ->where('state', 'available')
             ->with(['locations:id,name', 'types:id,name', 'ratings'])
             ->get();
 
@@ -82,6 +84,7 @@ class RealEstateController extends Controller
     public function getByType($typeId)
     {
         $realEstates = RealEstate::where('type1_id', $typeId)
+            ->where('state', 'available')
             ->with(['locations:id,name', 'types:id,name', 'ratings'])
             ->get();
 
@@ -102,12 +105,14 @@ class RealEstateController extends Controller
                 ->with(['locations:id,name', 'types:id,name', 'ratings'])
                 ->withCount('ratings') // تحميل عدد التقييمات
                 ->withAvg('ratings', 'rating') // تحميل معدل التقييمات
+                ->where('state', 'available')
                 ->get();
 
             $otherRealEstates = RealEstate::whereNotIn('type1_id', $user_preferences)
                 ->with(['locations:id,name', 'types:id,name', 'ratings'])
                 ->withCount('ratings') // تحميل عدد التقييمات
                 ->withAvg('ratings', 'rating') // تحميل معدل التقييمات
+                ->where('state', 'available')
                 ->get();
 
             $real_estates = $preferredRealEstates->merge($otherRealEstates);
@@ -117,6 +122,7 @@ class RealEstateController extends Controller
             $real_estates = RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
                 ->withCount('ratings') // تحميل عدد التقييمات
                 ->withAvg('ratings', 'rating') // تحميل معدل التقييمات();
+                ->where('state', 'available')
                 ->get();
         }
 
@@ -129,6 +135,7 @@ class RealEstateController extends Controller
         $realEstates = RealEstate::with(['locations:id,name', 'types:id,name', 'ratings'])
             ->withCount('ratings') // Load the number of ratings
             ->withAvg('ratings', 'rating') // Load the average rating
+            ->where('state', 'available')
             ->get();
 
         // Sort the real estates by the number of ratings in descending order
@@ -165,6 +172,7 @@ class RealEstateController extends Controller
 
         $realEstates = RealEstate::where('type2', 'for sale')
             ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->where('state', 'available')
             ->get();
         return $this->WithIsFavority($realEstates);
     }
@@ -175,6 +183,7 @@ class RealEstateController extends Controller
 
         $realEstates = RealEstate::where('type2', 'for rent')
             ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->where('state', 'available')
             ->get();
         return $this->WithIsFavority($realEstates);
     }
@@ -215,6 +224,7 @@ class RealEstateController extends Controller
         // Get the real estates that match the query
         $realEstates = $queryBuilder
             ->with(['locations:id,name', 'types:id,name', 'ratings'])
+            ->where('state', 'available')
             ->get();
 
         // Return the real estates as a resource

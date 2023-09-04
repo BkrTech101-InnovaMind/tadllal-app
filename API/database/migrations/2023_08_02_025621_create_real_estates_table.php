@@ -21,6 +21,11 @@ return new class extends Migration {
             $table->string('location_info');
             $table->enum('state', ['available', 'Unavailable'])->default('available');
             $table->enum('type2', ['for sale', 'for rent']);
+            $table->string('rooms')->nullable(); // عدد الغرف
+            $table->string('floors')->nullable(); // عدد الادوار
+            $table->string('vision')->nullable(); // البصيرة
+            $table->string('baptism')->nullable(); // التعميد
+            $table->string('area'); //المساحة
             $table->timestamps();
 
             $table->foreign('location_id')->references('id')->on('rlocations');

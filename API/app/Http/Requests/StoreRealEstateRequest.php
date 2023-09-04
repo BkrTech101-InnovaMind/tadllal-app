@@ -31,6 +31,16 @@ class StoreRealEstateRequest extends FormRequest
             'firstType' => ['required', 'integer'],
             'locationInfo' => ['required', 'string', 'max:255'],
             'secondType' => ['required', 'string', Rule::in(['for sale', 'for rent'])],
+            'rooms' => ['nullable', 'string'],
+            // عدد الغرف
+            'floors' => ['nullable', 'string'],
+            // عدد الادوار
+            'vision' => ['nullable', 'string'],
+            // البصيرة
+            'baptism' => ['nullable', 'string'],
+            // التعميد
+            'area' => ['required', 'string'],
+            // المساحة
             'images.*' => ['file', 'mimes:jpeg,png,jpg,gif', 'max:4048'],
         ];
     }

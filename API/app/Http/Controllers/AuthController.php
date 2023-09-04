@@ -220,31 +220,31 @@ class AuthController extends Controller
         ]);
     }
 
-    public function registerNormalUser(StoreUserRequest $request)
-    {
-        $request->validated($request->all());
-        // Check if the user is a marketer or a company, if not, return appropriate response
-        $user = Auth::user();
-        if ($user->role !== 'marketer' && $user->role !== 'company') {
-            return $this->error('', 'You are not authorized to perform this action', 403);
-        }
+    // public function registerNormalUser(StoreUserRequest $request)
+    // {
+    //     $request->validated($request->all());
+    //     // Check if the user is a marketer or a company, if not, return appropriate response
+    //     $user = Auth::user();
+    //     if ($user->role !== 'marketer' && $user->role !== 'company') {
+    //         return $this->error('', 'You are not authorized to perform this action', 403);
+    //     }
 
 
-        // Create the normal user account
-        $newUser = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'registered_by' => $user->id,
-            'activated' => true,
-            'activation_code' => null,
-        ]);
+    //     // Create the normal user account
+    //     $newUser = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //         'registered_by' => $user->id,
+    //         'activated' => true,
+    //         'activation_code' => null,
+    //     ]);
 
-        return $this->generateAndSendActivationCode($newUser->email, 'New User account created successfully & Activation code has been generated and sent successfully.');
-        // return $this->success([
-        //     'user' => new UserResource($newUser),
-        // ], 'New User account created successfully.');
-    }
+    //     return $this->generateAndSendActivationCode($newUser->email, 'New User account created successfully & Activation code has been generated and sent successfully.');
+    //     // return $this->success([
+    //     //     'user' => new UserResource($newUser),
+    //     // ], 'New User account created successfully.');
+    // }
 
     public function user(Request $request)
     {

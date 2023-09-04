@@ -24,7 +24,7 @@ class User extends Authenticatable
         'role',
         'phone_number',
         'avatar',
-        'registered_by',
+        // 'registered_by',
         'activated',
         'activation_code',
         'reset_code',

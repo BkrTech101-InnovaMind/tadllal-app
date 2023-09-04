@@ -29,6 +29,15 @@ class RealEstateFactory extends Factory
             'type1_id' => Rtypes::factory(),
             'location_info' => $this->faker->address(),
             'type2' => $randomTypes,
+            'rooms' => $this->faker->numberBetween(1, 10),
+            // عدد الغرف
+            'floors' => $this->faker->numberBetween(1, 5),
+            // عدد الادوار
+            'vision' => $this->faker->word(),
+            // البصيرة
+            'baptism' => $this->faker->word(),
+            // التعميد
+            'area' => $this->faker->numberBetween(50, 500), // المساحة
         ];
     }
 }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tadllal/config/global.dart';
@@ -82,208 +81,281 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EasySearchBar(
-        backgroundColor: const Color(0xFF194706),
-        title: const Text(
-          'ألبحث',
-          style: TextStyle(fontSize: 25, color: Colors.white),
-        ),
-        onSearch: onSearch,
-        iconTheme: const IconThemeData(color: Colors.white),
-        suggestions: _suggestions,
-        onSuggestionTap: onSuggestionTap,
-      ),
-      body: searchValue.isNotEmpty
-          ? GestureDetector(
-              onPanDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-              child: Container(
-                margin: const EdgeInsets.only(top: 40),
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: filteredResults().length,
-                  itemBuilder: (context, index) {
-                    final realEstate = filteredResults()[index];
-                    return Container(
-                      margin:
-                          const EdgeInsets.only(bottom: 20, left: 10, right: 7),
-                      color: const Color(0xFFF5F4F8),
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return RealEstateDetailsPage(
-                                  realEstate: realEstate);
-                            }),
-                          );
-                        },
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              NetworkImage(realEstate.attributes!.photo!),
+        body: SafeArea(
+      child: Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 15),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F4F8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextField(
+                onChanged: onSearch,
+                onSubmitted: onSuggestionTap,
+                onTapOutside: (event) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search_sharp),
+                  prefixIconColor: Colors.black,
+                  border: UnderlineInputBorder(borderSide: BorderSide.none),
+                  focusedBorder:
+                      UnderlineInputBorder(borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.symmetric(vertical: 20),
+                  hintText: "ابحث عن عقار",
+                ),
+              ),
+            ),
+            Expanded(
+              child: searchValue.isNotEmpty
+                  ? GestureDetector(
+                      onPanDown: (_) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 40),
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: filteredResults().length,
+                          itemBuilder: (context, index) {
+                            final realEstate = filteredResults()[index];
+                            return Container(
+                              margin: const EdgeInsets.only(
+                                  bottom: 20, left: 10, right: 7),
+                              color: const Color(0xFFF5F4F8),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return RealEstateDetailsPage(
+                                          realEstate: realEstate);
+                                    }),
+                                  );
+                                },
+                                leading: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(
+                                      realEstate.attributes!.photo!),
+                                ),
+                                title: Text(
+                                  realEstate.attributes!.name!,
+                                  style: const TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  '${realEstate.attributes!.price!} \$',
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                trailing: SizedBox(
+                                  width: 60,
+                                  child: Row(
+                                    children: [
+                                      Text(realEstate
+                                          .attributes!.ratings!.averageRating!),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Icon(
+                                        Icons.star,
+                                        color: Color(0xFFE0A410),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        title: Text(
-                          realEstate.attributes!.name!,
-                          style: const TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        subtitle: Text(
-                          '${realEstate.attributes!.price!} \$',
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        trailing: SizedBox(
-                          width: 60,
-                          child: Row(
+                      ),
+                    )
+                  : GestureDetector(
+                      onPanDown: (_) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                      child: RefreshIndicator(
+                        onRefresh: refresh,
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
                             children: [
-                              Text(realEstate
-                                  .attributes!.ratings!.averageRating!),
-                              const SizedBox(
-                                width: 10,
+                              const Center(
+                                child: Text(
+                                  "الاعلى تقييماً",
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: Color(0xFF234F68),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                              const Icon(
-                                Icons.star,
-                                color: Color(0xFFE0A410),
-                              ),
+                              FutureBuilder<List<RealEstate>>(
+                                  future: realEstateDataList,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<RealEstate>>
+                                          snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      if (snapshot.hasData &&
+                                          snapshot.hasError == false) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 20),
+                                          child: ListView.separated(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: snapshot.data!.length,
+                                              separatorBuilder: (context,
+                                                      index) =>
+                                                  const Divider(thickness: 2),
+                                              itemBuilder: (context, index) {
+                                                return Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 15),
+                                                  child: ListTile(
+                                                    onTap: () {},
+                                                    title: Text(
+                                                      snapshot.data![index]
+                                                          .attributes!.name!,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    subtitle: Text(
+                                                      snapshot
+                                                          .data![index]
+                                                          .attributes!
+                                                          .description!,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    leading: CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                        snapshot.data![index]
+                                                            .attributes!.photo!,
+                                                      ),
+                                                    ),
+                                                    trailing: Container(
+                                                      constraints:
+                                                          BoxConstraints.tight(
+                                                              const Size.square(
+                                                                  60)),
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Colors.grey[300],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      width: 60,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            snapshot
+                                                                .data![index]
+                                                                .attributes!
+                                                                .ratings!
+                                                                .averageRating!,
+                                                          ),
+                                                          const Icon(
+                                                            Icons.star,
+                                                            color: Color(
+                                                                0xFFE0A410),
+                                                            size: 20,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+                                        );
+                                      } else if (snapshot.hasError) {
+                                        return const Center(
+                                            child: Padding(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(ERROR_WHILE_GET_DATA),
+                                        ));
+                                      } else {
+                                        return const Center(
+                                            child: Padding(
+                                          padding: EdgeInsets.only(top: 16),
+                                          child: Text(NO_DATA),
+                                        ));
+                                      }
+                                    } else if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 60,
+                                              height: 60,
+                                              child: ColorLoader1(),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 16),
+                                              child: Text(
+                                                  LOADING_DATA_FROM_SERVER),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      return const Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 60,
+                                              height: 60,
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 16),
+                                              child: Text(
+                                                  LOADING_DATA_FROM_SERVER),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }),
                             ],
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
             )
-          : GestureDetector(
-              onPanDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-              child: RefreshIndicator(
-                onRefresh: refresh,
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  children: [
-
-                    FutureBuilder<List<RealEstate>>(
-                        future: realEstateDataList,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<RealEstate>> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasData &&
-                                snapshot.hasError == false) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 20),
-                                child: ListView.separated(
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data!.length,
-                                    separatorBuilder: (context, index) => const Divider(thickness: 2),
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        margin: const EdgeInsets.only(top: 15),
-                                        child: ListTile(
-                                          onTap: () {},
-                                          title: Text(
-                                            snapshot.data![index].attributes!.name!,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          subtitle: Text(
-                                              snapshot.data![index].attributes!.description!,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          leading: CircleAvatar(
-                                            backgroundImage:
-                                            NetworkImage( snapshot.data![index].attributes!.photo!,),
-                                          ),
-                                          trailing: Container(
-                                            constraints: BoxConstraints.tight(const Size.square(60)),
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey[300],
-                                                borderRadius: BorderRadius.circular(10)),
-                                            width: 60,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Text( snapshot.data![index].attributes!.ratings!.averageRating!,),
-                                                const Icon(
-                                                  Icons.star,
-                                                  color: Color(0xFFE0A410),
-                                                  size: 20,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              );
-                            } else if (snapshot.hasError) {
-                              return const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(ERROR_WHILE_GET_DATA),
-                                  ));
-                            } else {
-                              return const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(NO_DATA),
-                                  ));
-                            }
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: 60,
-                                    height: 60,
-                                    child: ColorLoader1(),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(LOADING_DATA_FROM_SERVER),
-                                  )
-                                ],
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: 60,
-                                    height: 60,
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 16),
-                                    child: Text(LOADING_DATA_FROM_SERVER),
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                        }),
-                  ],
-                ),
-              )
-            ),
-    );
+          ],
+        ),
+      ),
+    ));
   }
 
   Future<List<RealEstate>> _getRealEstateData() async {
@@ -298,16 +370,16 @@ class _SearchPageState extends State<SearchPage> {
 
     // log("data ${data}");
     List<RealEstate> realEstate =
-    (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
+        (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
     return realEstate;
   }
-  _syncData() {
 
+  _syncData() {
     setState(() {
       realEstateDataList = _getRealEstateData();
-
     });
   }
+
   Future<void> refresh() async {
     _syncData();
   }

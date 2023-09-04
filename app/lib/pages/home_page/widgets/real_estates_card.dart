@@ -10,7 +10,7 @@ import 'package:tadllal/services/api/dio_api.dart';
 import 'package:tadllal/widgets/error_dialog.dart';
 
 class RealEstateCard extends StatefulWidget {
-  const RealEstateCard({Key? key}) : super(key: key);
+  const RealEstateCard({super.key});
 
   @override
   State<RealEstateCard> createState() => _RealEstateCardState();

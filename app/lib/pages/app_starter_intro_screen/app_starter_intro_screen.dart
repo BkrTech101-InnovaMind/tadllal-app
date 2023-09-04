@@ -65,9 +65,9 @@ class _AppStarterIntroScreenState extends State<AppStarterIntroScreen> {
     setState(() {
       _screens = [
         const OnBoardingSplash(
-          title: "اكتشف أفضل مكان يقدم أفضل الأسعار",
+          title: "اكتشف أفضل مكان يقدم أفضل جودة وعروض حصرية",
           subTitle:
-              "نقدم أفضل الأسعار في عالم العقارات، بعيداً عن السماسرة والوسطاء",
+              "نقدم عروضًا حصرية في عالم العقارات, بعيدًا عن السماسرة والوسطاء",
           imagePath: 'assets/images/tour_1.png',
         ),
         const OnBoardingSplash(

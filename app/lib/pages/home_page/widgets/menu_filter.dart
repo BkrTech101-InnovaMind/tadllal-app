@@ -14,7 +14,6 @@ class _MenuFilterState extends State<MenuFilter> {
   List<FilterOption> options = [
     FilterOption(label: 'للبيع', isChecked: false),
     FilterOption(label: 'للإيجار', isChecked: false),
-    FilterOption(label: 'متاح', isChecked: false),
     FilterOption(label: 'التقييم', isChecked: false),
   ];
 

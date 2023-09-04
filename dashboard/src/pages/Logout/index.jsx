@@ -1,7 +1,9 @@
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-const API_URL = "https://tadllal.alqatta.com/api/dashboard/"
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
 const LogoutPage = () => {
   const router = useRouter()
   const logout = async () => {

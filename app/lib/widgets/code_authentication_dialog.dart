@@ -44,7 +44,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
         padding: const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: const Color(0xff103c5b),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(Consts.padding),
           boxShadow: const [
             BoxShadow(
@@ -66,20 +66,24 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Color(0xFF234F68),
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
                         height: 10,
-                        color: Colors.white,
+                        color: Colors.black,
                         thickness: 1.5,
                         indent: 1,
                         endIndent: 1),
                     const SizedBox(height: 11.0),
                     Row(
                       children: [
-                        const ColorfulCircularProgressIndicator(
-                          colors: [Color(0xfff48923), Colors.white, Colors.red],
+                        ColorfulCircularProgressIndicator(
+                          colors: [
+                            Colors.green.shade500,
+                            Colors.deepOrangeAccent,
+                            Colors.red
+                          ],
                           strokeWidth: 5,
                           indicatorHeight: 40,
                           indicatorWidth: 40,
@@ -91,7 +95,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 fontFamily: "Cairo",
-                                color: Color(0xfff48923),
+                                color: Color(0xFF234F68),
                                 fontWeight: FontWeight.normal,
                                 fontSize: 12)),
                       ],
@@ -108,12 +112,12 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
                           height: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           thickness: 1.5,
                           indent: 1,
                           endIndent: 1),
@@ -122,7 +126,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                         children: [
                           Icon(
                             Icons.done_outline_outlined,
-                            color: Color(0xfff48923),
+                            color: Colors.lightGreenAccent,
                           ),
                           SizedBox(
                             width: 30,
@@ -131,7 +135,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF234F68),
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         ],
@@ -143,7 +147,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -170,7 +174,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
@@ -184,7 +188,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                         children: [
                           const Icon(
                             Icons.error_outline,
-                            color: Color(0xfff48923),
+                            color: Colors.redAccent,
                           ),
                           const SizedBox(
                             width: 30,
@@ -195,7 +199,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -208,7 +212,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -228,7 +232,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -255,12 +259,12 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
                           height: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           thickness: 1.5,
                           indent: 1,
                           endIndent: 1),
@@ -271,7 +275,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                             flex: 1,
                             child: Icon(
                               Icons.error_outline,
-                              color: Color(0xfff48923),
+                              color: Colors.redAccent,
                             ),
                           ),
                           SizedBox(
@@ -284,7 +288,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -297,7 +301,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -317,7 +321,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.lightGreenAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -325,7 +329,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                             onPressed: () {
                               _getData();
                             },
-                            splashColor: Colors.redAccent,
+                            splashColor: Colors.lightGreenAccent,
                             child: const Text(
                               'إعادة المحاولة',
                               style: TextStyle(fontSize: 12),
@@ -345,12 +349,12 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Color(0xFF234F68),
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
                         height: 10,
-                        color: Colors.white,
+                        color: Colors.black,
                         thickness: 1.5,
                         indent: 1,
                         endIndent: 1),
@@ -359,7 +363,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                       children: [
                         Icon(
                           Icons.error_outline,
-                          color: Color(0xfff48923),
+                          color: Colors.redAccent,
                         ),
                         SizedBox(
                           width: 30,
@@ -371,7 +375,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF234F68),
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12)),
                         ),
@@ -384,7 +388,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: Colors.redAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -404,7 +408,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: Colors.lightGreenAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -412,7 +416,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
                           onPressed: () {
                             _getData();
                           },
-                          splashColor: Colors.redAccent,
+                          splashColor: Colors.lightGreenAccent,
                           child: const Text(
                             'إعادة المحاولة',
                             style: TextStyle(fontSize: 12),

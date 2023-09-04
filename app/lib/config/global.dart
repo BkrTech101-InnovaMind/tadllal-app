@@ -10,8 +10,8 @@ const String USERNAME = "user_name";
 const String PASSWORD = "password";
 
 // API endpoint URL
-const String APP_API_URI = "https://tadllal.alqatta.com";
-// const String APP_API_URI = "http://192.168.1.251";
+// const String APP_API_URI = "https://tadllal.alqatta.com";
+const String APP_API_URI = "http://192.168.0.46:8080";
 // const String APP_API_URI="http://192.168.0.221";
 
 //Hero Tags
@@ -34,14 +34,16 @@ class Consts {
 }
 
 const TextStyle lightDetailsTextFieldTheme = TextStyle(
-    fontFamily: "Cairo",
-    fontSize: 11,
-    color: Colors.white,
-    fontWeight: FontWeight.bold);
+  fontFamily: "Cairo",
+  fontSize: 11,
+  color: Color(0xFF234F68),
+  fontWeight: FontWeight.bold,
+);
 
 const TextStyle lightDetailsLabelTextFieldTheme = TextStyle(
-    fontFamily: "Cairo",
-    fontSize: 15,
-    fontWeight: FontWeight.bold,
-    color: Color(0xfff48923),
-    decoration: TextDecoration.underline);
+  fontFamily: "Cairo",
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+  color: Color(0xFF1F4C6B),
+  decoration: TextDecoration.underline,
+);

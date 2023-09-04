@@ -68,7 +68,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
         padding: const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: const Color(0xff103c5b),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(Consts.padding),
           boxShadow: const [
             BoxShadow(
@@ -92,13 +92,13 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         title,
                         style: const TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Color(0xFF1F4C6B),
                             fontWeight: FontWeight.bold,
                             fontSize: 15),
                       ),
                       const Divider(
                           height: 10,
-                          color: Colors.white,
+                          color: Colors.black,
                           thickness: 1.5,
                           indent: 1,
                           endIndent: 1),
@@ -110,7 +110,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             child: ColorfulCircularProgressIndicator(
                               colors: [
                                 Color(0xfff48923),
-                                Colors.white,
+                                Colors.lightGreenAccent,
                                 Colors.red
                               ],
                               strokeWidth: 5,
@@ -118,15 +118,13 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               indicatorWidth: 40,
                             ),
                           ),
-                          const SizedBox(
-                            width: 30,
-                          ),
+                          const SizedBox(width: 30),
                           Expanded(
                             flex: 5,
                             child: Text(progressDesc,
                                 style: const TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12)),
                           ),
@@ -147,12 +145,12 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         Text(title,
                             style: const TextStyle(
                                 fontFamily: "Cairo",
-                                color: Color(0xfff48923),
+                                color: Color(0xFF234F68),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15)),
                         const Divider(
                             height: 10,
-                            color: Colors.white,
+                            color: Colors.black,
                             thickness: 1.5,
                             indent: 1,
                             endIndent: 1),
@@ -163,19 +161,20 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 flex: 1,
                                 child: Icon(
                                   Icons.done_outline_outlined,
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF8BC83F),
                                 )),
-                            const SizedBox(
-                              width: 20,
-                            ),
+                            const SizedBox(width: 20),
                             Expanded(
                               flex: 5,
-                              child: Text("تم $title",
-                                  style: const TextStyle(
-                                      fontFamily: "Cairo",
-                                      color: Color(0xfff48923),
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12)),
+                              child: Text(
+                                "تم $title",
+                                style: const TextStyle(
+                                  fontFamily: "Cairo",
+                                  color: Color(0xFF234F68),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -194,12 +193,12 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                           Text(title,
                               style: const TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF234F68),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15)),
                           const Divider(
                             height: 10,
-                            color: Colors.white,
+                            color: Colors.black,
                             thickness: 1.5,
                             indent: 1,
                             endIndent: 1,
@@ -211,12 +210,10 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 flex: 1,
                                 child: Icon(
                                   Icons.error_outline,
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                 ),
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              const SizedBox(width: 20),
                               Expanded(
                                 flex: 5,
                                 child: Column(
@@ -225,14 +222,14 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                     Text(e.statusMessage,
                                         style: const TextStyle(
                                             fontFamily: "Cairo",
-                                            color: Color(0xfff48923),
+                                            color: Color(0xFF234F68),
                                             fontWeight: FontWeight.normal,
                                             fontSize: 12)),
                                     Text(
                                       "رقم الخطأ: (${e.statusCode})",
                                       style: const TextStyle(
                                           fontFamily: "Cairo",
-                                          color: Color(0xfff48923),
+                                          color: Color(0xFF234F68),
                                           fontWeight: FontWeight.normal,
                                           fontSize: 12),
                                     ),
@@ -248,7 +245,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: Colors.redAccent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -268,7 +265,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: const Color(0xFF8BC83F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -276,7 +273,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 onPressed: () {
                                   _getData();
                                 },
-                                splashColor: Colors.redAccent,
+                                splashColor: const Color(0xFF8BC83F),
                                 child: const Text(
                                   'إعادة المحاولة',
                                   style: TextStyle(fontSize: 12),
@@ -297,12 +294,12 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                           Text(title,
                               style: const TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Color(0xFF234F68),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15)),
                           const Divider(
                               height: 10,
-                              color: Colors.white,
+                              color: Colors.black,
                               thickness: 1.5,
                               indent: 1,
                               endIndent: 1),
@@ -313,7 +310,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 flex: 1,
                                 child: Icon(
                                   Icons.error_outline,
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                 ),
                               ),
                               const SizedBox(
@@ -321,12 +318,15 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               ),
                               Expanded(
                                 flex: 5,
-                                child: Text("${snapshot.error}",
-                                    style: const TextStyle(
-                                        fontFamily: "Cairo",
-                                        color: Color(0xfff48923),
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12)),
+                                child: Text(
+                                  "${snapshot.error}",
+                                  style: const TextStyle(
+                                    fontFamily: "Cairo",
+                                    color: Color(0xFF234F68),
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -337,7 +337,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: Colors.redAccent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -357,7 +357,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: const Color(0xFF8BC83F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -365,7 +365,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                                 onPressed: () {
                                   _getData();
                                 },
-                                splashColor: Colors.redAccent,
+                                splashColor: const Color(0xFF8BC83F),
                                 child: const Text(
                                   'إعادة المحاولة',
                                   style: TextStyle(fontSize: 12),
@@ -387,12 +387,12 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         Text(title,
                             style: const TextStyle(
                                 fontFamily: "Cairo",
-                                color: Color(0xfff48923),
+                                color: Color(0xFF234F68),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15)),
                         const Divider(
                             height: 10,
-                            color: Colors.white,
+                            color: Colors.black,
                             thickness: 1.5,
                             indent: 1,
                             endIndent: 1),
@@ -403,21 +403,21 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               flex: 1,
                               child: Icon(
                                 Icons.error_outline,
-                                color: Color(0xfff48923),
+                                color: Colors.redAccent,
                               ),
                             ),
-                            const SizedBox(
-                              width: 20,
-                            ),
+                            const SizedBox(width: 20),
                             Expanded(
                               flex: 5,
                               child: Text(
-                                  "حدث خطاء في $title يرجى إعادة المحاولة",
-                                  style: const TextStyle(
-                                      fontFamily: "Cairo",
-                                      color: Color(0xfff48923),
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12)),
+                                "حدث خطاء في $title يرجى إعادة المحاولة",
+                                style: const TextStyle(
+                                  fontFamily: "Cairo",
+                                  color: Color(0xFF234F68),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -428,7 +428,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             MaterialButton(
                               height: 30.0,
                               minWidth: 50.0,
-                              color: const Color(0xFFBD6611),
+                              color: Colors.redAccent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -448,7 +448,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                             MaterialButton(
                               height: 30.0,
                               minWidth: 50.0,
-                              color: const Color(0xFFBD6611),
+                              color: const Color(0xFF8BC83F),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -456,7 +456,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                               onPressed: () {
                                 _getData();
                               },
-                              splashColor: Colors.redAccent,
+                              splashColor: const Color(0xFF8BC83F),
                               child: const Text(
                                 'إعادة المحاولة',
                                 style: TextStyle(fontSize: 12),
@@ -477,12 +477,12 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontFamily: "Cairo",
-                            color: Color(0xfff48923),
+                            color: Color(0xFF234F68),
                             fontWeight: FontWeight.bold,
                             fontSize: 15)),
                     const Divider(
                         height: 10,
-                        color: Colors.white,
+                        color: Colors.black,
                         thickness: 1.5,
                         indent: 1,
                         endIndent: 1),
@@ -491,20 +491,21 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                       children: [
                         const Icon(
                           Icons.error_outline,
-                          color: Color(0xfff48923),
+                          color: Colors.redAccent,
                         ),
-                        const SizedBox(
-                          width: 30,
-                        ),
+                        const SizedBox(width: 30),
                         FittedBox(
                           fit: BoxFit.fitWidth,
-                          child: Text("حدث خطاء اثناء $title إعادة المحاولة",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12)),
+                          child: Text(
+                            "حدث خطاء اثناء $title إعادة المحاولة",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontFamily: "Cairo",
+                              color: Color(0xFF234F68),
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -515,7 +516,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: Colors.redAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -535,7 +536,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                         MaterialButton(
                           height: 30.0,
                           minWidth: 50.0,
-                          color: const Color(0xFFBD6611),
+                          color: const Color(0xFF8BC83F),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -543,7 +544,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
                           onPressed: () {
                             _getData();
                           },
-                          splashColor: Colors.redAccent,
+                          splashColor: const Color(0xFF8BC83F),
                           child: const Text(
                             'إعادة المحاولة',
                             style: TextStyle(fontSize: 12),

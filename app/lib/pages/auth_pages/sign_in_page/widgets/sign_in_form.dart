@@ -17,20 +17,20 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool password = true;
 
   @override
   void initState() {
-    _phoneController.text = "zabobaker7355@gmail.com";
+    _emailController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77920";
     super.initState();
   }
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -42,7 +42,7 @@ class _SignInFormState extends State<SignInForm> {
 
     setBaseUrl(APP_API_URI);
     SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest(
-        email: _phoneController.text.toString().trim(),
+        email: _emailController.text.toString().trim(),
         password: _passwordController.text.toString().trim());
 
     showDialog(
@@ -81,7 +81,7 @@ class _SignInFormState extends State<SignInForm> {
       context,
       MaterialPageRoute(
           builder: (context) => CodeAuthenticationPage(
-                email: _phoneController.text.trim(),
+                email: _emailController.text.trim(),
               )),
     );
   }
@@ -103,15 +103,15 @@ class _SignInFormState extends State<SignInForm> {
               validator: (value) => value == null || value.isEmpty
                   ? "الرجاء ادخال رقم الهاتف"
                   : null,
-              controller: _phoneController,
+              controller: _emailController,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.phone_iphone_outlined),
+                prefixIcon: Icon(Icons.email_outlined),
                 prefixIconColor: Colors.black,
                 border: UnderlineInputBorder(borderSide: BorderSide.none),
                 focusedBorder:
                     UnderlineInputBorder(borderSide: BorderSide.none),
                 contentPadding: EdgeInsets.symmetric(vertical: 25),
-                hintText: "رقم الهاتف",
+                hintText: "البريد الإلكتروني",
               ),
             ),
           ),
@@ -161,7 +161,7 @@ class _SignInFormState extends State<SignInForm> {
                     barrierDismissible: false,
                     context: context,
                     builder: (context2) => ForgetPasswordDialog(
-                        email: _phoneController.text.trim()),
+                        email: _emailController.text.trim()),
                   );
                 },
                 child: const Text(

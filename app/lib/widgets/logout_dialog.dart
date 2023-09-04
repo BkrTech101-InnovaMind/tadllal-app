@@ -18,7 +18,7 @@ class LogoutDialog extends StatelessWidget {
         padding: const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          color: const Color(0xff103c5b),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(Consts.padding),
           boxShadow: const [
             BoxShadow(
@@ -37,12 +37,12 @@ class LogoutDialog extends StatelessWidget {
               const Text("تسجيل الخروج",
                   style: TextStyle(
                       fontFamily: "Cairo",
-                      color: Color(0xfff48923),
+                      color: Color(0xFF1F4C6B),
                       fontWeight: FontWeight.bold,
                       fontSize: 15)),
               const Divider(
                   height: 10,
-                  color: Colors.white,
+                  color: Colors.black,
                   thickness: 1.5,
                   indent: 1,
                   endIndent: 1),
@@ -52,7 +52,7 @@ class LogoutDialog extends StatelessWidget {
                 child: Text("هل تريد فعلا تسجيل الخروج؟",
                     style: TextStyle(
                         fontFamily: "Cairo",
-                        color: Color(0xfff48923),
+                        color: Color(0xFF1F4C6B),
                         fontWeight: FontWeight.normal,
                         fontSize: 12)),
               ),
@@ -63,7 +63,7 @@ class LogoutDialog extends StatelessWidget {
                   MaterialButton(
                     height: 30.0,
                     minWidth: 50.0,
-                    color: const Color(0xFFBD6611),
+                    color: Colors.redAccent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -77,19 +77,17 @@ class LogoutDialog extends StatelessWidget {
                       style: TextStyle(fontSize: 12),
                     ),
                   ),
-                  const SizedBox(
-                    width: 30,
-                  ),
+                  const SizedBox(width: 30),
                   MaterialButton(
                     height: 30.0,
                     minWidth: 50.0,
-                    color: const Color(0xFFBD6611),
+                    color: const Color(0xFF8BC83F),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     textColor: Colors.white,
                     onPressed: () => onLogOutPressed(),
-                    splashColor: Colors.redAccent,
+                    splashColor: const Color(0xFF8BC83F),
                     child: const Text(
                       'نعم',
                       style: TextStyle(fontSize: 12),

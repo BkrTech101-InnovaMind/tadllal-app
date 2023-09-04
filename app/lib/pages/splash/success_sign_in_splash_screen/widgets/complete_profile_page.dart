@@ -197,8 +197,8 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
         CircleAvatar(
           radius: 40,
           backgroundImage: selectedImage == null
-              ? const NetworkImage(
-                  'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+              ? const AssetImage(
+                  "assets/images/avatar_placeholder.png",
                 )
               : FileImage(File(selectedImage!.path)) as ImageProvider<Object>,
         ),

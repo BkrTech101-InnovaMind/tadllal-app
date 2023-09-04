@@ -134,11 +134,6 @@ class _SuccessSignInScreenState extends State<SuccessSignInSplashScreen> {
     setState(
       () {
         currentIndex = index;
-        pageController.animateToPage(
-          index,
-          duration: const Duration(seconds: 1),
-          curve: Curves.easeInOut,
-        );
       },
     );
   }

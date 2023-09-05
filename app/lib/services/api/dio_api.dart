@@ -2,18 +2,18 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tedllal/model/api_molels/error_response.dart';
-import 'package:tedllal/model/api_molels/login_response.dart';
-import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/model/api_models/error_response.dart';
+import 'package:tedllal/model/api_models/login_response.dart';
+import 'package:tedllal/model/api_models/signin_signup_request.dart';
 import 'package:tedllal/services/dio_helper.dart';
 
 class DioApi {
-  Future<LoginResponse> sinIn(
-      {required SinInSinUpRequest sinInSinUpRequest}) async {
+  Future<LoginResponse> signIn(
+      {required SignInSignUpRequest signInSignUpRequest}) async {
     try {
       final response = await DioHelper.dio!.post(
         '/login',
-        data: sinInSinUpRequest.toJson(),
+        data: signInSignUpRequest.toJson(),
         options: Options(validateStatus: (status) => status! < 500),
       );
       if (kDebugMode) {
@@ -68,13 +68,12 @@ class DioApi {
     }
   }
 
-  Future<LoginResponse> sinUp(
-      {required SinInSinUpRequest sinInSinUpRequest}) async {
-    bool showPrint = false;
+  Future<LoginResponse> signUp(
+      {required SignInSignUpRequest signInSignUpRequest}) async {
     try {
       final response = await DioHelper.dio!.post(
         '/register',
-        data: sinInSinUpRequest.toJson(),
+        data: signInSignUpRequest.toJson(),
         options: Options(receiveDataWhenStatusError: true),
       );
 
@@ -83,7 +82,7 @@ class DioApi {
         print("SinUP response $response");
       }
       if (response.statusCode == HttpStatus.ok) {
-        if (kDebugMode && showPrint) {
+        if (kDebugMode) {
           print("===================");
           print("SinUP response $response");
           print("===================");

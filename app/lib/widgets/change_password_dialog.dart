@@ -18,7 +18,7 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool showSuccessPopup = false;
-  String oldPassword = jsonDecode(LoginInfo().login_info!)[PASSWORD];
+  String oldPassword = jsonDecode(LoginInfo().loginInfo!)[password];
 
   Map<String, dynamic> passwordValues = {};
 
@@ -78,8 +78,8 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
           {"path": "/profile/change-password", "myData": passwordValues}
         ],
         onUrlChanged: (data) {
-          LoginInfo.set_USERNAME_PASSWORD(
-              user_name: jsonDecode(LoginInfo().login_info!)[USERNAME],
+          LoginInfo.setUserNamePassword(
+              userName: jsonDecode(LoginInfo().loginInfo!)[userName],
               password: _newPasswordController.text.trim());
 
           Navigator.of(context2).pop();

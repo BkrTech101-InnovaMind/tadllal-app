@@ -8,8 +8,8 @@ import 'package:tedllal/model/real_estate.dart';
 import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/utils/in_intro_tour.dart';
-import 'package:tedllal/widgets/LodingUi/Loder2.dart';
 import 'package:tedllal/widgets/error_dialog.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -244,13 +244,13 @@ class _FavoritesPageState extends State<FavoritesPage>
                         return const Center(
                             child: Padding(
                           padding: EdgeInsets.only(top: 16),
-                          child: Text(ERROR_WHILE_GET_DATA),
+                          child: Text(errorWhileGetData),
                         ));
                       } else {
                         return const Center(
                           child: Padding(
                             padding: EdgeInsets.only(top: 16),
-                            child: Text(NO_DATA),
+                            child: Text(noData),
                           ),
                         );
                       }
@@ -268,7 +268,7 @@ class _FavoritesPageState extends State<FavoritesPage>
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 16),
-                              child: Text(LOADING_DATA_FROM_SERVER),
+                              child: Text(loadingDataFromServer),
                             )
                           ],
                         ),
@@ -286,7 +286,7 @@ class _FavoritesPageState extends State<FavoritesPage>
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 16),
-                              child: Text(LOADING_DATA_FROM_SERVER),
+                              child: Text(loadingDataFromServer),
                             )
                           ],
                         ),

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tedllal/config/config.dart';
-import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/model/api_models/user.dart';
 import 'package:tedllal/model/real_estate_type.dart';
 import 'package:tedllal/pages/splash/success_sign_in_splash_screen/widgets/chose_fav_page.dart';
 import 'package:tedllal/pages/splash/success_sign_in_splash_screen/widgets/complete_profile_page.dart';

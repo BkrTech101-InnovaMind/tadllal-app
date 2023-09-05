@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tedllal/config/global.dart';
-import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/model/api_models/signin_signup_request.dart';
 import 'package:tedllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
 import 'package:tedllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
 import 'package:tedllal/services/helpers.dart';
 import 'package:tedllal/services/http.dart';
-import 'package:tedllal/widgets/sinin_sinup_dialog.dart';
+import 'package:tedllal/widgets/signin_signup_dialog.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -44,21 +44,22 @@ class _SignUpFormState extends State<SignUpForm> {
       "device_name": "mobile",
     };
 
-    await setBaseUrl(APP_API_URI);
+    await setBaseUrl(appApiUri);
     _showTheDialog(form);
   }
 
   void _showTheDialog(form) {
-    SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest.fromJson(form);
+    SignInSignUpRequest signInSignUpRequest =
+        SignInSignUpRequest.fromJson(form);
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (BuildContext context2) => SinInSinUpDialog(
-        sinInSinUpRequest: sinInSinUpRequest,
-        type: SINUP_TYPE,
+      builder: (BuildContext context2) => SignInSignUpDialog(
+        signInSignUpRequest: signInSignUpRequest,
+        type: signUpType,
         onLogin: (response) async {
           await updateUserDetails(
-              response: response, sinInSinUpRequest: sinInSinUpRequest);
+              response: response, signInSignUpRequest: signInSignUpRequest);
           _navigateToSignInPage(response);
         },
       ),

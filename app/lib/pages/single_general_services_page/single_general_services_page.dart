@@ -5,7 +5,7 @@ import 'package:tedllal/config/global.dart';
 import 'package:tedllal/model/services.dart';
 import 'package:tedllal/pages/single_sub_service_page/single_sub_service_page.dart';
 import 'package:tedllal/services/api/dio_api.dart';
-import 'package:tedllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 
 class SingleGeneralServicesPage extends StatefulWidget {
   final Services servicesDetails;
@@ -108,13 +108,13 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
                       return const Center(
                           child: Padding(
                         padding: EdgeInsets.only(top: 16),
-                        child: Text(ERROR_WHILE_GET_DATA),
+                        child: Text(errorWhileGetData),
                       ));
                     } else {
                       return const Center(
                           child: Padding(
                         padding: EdgeInsets.only(top: 16),
-                        child: Text(NO_DATA),
+                        child: Text(noData),
                       ));
                     }
                   } else if (snapshot.connectionState ==
@@ -131,7 +131,7 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 16),
-                            child: Text(LOADING_DATA_FROM_SERVER),
+                            child: Text(loadingDataFromServer),
                           )
                         ],
                       ),
@@ -149,7 +149,7 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 16),
-                            child: Text(LOADING_DATA_FROM_SERVER),
+                            child: Text(loadingDataFromServer),
                           )
                         ],
                       ),

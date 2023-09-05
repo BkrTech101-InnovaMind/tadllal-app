@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:tedllal/model/api_molels/data.dart';
+import 'package:tedllal/model/api_models/data.dart';
 
 LoginResponse loginResponseFromJson(String str) =>
     LoginResponse.fromJson(json.decode(str));

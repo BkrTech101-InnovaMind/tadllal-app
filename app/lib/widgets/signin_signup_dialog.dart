@@ -1,28 +1,28 @@
 import 'package:colorful_circular_progress_indicator/colorful_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:tedllal/config/global.dart';
-import 'package:tedllal/model/api_molels/error_response.dart';
-import 'package:tedllal/model/api_molels/login_response.dart';
-import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/model/api_models/error_response.dart';
+import 'package:tedllal/model/api_models/login_response.dart';
+import 'package:tedllal/model/api_models/signin_signup_request.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 
-class SinInSinUpDialog extends StatefulWidget {
-  const SinInSinUpDialog(
+class SignInSignUpDialog extends StatefulWidget {
+  const SignInSignUpDialog(
       {Key? key,
       required this.onLogin,
-      required this.sinInSinUpRequest,
+      required this.signInSignUpRequest,
       required this.type})
       : super(key: key);
   final Function(LoginResponse response) onLogin;
   final String type;
 
-  final SinInSinUpRequest sinInSinUpRequest;
+  final SignInSignUpRequest signInSignUpRequest;
 
   @override
-  State<SinInSinUpDialog> createState() => _SinInSinUpDialogState();
+  State<SignInSignUpDialog> createState() => _SignInSignUpDialogState();
 }
 
-class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
+class _SignInSignUpDialogState extends State<SignInSignUpDialog> {
   final DioApi dioApi = DioApi();
   String statue = "يرجى الانتظار";
   late Future<LoginResponse> data;
@@ -34,15 +34,15 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
 
   Future _getData() async {
     setState(() {
-      if (widget.type == SININ_TYPE) {
-        data = dioApi.sinIn(sinInSinUpRequest: widget.sinInSinUpRequest);
+      if (widget.type == signInType) {
+        data = dioApi.signIn(signInSignUpRequest: widget.signInSignUpRequest);
         data.then((value) async {
           widget.onLogin(value);
 
           Navigator.of(context).pop();
         });
       } else {
-        data = dioApi.sinUp(sinInSinUpRequest: widget.sinInSinUpRequest);
+        data = dioApi.signUp(signInSignUpRequest: widget.signInSignUpRequest);
         data.then((value) async {
           widget.onLogin(value);
 
@@ -54,13 +54,13 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
 
   @override
   Widget build(BuildContext context) {
-    String title = widget.type == SININ_TYPE ? "تسجيل الدخول" : "انشاء حساب";
-    String progressDesc = widget.type == SININ_TYPE
+    String title = widget.type == signInType ? "تسجيل الدخول" : "انشاء حساب";
+    String progressDesc = widget.type == signInType
         ? "جاري التحقق من البيانات وتسجيل الدخول"
         : "جاري التحقق من البيانات وإنشاء الحساب";
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consist.padding),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -69,7 +69,7 @@ class _SinInSinUpDialogState extends State<SinInSinUpDialog> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Colors.white,
-          borderRadius: BorderRadius.circular(Consts.padding),
+          borderRadius: BorderRadius.circular(Consist.padding),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,

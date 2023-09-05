@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tedllal/config/config.dart';
-import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/model/api_models/user.dart';
 import 'package:tedllal/widgets/save_dialog.dart';
 
 class ProfileEditorPage extends StatefulWidget {

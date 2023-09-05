@@ -36,7 +36,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consist.padding),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -45,7 +45,7 @@ class _CodeAuthenticationDialogState extends State<CodeAuthenticationDialog> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Colors.white,
-          borderRadius: BorderRadius.circular(Consts.padding),
+          borderRadius: BorderRadius.circular(Consist.padding),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,

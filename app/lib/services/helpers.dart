@@ -7,8 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tedllal/config/config.dart';
 import 'package:tedllal/config/login_info.dart';
-import 'package:tedllal/model/api_molels/login_response.dart';
-import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/model/api_models/login_response.dart';
+import 'package:tedllal/model/api_models/signin_signup_request.dart';
 import 'package:tedllal/services/dio_helper.dart';
 import 'package:tedllal/services/storage_service.dart';
 import 'package:tedllal/widgets/logout_dialog.dart';
@@ -70,7 +70,7 @@ clearLoginInfo() async {
 
 Future<void> updateUserDetails(
     {required LoginResponse response,
-    required SinInSinUpRequest sinInSinUpRequest}) async {
+    required SignInSignUpRequest signInSignUpRequest}) async {
   Config.set('isLoggedIn', true);
 
   Config.set(
@@ -92,9 +92,9 @@ Future<void> updateUserDetails(
     response.data!.user!.attributes!.avatar,
   );
 
-  LoginInfo.set_USERNAME_PASSWORD(
-      user_name: sinInSinUpRequest.email!,
-      password: sinInSinUpRequest.password!);
+  LoginInfo.setUserNamePassword(
+      userName: signInSignUpRequest.email!,
+      password: signInSignUpRequest.password!);
   await DioHelper.initCookies();
 }
 
@@ -109,7 +109,7 @@ initDb() async {
   await storageService.initHiveBox('queue');
   await storageService.initHiveBox('offline');
   await storageService.initHiveBox('config');
-  await storageService.initHiveBox('login_info');
+  await storageService.initHiveBox('loginInfo');
 }
 
 Widget userPlaceHolderImage() {
@@ -135,7 +135,7 @@ Widget userPlaceHolderImage() {
   );
 }
 
-on_logOut({required BuildContext context}) {
+onLogOut({required BuildContext context}) {
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -156,7 +156,6 @@ Future<bool> checkPermission({required ImageSource source}) async {
   if (Platform.isAndroid || Platform.isIOS || Platform.isWindows) {
     if (source == ImageSource.camera) {
       PermissionStatus status = await Permission.camera.status;
-      print("============$status");
       if (!status.isGranted) {
         PermissionStatus requestStatus = await Permission.camera.request();
         if (requestStatus == PermissionStatus.permanentlyDenied) {

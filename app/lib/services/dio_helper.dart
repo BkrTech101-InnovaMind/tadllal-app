@@ -57,7 +57,7 @@ class DioHelper {
     return headers;
   }
 
-  static Map<String, dynamic>? getRegesterHeader() {
+  static Map<String, dynamic>? getRegisterHeader() {
     Map<String, dynamic> headers = {};
 
     headers["Content-Type"] = "application/vnd.api+json";

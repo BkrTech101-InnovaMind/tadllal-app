@@ -7,8 +7,8 @@ import 'package:tedllal/config/config.dart';
 import 'package:tedllal/config/global.dart';
 import 'package:tedllal/model/real_estate.dart';
 import 'package:tedllal/services/api/dio_api.dart';
-import 'package:tedllal/widgets/LodingUi/Loder1.dart';
 import 'package:tedllal/widgets/comment_dialog.dart';
+import 'package:tedllal/widgets/loading_ui/loader1.dart';
 import 'package:tedllal/widgets/make_order_dialog.dart';
 
 class RealEstateDetailsPage extends StatefulWidget {
@@ -101,13 +101,13 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                 return const Center(
                     child: Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(ERROR_WHILE_GET_DATA),
+                  child: Text(errorWhileGetData),
                 ));
               } else {
                 return const Center(
                     child: Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(NO_DATA),
+                  child: Text(noData),
                 ));
               }
             } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -123,7 +123,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 16),
-                      child: Text(LOADING_DATA_FROM_SERVER),
+                      child: Text(loadingDataFromServer),
                     )
                   ],
                 ),
@@ -141,7 +141,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 16),
-                      child: Text(LOADING_DATA_FROM_SERVER),
+                      child: Text(loadingDataFromServer),
                     )
                   ],
                 ),

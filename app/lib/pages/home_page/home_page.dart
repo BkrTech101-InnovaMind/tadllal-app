@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:tedllal/config/config.dart';
 import 'package:tedllal/config/global.dart';
 import 'package:tedllal/methods/api_provider.dart';
-import 'package:tedllal/model/api_molels/location.dart';
-import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/model/api_models/location.dart';
+import 'package:tedllal/model/api_models/user.dart';
 import 'package:tedllal/model/filter_option.dart';
 import 'package:tedllal/model/real_estate.dart';
 import 'package:tedllal/model/real_estate_type.dart';
@@ -22,7 +22,7 @@ import 'package:tedllal/pages/notification_page/notification_page.dart';
 import 'package:tedllal/pages/single_sub_service_page/single_sub_service_page.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/services/helpers.dart';
-import 'package:tedllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 
 class HalfCircleClipper extends CustomClipper<Path> {
   @override
@@ -232,13 +232,13 @@ class _HomePageState extends State<HomePage>
                                     return const Center(
                                         child: Padding(
                                       padding: EdgeInsets.only(top: 16),
-                                      child: Text(ERROR_WHILE_GET_DATA),
+                                      child: Text(errorWhileGetData),
                                     ));
                                   } else {
                                     return const Center(
                                         child: Padding(
                                       padding: EdgeInsets.only(top: 16),
-                                      child: Text(NO_DATA),
+                                      child: Text(noData),
                                     ));
                                   }
                                 } else if (snapshot.connectionState ==
@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage>
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(top: 16),
-                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                          child: Text(loadingDataFromServer),
                                         )
                                       ],
                                     ),
@@ -277,7 +277,7 @@ class _HomePageState extends State<HomePage>
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(top: 16),
-                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                          child: Text(loadingDataFromServer),
                                         )
                                       ],
                                     ),
@@ -306,13 +306,13 @@ class _HomePageState extends State<HomePage>
                                     return const Center(
                                         child: Padding(
                                       padding: EdgeInsets.only(top: 16),
-                                      child: Text(ERROR_WHILE_GET_DATA),
+                                      child: Text(errorWhileGetData),
                                     ));
                                   } else {
                                     return const Center(
                                         child: Padding(
                                       padding: EdgeInsets.only(top: 16),
-                                      child: Text(NO_DATA),
+                                      child: Text(noData),
                                     ));
                                   }
                                 } else if (snapshot.connectionState ==
@@ -331,7 +331,7 @@ class _HomePageState extends State<HomePage>
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(top: 16),
-                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                          child: Text(loadingDataFromServer),
                                         )
                                       ],
                                     ),
@@ -351,7 +351,7 @@ class _HomePageState extends State<HomePage>
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(top: 16),
-                                          child: Text(LOADING_DATA_FROM_SERVER),
+                                          child: Text(loadingDataFromServer),
                                         )
                                       ],
                                     ),
@@ -416,12 +416,11 @@ class _HomePageState extends State<HomePage>
     // log("data ${data}");
     List<RealEstate> realEstate =
         (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
-    for (var element in realEstate) {
-      print(element.toJson());
-    }
-    Provider.of<AppProvider>(context, listen: false)
-        .addRealEstateList(listData: realEstate);
+    providerListener().addRealEstateList(listData: realEstate);
   }
+
+  AppProvider providerListener() =>
+      Provider.of<AppProvider>(context, listen: false);
 
   Future<List<Location>> _getLocationData() async {
     var rowData = await dioApi.get("/locations");
@@ -710,6 +709,7 @@ class _HomePageState extends State<HomePage>
       ],
     );
   }
+
   // * Uncomment this widget and comment the previous one to change the services
   // * from the api instead of hard coding
   // Widget buildService() {
@@ -860,13 +860,13 @@ class _HomePageState extends State<HomePage>
   //                   return const Center(
   //                       child: Padding(
   //                     padding: EdgeInsets.only(top: 16),
-  //                     child: Text(ERROR_WHILE_GET_DATA),
+  //                     child: Text(errorWhileGetData),
   //                   ));
   //                 } else {
   //                   return const Center(
   //                       child: Padding(
   //                     padding: EdgeInsets.only(top: 16),
-  //                     child: Text(NO_DATA),
+  //                     child: Text(noData),
   //                   ));
   //                 }
   //               } else if (snapshot.connectionState ==
@@ -883,7 +883,7 @@ class _HomePageState extends State<HomePage>
   //                       ),
   //                       Padding(
   //                         padding: EdgeInsets.only(top: 16),
-  //                         child: Text(LOADING_DATA_FROM_SERVER),
+  //                         child: Text(loadingDataFromServer),
   //                       )
   //                     ],
   //                   ),
@@ -901,7 +901,7 @@ class _HomePageState extends State<HomePage>
   //                       ),
   //                       Padding(
   //                         padding: EdgeInsets.only(top: 16),
-  //                         child: Text(LOADING_DATA_FROM_SERVER),
+  //                         child: Text(loadingDataFromServer),
   //                       )
   //                     ],
   //                   ),
@@ -991,17 +991,16 @@ class _HomePageState extends State<HomePage>
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    print("DATA ERROR ${snapshot.error}");
                     return const Center(
                         child: Padding(
                       padding: EdgeInsets.only(top: 16),
-                      child: Text(ERROR_WHILE_GET_DATA),
+                      child: Text(errorWhileGetData),
                     ));
                   } else {
                     return const Center(
                         child: Padding(
                       padding: EdgeInsets.only(top: 16),
-                      child: Text(NO_DATA),
+                      child: Text(noData),
                     ));
                   }
                 } else if (snapshot.connectionState ==
@@ -1018,7 +1017,7 @@ class _HomePageState extends State<HomePage>
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 16),
-                          child: Text(LOADING_DATA_FROM_SERVER),
+                          child: Text(loadingDataFromServer),
                         )
                       ],
                     ),
@@ -1036,7 +1035,7 @@ class _HomePageState extends State<HomePage>
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 16),
-                          child: Text(LOADING_DATA_FROM_SERVER),
+                          child: Text(loadingDataFromServer),
                         )
                       ],
                     ),

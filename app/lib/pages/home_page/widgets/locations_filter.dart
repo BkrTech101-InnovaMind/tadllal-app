@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tedllal/model/api_molels/location.dart';
+import 'package:tedllal/model/api_models/location.dart';
 
 class LocationFilter extends StatefulWidget {
   const LocationFilter(

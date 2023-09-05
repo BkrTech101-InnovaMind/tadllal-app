@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tedllal/config/config.dart';
-import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/model/api_models/user.dart';
 import 'package:tedllal/pages/add_user_page/add_user_page.dart';
 import 'package:tedllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
 import 'package:tedllal/services/helpers.dart';
@@ -75,7 +75,6 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       },
     );
-    print("editedForm $editedForm");
     if (changedFields.isNotEmpty) {
       _onEdit();
     }
@@ -129,6 +128,8 @@ class _ProfilePageState extends State<ProfilePage> {
       userRole = "شركة";
     } else if (user.attributes!.role == "marketer") {
       userRole = "مسوق";
+    } else if (user.attributes!.role == "admin") {
+      userRole = "مدير";
     } else {
       userRole = "مستخدم قياسي";
     }
@@ -613,16 +614,20 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 5),
-          content: Text(
-            source == ImageSource.camera
-                ? "تم رفض الوصول الى الكيمرة"
-                : "تم رفض الوصول الى معرض الصور",
-          ),
-        ),
-      );
+      _showSnackMessage(source);
     }
+  }
+
+  void _showSnackMessage(source) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Text(
+          source == ImageSource.camera
+              ? "تم رفض الوصول الى الكاميرا"
+              : "تم رفض الوصول الى المعرض",
+        ),
+      ),
+    );
   }
 }

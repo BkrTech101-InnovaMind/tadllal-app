@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/model/api_models/user.dart';
 import 'package:tedllal/services/storage_service.dart';
 
 class Config {

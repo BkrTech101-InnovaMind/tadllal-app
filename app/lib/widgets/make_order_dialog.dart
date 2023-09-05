@@ -36,7 +36,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
       contentPadding: EdgeInsets.zero,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consist.padding),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -48,7 +48,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
-            borderRadius: BorderRadius.circular(Consts.padding),
+            borderRadius: BorderRadius.circular(Consist.padding),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black26,

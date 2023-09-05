@@ -38,7 +38,6 @@ class _AddUserPageState extends State<AddUserPage> {
         },
       ),
     );
-    print(form);
   }
 
   @override

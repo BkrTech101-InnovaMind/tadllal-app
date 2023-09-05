@@ -37,17 +37,21 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
         });
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 5),
-          content: Text(
-            source == ImageSource.camera
-                ? "تم رفض الوصول الى الكاميرا"
-                : "تم رفض الوصول الى معرض الصور",
-          ),
-        ),
-      );
+      _showSnackMessage(source);
     }
+  }
+
+  void _showSnackMessage(source) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Text(
+          source == ImageSource.camera
+              ? "تم رفض الوصول الى الكاميرا"
+              : "تم رفض الوصول الى المعرض",
+        ),
+      ),
+    );
   }
 
   @override

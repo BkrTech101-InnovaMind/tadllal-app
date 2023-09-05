@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tedllal/model/api_molels/user_preference.dart';
+import 'package:tedllal/model/api_models/user_preference.dart';
 import 'package:tedllal/model/real_estate_type.dart';
 import 'package:tedllal/services/api/dio_api.dart';
-import 'package:tedllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 import 'package:tedllal/widgets/save_dialog.dart';
 
 import '../../config/global.dart';
@@ -68,7 +68,6 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
     List<UserPreference> preferencesList = await _getPreferencesData();
     for (var type in typeList) {
       RealEstateType temp = type;
-      print(temp.toJson());
       for (var preferences in preferencesList) {
         if (preferences.id == type.id) {
           temp.isChecked = true;
@@ -244,13 +243,13 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
             return const Center(
                 child: Padding(
               padding: EdgeInsets.only(top: 16),
-              child: Text(NO_DATA),
+              child: Text(noData),
             ));
           } else {
             return const Center(
                 child: Padding(
               padding: EdgeInsets.only(top: 16),
-              child: Text(NO_DATA),
+              child: Text(noData),
             ));
           }
         } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -266,7 +265,7 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(LOADING_DATA_FROM_SERVER),
+                  child: Text(loadingDataFromServer),
                 )
               ],
             ),
@@ -284,7 +283,7 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(LOADING_DATA_FROM_SERVER),
+                  child: Text(loadingDataFromServer),
                 )
               ],
             ),

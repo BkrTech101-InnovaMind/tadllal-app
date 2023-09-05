@@ -15,7 +15,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consist.padding),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -24,7 +24,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: const Color(0xFFF5F4F8),
-          borderRadius: BorderRadius.circular(Consts.padding),
+          borderRadius: BorderRadius.circular(Consist.padding),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,

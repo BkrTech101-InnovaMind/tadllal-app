@@ -7,7 +7,7 @@ initApiConfig() async {
     await DioHelper.init(Config().baseUrl!);
     await DioHelper.initCookies();
   } else {
-    Config.set("baseUrl", APP_API_URI);
+    Config.set("baseUrl", appApiUri);
     await DioHelper.init(Config().baseUrl!);
     await DioHelper.initCookies();
   }
@@ -22,7 +22,6 @@ Future<void> setBaseUrl(url) async {
       isSSL == true) {
     url = "https://$url";
   }
-  print("HTTP IS $url");
   await Config.set('baseUrl', url);
   await DioHelper.init(url);
 }

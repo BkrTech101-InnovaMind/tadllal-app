@@ -56,7 +56,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
       insetPadding: const EdgeInsets.all(10),
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consist.padding),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -68,7 +68,7 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
-            borderRadius: BorderRadius.circular(Consts.padding),
+            borderRadius: BorderRadius.circular(Consist.padding),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
@@ -196,22 +196,20 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
   }
 
   Widget waitingBody() {
-    return Row(
+    return const Row(
       children: [
-        Container(
-          child: const ColorfulCircularProgressIndicator(
-            colors: [
-              Color(0xFF194706),
-              Colors.white,
-              Color(0xFF8BC83F),
-              Colors.white,
-            ],
-            strokeWidth: 2,
-            indicatorHeight: 20,
-            indicatorWidth: 20,
-          ),
+        ColorfulCircularProgressIndicator(
+          colors: [
+            Color(0xFF194706),
+            Colors.white,
+            Color(0xFF8BC83F),
+            Colors.white,
+          ],
+          strokeWidth: 2,
+          indicatorHeight: 20,
+          indicatorWidth: 20,
         ),
-        const Expanded(
+        Expanded(
           child: Text(
             "جاري حفظ البيانات يرجى الانتظار",
             textAlign: TextAlign.center,
@@ -874,7 +872,6 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
             {
               isWaiting = true;
               Map<String, dynamic> mainFormValue = _formKey.currentState!.value;
-              print(mainFormValue);
               _data = dioApi.post("/resetPassword", myData: mainFormValue);
               _data.then((value) {
                 if (value.statusCode == HttpStatus.ok) {

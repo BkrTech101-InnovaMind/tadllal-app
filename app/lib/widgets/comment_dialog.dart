@@ -79,14 +79,14 @@ class _CommentDialogState extends State<CommentDialog> {
     );
   }
 
-  void _whenSubmit() {
+  void _onPressed() {
     final String comment = commentController.text;
     if (comment.isNotEmpty && rating != 0) {
       if (commentId.isEmpty) {
         _ratingPost();
         _commentPost();
         Navigator.pop(context);
-        _showSnackBar("تم التقييم بنجاح");
+        _showSnackBar("تم الإرسال بنجاح");
       } else {
         _commentEdit();
         Navigator.pop(context);
@@ -185,7 +185,7 @@ class _CommentDialogState extends State<CommentDialog> {
             borderRadius: BorderRadius.circular(5.0),
           ),
           textColor: Colors.white,
-          onPressed: () => _whenSubmit(),
+          onPressed: () => _onPressed(),
           splashColor: const Color(0xFF8BC83F),
           child: const Text(
             'تقييم',

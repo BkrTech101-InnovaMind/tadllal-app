@@ -72,7 +72,9 @@ class _CommentDialogState extends State<CommentDialog> {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextFormField(
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
+              maxLines: 6,
+              minLines: 1,
               controller: commentController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(borderSide: BorderSide.none),

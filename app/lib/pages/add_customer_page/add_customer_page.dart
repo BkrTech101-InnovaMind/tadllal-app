@@ -168,17 +168,23 @@ class _AddUserPageState extends State<AddCustomerPage> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    final budgetFrom = int.tryParse(_budgetFromController.text.trim());
+    final budgetTo = int.tryParse(_budgetToController.text.trim());
+    final customerNumber =
+        double.tryParse(_customerNumberController.text.trim());
     final form = {
       "customer_name": _customerNameController.text.trim(),
-      "customer_number": _customerNumberController.text.trim(),
+      "customer_number": customerNumber,
       "location_id": selectedLocationId,
       "type_id": selectedTypeId,
       "property": _propertyController.text.trim(),
-      "budget_from": _budgetFromController.text.trim(),
-      "budget_to": _budgetToController.text.trim(),
+      "budget_from": budgetFrom,
+      "budget_to": budgetTo,
       "currency": _currencyController.text.trim(),
       "other_details": _otherDetailsController.text.trim(),
     };
+
+    print("form: $form");
 
     showDialog(
       barrierDismissible: false,
@@ -193,7 +199,7 @@ class _AddUserPageState extends State<AddCustomerPage> {
         },
       ),
     );
-    print(form);
+    print("form: $form");
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/model/api_molels/location.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/model/real_estate_type.dart';
+import 'package:tedllal/model/api_molels/location.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/model/real_estate_type.dart';
 
 class AppProvider extends ChangeNotifier {
   List<RealEstate> realEstateList = [];

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/auth_pages/auth_pages.dart';
-import 'package:tadllal/pages/auth_pages/sign_up_page/widgets/sign_up_form.dart';
+import 'package:tedllal/pages/auth_pages/auth_pages.dart';
+import 'package:tedllal/pages/auth_pages/sign_up_page/widgets/sign_up_form.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

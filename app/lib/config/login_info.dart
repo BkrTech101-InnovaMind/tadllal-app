@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/services/storage_service.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/services/storage_service.dart';
 
 class LoginInfo {
   static var loginInfoContainer = StorageService().getHiveBox('login_info');

@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/methods/api_provider.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder1.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/methods/api_provider.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/LodingUi/Loder1.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

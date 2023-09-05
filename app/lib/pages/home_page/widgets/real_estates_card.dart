@@ -3,11 +3,11 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:tadllal/methods/api_provider.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/error_dialog.dart';
+import 'package:tedllal/methods/api_provider.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/error_dialog.dart';
 
 class RealEstateCard extends StatefulWidget {
   const RealEstateCard({super.key});

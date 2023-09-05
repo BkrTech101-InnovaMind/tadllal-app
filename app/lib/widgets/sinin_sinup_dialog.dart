@@ -1,10 +1,10 @@
 import 'package:colorful_circular_progress_indicator/colorful_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/api_molels/error_response.dart';
-import 'package:tadllal/model/api_molels/login_response.dart';
-import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/services/api/dio_api.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/api_molels/error_response.dart';
+import 'package:tedllal/model/api_molels/login_response.dart';
+import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/services/api/dio_api.dart';
 
 class SinInSinUpDialog extends StatefulWidget {
   const SinInSinUpDialog(

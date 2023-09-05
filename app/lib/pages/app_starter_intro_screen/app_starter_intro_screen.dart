@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/pages/app_starter_intro_screen/widgets/on_boarding_splash.dart';
-import 'package:tadllal/pages/auth_pages/auth_pages.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/pages/app_starter_intro_screen/widgets/on_boarding_splash.dart';
+import 'package:tedllal/pages/auth_pages/auth_pages.dart';
 
 class AppStarterIntroScreen extends StatefulWidget {
   const AppStarterIntroScreen({super.key});

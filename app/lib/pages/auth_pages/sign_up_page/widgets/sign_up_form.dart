@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
-import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
-import 'package:tadllal/services/helpers.dart';
-import 'package:tadllal/services/http.dart';
-import 'package:tadllal/widgets/sinin_sinup_dialog.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
+import 'package:tedllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
+import 'package:tedllal/services/helpers.dart';
+import 'package:tedllal/services/http.dart';
+import 'package:tedllal/widgets/sinin_sinup_dialog.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});

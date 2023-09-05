@@ -227,7 +227,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               // Navigator.pushReplacement(
               //     context,
               //     MaterialPageRoute(
-              //       builder: (context) => const TadllalApp(),
+              //       builder: (context) => const TedllalApp(),
               //     ));
             },
             child: const Text("الذهاب الى الصفحة الرئيسية"),

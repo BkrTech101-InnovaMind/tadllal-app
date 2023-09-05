@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
+import 'package:tedllal/config/global.dart';
 
 class ErrorDialog extends StatefulWidget {
   final String desc;

@@ -3,13 +3,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder1.dart';
-import 'package:tadllal/widgets/comment_dialog.dart';
-import 'package:tadllal/widgets/make_order_dialog.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/LodingUi/Loder1.dart';
+import 'package:tedllal/widgets/comment_dialog.dart';
+import 'package:tedllal/widgets/make_order_dialog.dart';
 
 class RealEstateDetailsPage extends StatefulWidget {
   final RealEstate realEstate;

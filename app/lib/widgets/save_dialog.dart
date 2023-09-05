@@ -1,8 +1,8 @@
 import 'package:colorful_circular_progress_indicator/colorful_circular_progress_indicator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/services/api/dio_api.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/services/api/dio_api.dart';
 
 class SaveDialog extends StatefulWidget {
   final Function(List<Response<dynamic>> response) onUrlChanged;

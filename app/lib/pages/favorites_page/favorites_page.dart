@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/methods/in_intro_tour_preferences.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/utils/in_intro_tour.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
-import 'package:tadllal/widgets/error_dialog.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/methods/in_intro_tour_preferences.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/utils/in_intro_tour.dart';
+import 'package:tedllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/widgets/error_dialog.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class FavoritesPage extends StatefulWidget {

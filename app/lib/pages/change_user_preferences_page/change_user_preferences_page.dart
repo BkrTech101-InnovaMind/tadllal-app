@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/model/api_molels/user_preference.dart';
-import 'package:tadllal/model/real_estate_type.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/model/api_molels/user_preference.dart';
+import 'package:tedllal/model/real_estate_type.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 import '../../config/global.dart';
 

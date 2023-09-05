@@ -1,5 +1,5 @@
-name: tadllal
-description: Tadllal, is a real estate application that allows users to buy and sell properties. Real estate companies can also create accounts to showcase their properties. The app enables users to search for properties and view details such as location, size, and images. It streamlines the process and enhances the customer experience in the real estate market.
+name: tedllal
+description: Tedllal, is a real estate application that allows users to buy and sell properties. Real estate companies can also create accounts to showcase their properties. The app enables users to search for properties and view details such as location, size, and images. It streamlines the process and enhances the customer experience in the real estate market.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev

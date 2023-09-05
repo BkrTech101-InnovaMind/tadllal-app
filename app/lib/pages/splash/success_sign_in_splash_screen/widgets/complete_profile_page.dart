@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/services/helpers.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/services/helpers.dart';
 
 class CompleteProfilePage extends StatefulWidget {
   const CompleteProfilePage(

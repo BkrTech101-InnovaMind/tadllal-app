@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/services/api/dio_api.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/services/api/dio_api.dart';
 
 class CommentDialog extends StatefulWidget {
   final double rating;

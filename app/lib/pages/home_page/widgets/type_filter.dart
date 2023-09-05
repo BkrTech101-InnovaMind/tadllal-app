@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/model/real_estate_type.dart';
+import 'package:tedllal/model/real_estate_type.dart';
 
 class TypeFilter extends StatefulWidget {
   const TypeFilter(

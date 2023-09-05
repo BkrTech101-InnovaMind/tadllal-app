@@ -1,6 +1,6 @@
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/services/dio_helper.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/services/dio_helper.dart';
 
 initApiConfig() async {
   if (Config().baseUrl != null) {

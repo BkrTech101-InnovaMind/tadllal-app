@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/config/login_info.dart';
-import 'package:tadllal/model/api_molels/login_response.dart';
-import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/services/dio_helper.dart';
-import 'package:tadllal/services/storage_service.dart';
-import 'package:tadllal/widgets/logout_dialog.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/config/login_info.dart';
+import 'package:tedllal/model/api_molels/login_response.dart';
+import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/services/dio_helper.dart';
+import 'package:tedllal/services/storage_service.dart';
+import 'package:tedllal/widgets/logout_dialog.dart';
 
 getDownloadPath() async {
   if (Platform.isAndroid) {

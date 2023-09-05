@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tadllal/model/api_molels/error_response.dart';
-import 'package:tadllal/model/api_molels/login_response.dart';
-import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/services/dio_helper.dart';
+import 'package:tedllal/model/api_molels/error_response.dart';
+import 'package:tedllal/model/api_molels/login_response.dart';
+import 'package:tedllal/model/api_molels/sinin_sinup_request.dart';
+import 'package:tedllal/services/dio_helper.dart';
 
 class DioApi {
   Future<LoginResponse> sinIn(

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/services.dart';
-import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/services.dart';
+import 'package:tedllal/pages/single_sub_service_page/single_sub_service_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/LodingUi/Loder2.dart';
 
 class GeneralServicesPage extends StatefulWidget {
   const GeneralServicesPage({super.key});

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:tadllal/model/api_molels/user.dart';
-import 'package:tadllal/services/storage_service.dart';
+import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/services/storage_service.dart';
 
 class Config {
   static var configContainer = StorageService().getHiveBox('config');

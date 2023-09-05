@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class AddUserPage extends StatefulWidget {
   const AddUserPage({super.key});

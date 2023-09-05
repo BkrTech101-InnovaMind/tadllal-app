@@ -5,14 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/model/api_molels/user.dart';
-import 'package:tadllal/pages/add_user_page/add_user_page.dart';
-import 'package:tadllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
-import 'package:tadllal/services/helpers.dart';
-import 'package:tadllal/widgets/change_password_dialog.dart';
-import 'package:tadllal/widgets/logout_dialog.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/model/api_molels/user.dart';
+import 'package:tedllal/pages/add_user_page/add_user_page.dart';
+import 'package:tedllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
+import 'package:tedllal/services/helpers.dart';
+import 'package:tedllal/widgets/change_password_dialog.dart';
+import 'package:tedllal/widgets/logout_dialog.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/config/login_info.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/config/login_info.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
   const ChangePasswordDialog({super.key});

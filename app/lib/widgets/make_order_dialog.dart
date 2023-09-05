@@ -2,8 +2,8 @@ import 'package:colorful_circular_progress_indicator/colorful_circular_progress_
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/services/api/dio_api.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/services/api/dio_api.dart';
 
 class MakeOrderDialog extends StatefulWidget {
   final int orderId;

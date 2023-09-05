@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/real_estate_type.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/real_estate_type.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/LodingUi/Loder2.dart';
 
 class ChoseFavPage extends StatefulWidget {
   const ChoseFavPage({super.key, required this.onTypePressed});

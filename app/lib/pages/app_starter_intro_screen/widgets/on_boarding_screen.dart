@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/app_starter_intro_screen/app_starter_intro_screen.dart';
+import 'package:tedllal/pages/app_starter_intro_screen/app_starter_intro_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});

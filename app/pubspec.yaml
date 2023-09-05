@@ -65,6 +65,7 @@ dependencies:
   path_provider: ^2.1.1
   cookie_jar: ^4.0.8
   intl: ^0.18.1
+  intl_phone_number_input: ^0.7.3+1
 
 flutter_launcher_icons:
   remove_alpha_ios: true

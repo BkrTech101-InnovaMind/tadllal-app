@@ -29,7 +29,7 @@ class _FavoritesPageState extends State<FavoritesPage>
   @override
   void initState() {
     setState(() {
-      realStateDataList = _getrealEstateData();
+      realStateDataList = _getRealEstateData();
 
       realStateDataList.then((value) {
         if (value.isNotEmpty) {
@@ -314,7 +314,7 @@ class _FavoritesPageState extends State<FavoritesPage>
     });
   }
 
-  Future<List<RealEstate>> _getrealEstateData() async {
+  Future<List<RealEstate>> _getRealEstateData() async {
     var rowData = await dioApi.get("/favorites/show");
     String jsonString = json.encode(rowData.data["favorites"]);
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
@@ -325,7 +325,7 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   _syncData() {
     setState(() {
-      realStateDataList = _getrealEstateData();
+      realStateDataList = _getRealEstateData();
     });
   }
 

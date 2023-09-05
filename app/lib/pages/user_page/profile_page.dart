@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tedllal/config/config.dart';
 import 'package:tedllal/model/api_models/user.dart';
-import 'package:tedllal/pages/add_user_page/add_user_page.dart';
+import 'package:tedllal/pages/add_customer_page/add_customer_page.dart';
 import 'package:tedllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
 import 'package:tedllal/services/helpers.dart';
 import 'package:tedllal/widgets/change_password_dialog.dart';
@@ -350,21 +350,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const AddUserPage()),
+                                                const AddCustomerPage()),
                                       );
                                     },
                                     style: OutlinedButton.styleFrom(
                                       backgroundColor: const Color(0xFF8BC83F),
                                       foregroundColor: Colors.white,
-                                      // padding: const EdgeInsets.symmetric(
-                                      //     horizontal: 10, vertical: 10),
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)),
                                       ),
                                     ),
                                     child: const Text(
-                                      "إضافة مستخدم جديد",
+                                      "إضافة عميل",
                                       style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,

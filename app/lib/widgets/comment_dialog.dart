@@ -40,6 +40,78 @@ class _CommentDialogState extends State<CommentDialog> {
     super.initState();
   }
 
+  void _ratingPost() {
+    dioApi.post(
+      "/realEstate/rate",
+      myData: {
+        "id": realEstate.id,
+        "rate": rating,
+      },
+    ).then((value) => _syncData());
+  }
+
+  void _commentPost() {
+    dioApi.post("/comments/add/${realEstate.id}",
+        myData: {"comment": commentController.text.trim()}).then(
+      (value) {
+        commentController.clear();
+        _syncData();
+      },
+    );
+  }
+
+  void _commentEdit() {
+    dioApi.put("/comments/comment/$commentId",
+        myData: {"comment": commentController.text.trim()}).then(
+      (value) {
+        commentController.clear();
+        commentId = "";
+        _syncData();
+      },
+    );
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  void _whenSubmit() {
+    final String comment = commentController.text;
+    if (comment.isNotEmpty && rating != 0) {
+      if (commentId.isEmpty) {
+        _ratingPost();
+        _commentPost();
+        Navigator.pop(context);
+        _showSnackBar("تم التقييم بنجاح");
+      } else {
+        _commentEdit();
+        Navigator.pop(context);
+        _showSnackBar("تم التعديل بنجاح");
+      }
+    } else if (comment.isNotEmpty) {
+      if (commentId.isEmpty) {
+        _commentPost();
+        Navigator.pop(context);
+        _showSnackBar("تم التعليق بنجاح");
+      } else {
+        _commentEdit();
+        Navigator.pop(context);
+        _showSnackBar("تم التعديل بنجاح");
+      }
+    } else if (rating != 0) {
+      _ratingPost();
+      Navigator.pop(context);
+      _showSnackBar("تم التقييم بنجاح");
+    } else {
+      Navigator.pop(context);
+      _showSnackBar("لا توجد بيانات للتقييم!! ");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -52,7 +124,7 @@ class _CommentDialogState extends State<CommentDialog> {
             child: RatingBar(
               initialRating: widget.rating,
               direction: Axis.horizontal,
-              allowHalfRating: true,
+              allowHalfRating: false,
               itemCount: 5,
               ratingWidget: RatingWidget(
                 full: const Icon(Icons.star, color: Colors.amber),
@@ -113,37 +185,10 @@ class _CommentDialogState extends State<CommentDialog> {
             borderRadius: BorderRadius.circular(5.0),
           ),
           textColor: Colors.white,
-          onPressed: () {
-            if (commentController.text.isEmpty) {
-              Navigator.pop(context);
-              return;
-            } else {
-              if (commentId.isEmpty) {
-                dioApi.post("/comments/add/${realEstate.id}", myData: {
-                  "comment": commentController.text.trim()
-                }).then((value) {
-                  commentController.clear();
-                  _syncData();
-                });
-              } else {
-                dioApi.put("/comments/comment/$commentId", myData: {
-                  "comment": commentController.text.trim()
-                }).then((value) {
-                  commentController.clear();
-                  commentId = "";
-                  _syncData();
-                });
-              }
-            }
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text(
-              "تم التعليق بنجاح",
-            )));
-            Navigator.of(context).pop();
-          },
+          onPressed: () => _whenSubmit(),
           splashColor: const Color(0xFF8BC83F),
           child: const Text(
-            'تعليق',
+            'تقييم',
             style: TextStyle(fontSize: 12),
           ),
         ),

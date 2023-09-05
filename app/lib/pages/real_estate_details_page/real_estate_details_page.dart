@@ -13,9 +13,7 @@ import 'package:tedllal/widgets/make_order_dialog.dart';
 
 class RealEstateDetailsPage extends StatefulWidget {
   final RealEstate realEstate;
-
-  const RealEstateDetailsPage({Key? key, required this.realEstate})
-      : super(key: key);
+  const RealEstateDetailsPage({required this.realEstate, super.key});
 
   @override
   State<RealEstateDetailsPage> createState() => _RealEstateDetailsPageState();

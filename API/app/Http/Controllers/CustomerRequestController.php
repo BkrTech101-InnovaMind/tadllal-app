@@ -19,7 +19,7 @@ class CustomerRequestController extends Controller
         $user = Auth::user();
 
 
-        if ($user->role !== 'marketer' && $user->role !== 'company') {
+        if ($user->role !== 'marketer' && $user->role !== 'company' && $user->role !== 'admin') {
             return $this->error('Error', ['message' => 'Unauthorized..'], 401);
         }
 
@@ -51,7 +51,7 @@ class CustomerRequestController extends Controller
         $user = Auth::user();
 
         // التحقق من دور المستخدم (يجب أن يكون مسوقًا أو شركة)
-        if ($user->role !== 'marketer' && $user->role !== 'company') {
+        if ($user->role !== 'marketer' && $user->role !== 'company' && $user->role !== 'admin') {
             return $this->error('Error', ['message' => 'Unauthorized..'], 401);
         }
 

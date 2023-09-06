@@ -15,7 +15,7 @@ class RatingController extends Controller
     {
         $request->validate([
             'id' => 'required|exists:real_estates,id',
-            'rate' => 'required|integer|min:1|max:5',
+            'rate' => 'required|numeric|min:1|max:5',
         ]);
 
         $user = Auth::user(); // Get the currently authenticated user

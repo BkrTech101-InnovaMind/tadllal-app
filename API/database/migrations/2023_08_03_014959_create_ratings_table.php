@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('real_estate_id');
-            $table->integer('rating');
+            $table->float('rating', 2, 1);
             $table->timestamps();
 
             $table->unique(['user_id', 'real_estate_id']);

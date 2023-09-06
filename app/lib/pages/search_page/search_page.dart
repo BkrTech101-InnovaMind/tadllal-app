@@ -10,6 +10,13 @@ import 'package:tedllal/pages/search_page/widgets/search_page_filters.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/widgets/loading_ui/loader1.dart';
 
+enum FilterSearchType{
+  secondType,
+  baptism,
+  firstType,
+  vision
+}
+
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -31,23 +38,53 @@ class _SearchPageState extends State<SearchPage> {
   String searchValue = '';
   final List<String> _suggestions = [];
   List<RealEstate> realEstatesApiExample = [];
+  List<RealEstate> filteredResultsList = [];
   final DioApi dioApi = DioApi();
   Future<List<RealEstate>> realEstateDataList = Future(() => []);
-  List<RealEstate> filteredResults() {
-    return realEstatesApiExample.where((realEstate) {
-      return (realEstate.attributes!.name!.toLowerCase().contains(
-                searchValue.toLowerCase(),
-              )) ||
-          (realEstate.attributes!.location!.name!.toLowerCase().contains(
-                searchValue.toLowerCase(),
-              )) ||
-          (realEstate.attributes!.price.toString().toLowerCase().contains(
-                searchValue.toLowerCase(),
-              ));
+
+  void filteredResults({ String data="",FilterSearchType? filterSearchType,}) {
+
+    List<RealEstate> real=realEstatesApiExample.where((realEstate) {
+      return (realEstate.attributes!.name!.toLowerCase().contains(searchValue.toLowerCase() ))
+          ||
+          (realEstate.attributes!.location!.name!.toLowerCase().contains(searchValue.toLowerCase()))
+          ||
+          (realEstate.attributes!.price.toString().toLowerCase().contains(searchValue.toLowerCase()));
     }).toList();
+
+
+    if(filterSearchType!=null  &&data.isNotEmpty){
+      switch (filterSearchType){
+        case FilterSearchType.secondType:{
+          real= real.where((element) => element.attributes!.secondType==data).toList();
+          break;
+        }
+        case FilterSearchType.baptism:{
+          real= real.where((element) => element.attributes!.baptism==data).toList();
+          break;
+        }
+        case FilterSearchType.firstType:{
+          real= real.where((element) => element.attributes!.firstType!.name==data).toList();
+          break;
+        }
+        case FilterSearchType.vision:{
+          real= real.where((element) => element.attributes!.vision==data).toList();
+          break;
+        }
+
+
+      }
+    }
+
+    setState(() {
+      filteredResultsList=real;
+    });
+
   }
 
   void onSearch(value) {
+
+
     setState(() {
       searchValue = value;
       _suggestions.clear();
@@ -62,6 +99,7 @@ class _SearchPageState extends State<SearchPage> {
               (realEstate.attributes!.price.toString().toLowerCase().contains(
                     searchValue.toLowerCase(),
                   ))) {
+
             _suggestions.add(realEstate.attributes!.name!);
           }
         }
@@ -113,7 +151,10 @@ class _SearchPageState extends State<SearchPage> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
-                onChanged: onSearch,
+                onChanged: (value) {
+                  onSearch(value);
+                  filteredResults();
+                },
                 onSubmitted: onSuggestionTap,
                 onTapOutside: (event) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
@@ -155,9 +196,9 @@ class _SearchPageState extends State<SearchPage> {
                               )
                             ],
                           ),
-                          child: const Column(
+                          child:  Column(
                             children: [
-                              Text(
+                              const Text(
                                 "فلترة النتائج",
                                 style: TextStyle(
                                   fontSize: 22,
@@ -165,12 +206,29 @@ class _SearchPageState extends State<SearchPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 5),
-                              SearchPageFilters(),
-                              SizedBox(
+                              const SizedBox(height: 5),
+                              SearchPageFilters(
+                                onSelectedSecondType:
+                                    (String selectedSecondType) {
+
+                                  filteredResults(filterSearchType: FilterSearchType.secondType,data: selectedSecondType);
+                                    },
+                                onSelectedBaptism: (String selectedBaptism) {
+                                  filteredResults(filterSearchType: FilterSearchType.baptism,data: selectedBaptism);
+                                },
+                                onSelectedFirstType:
+                                    (String selectedFirstType) {
+
+                                      filteredResults(filterSearchType: FilterSearchType.firstType,data: selectedFirstType);
+                                    },
+                                onSelectedVision: (String selectedVision) {
+                                  filteredResults(filterSearchType: FilterSearchType.vision,data: selectedVision);
+                                },
+                              ),
+                              const SizedBox(
                                 height: 15,
                               ),
-                              Padding(
+                              const Padding(
                                 padding: EdgeInsets.only(bottom: 5),
                                 child: Text(
                                   "نتائج البحث",
@@ -184,14 +242,14 @@ class _SearchPageState extends State<SearchPage> {
                             ],
                           ),
                         ),
-                        filteredResults().isNotEmpty
+                        filteredResultsList.isNotEmpty
                             ? Expanded(
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: filteredResults().length,
+                                  itemCount: filteredResultsList.length,
                                   itemBuilder: (context, index) {
-                                    final realEstate = filteredResults()[index];
+                                    final realEstate = filteredResultsList[index];
                                     return Container(
                                       margin: const EdgeInsets.symmetric(
                                           vertical: 10),

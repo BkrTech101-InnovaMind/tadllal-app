@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class SearchPageFilters extends StatefulWidget {
-  const SearchPageFilters({super.key});
+  const SearchPageFilters({super.key, required this.onSelectedSecondType, required this.onSelectedBaptism, required this.onSelectedFirstType, required this.onSelectedVision});
+  final Function(String selectedSecondType) onSelectedSecondType;
+  final Function(String selectedBaptism) onSelectedBaptism;
+  final Function(String selectedFirstType) onSelectedFirstType;
+  final Function(String selectedVision) onSelectedVision;
+
 
   @override
   State<SearchPageFilters> createState() => _SearchPageFiltersState();
@@ -45,7 +50,9 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                             onTap: () {
                               setState(() {
                                 selectedSecondType = type;
+
                               });
+                              widget.onSelectedSecondType(type);
                               Navigator.pop(context);
                             },
                           );
@@ -64,6 +71,7 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                             setState(() {
                               selectedSecondType = "";
                             });
+
                             Navigator.of(context).pop();
                           },
                           splashColor: Colors.redAccent,
@@ -112,6 +120,7 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                               setState(() {
                                 selectedBaptism = baptism;
                               });
+                              widget.onSelectedBaptism(baptism);
                               Navigator.pop(context);
                             },
                           );
@@ -178,6 +187,7 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                               setState(() {
                                 selectedFirstType = type;
                               });
+                              widget.onSelectedFirstType(type);
                               Navigator.pop(context);
                             },
                           );
@@ -244,6 +254,7 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                               setState(() {
                                 selectedVision = vision;
                               });
+                              widget.onSelectedVision(vision);
                               Navigator.pop(context);
                             },
                           );

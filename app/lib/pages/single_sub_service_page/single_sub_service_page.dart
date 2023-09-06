@@ -124,32 +124,8 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
             ),
           ),
           const SizedBox(height: 20),
-          // buildOrderButton(),
         ],
       ),
     );
   }
-
-  // Widget buildOrderButton() {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-  //     child: OutlinedButton(
-  //       style: OutlinedButton.styleFrom(
-  //         foregroundColor: Colors.white,
-  //         backgroundColor: const Color(0xFF194706).withOpacity(0.8),
-  //         fixedSize: const Size(150, 63),
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(20),
-  //         ),
-  //       ),
-  //       onPressed: () {
-
-  //       },
-  //       child: const Text(
-  //         "أطلب ألان",
-  //         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

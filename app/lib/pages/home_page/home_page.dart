@@ -453,8 +453,14 @@ class _HomePageState extends State<HomePage>
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-    List<RealEstateType> typeList =
+    List<RealEstateType> typeListTemp =
         (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
+    List<RealEstateType> typeList=[];
+    for (var realEstate in await _setRealEstateData()){
+
+      typeList.addAll(typeListTemp.where((element) => element.id==realEstate.attributes!.firstType!.id ));
+    }
+    typeList=typeList.toSet().toList();
     typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
     return typeList;
   }

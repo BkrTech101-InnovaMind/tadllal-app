@@ -61,7 +61,9 @@
 import 'package:flutter/material.dart';
 
 class PriceFilter extends StatefulWidget {
-  const PriceFilter({Key? key}) : super(key: key);
+  final Function(double from, double to) onPricePressed;
+
+  const PriceFilter({required this.onPricePressed, super.key});
 
   @override
   State<PriceFilter> createState() => _PriceFilterState();
@@ -81,21 +83,27 @@ class _PriceFilterState extends State<PriceFilter> {
     switch (index) {
       case 0:
         print("Selected filter: 0 to 100");
+        widget.onPricePressed(0, 100);
         break;
       case 1:
         print("Selected filter: 100 to 1,000");
+        widget.onPricePressed(100, 1000);
         break;
       case 2:
         print("Selected filter: 1,000 to 10,000");
+        widget.onPricePressed(1000, 10000);
         break;
       case 3:
         print("Selected filter: 10,000 to 100,000");
+        widget.onPricePressed(10000, 100000);
         break;
       case 4:
         print("Selected filter: 100,000 and above");
+        widget.onPricePressed(100000, 100000);
         break;
       case 5:
         print("Selected filter: all");
+        widget.onPricePressed(0, 0);
       default:
         print("Selected filter: None");
     }

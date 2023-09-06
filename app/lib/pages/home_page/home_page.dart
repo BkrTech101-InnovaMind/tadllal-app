@@ -58,12 +58,13 @@ class _HomePageState extends State<HomePage>
     "id": "0",
     "attributes": {"name": "الكل"}
   };
-
+  AppProvider providerListener() =>
+      Provider.of<AppProvider>(context, listen: false);
   Future<List<Services>> servicesDataList = Future(() => []);
   Future<List<Services>> subServicesDataList = Future(() => []);
   Future<List<Location>> locationDataList = Future(() => []);
   Future<List<RealEstateType>> typeDataList = Future(() => []);
-
+  List<RealEstate> real=[];
   @override
   void initState() {
     if (kDebugMode) {
@@ -361,7 +362,12 @@ class _HomePageState extends State<HomePage>
                                   );
                                 }
                               }),
-                          const PriceFilter(),
+                           PriceFilter(onPricePressed: ( from ,to){
+                             Provider.of<AppProvider>(context,
+                                 listen: false)
+                                 .filterRealEstateListByPrice(from: from,to: to);
+
+                           }),
                           const SizedBox(height: 20),
                           const RealEstateCard(),
                         ],
@@ -377,8 +383,8 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  _syncData() {
-    _setRealEstateData();
+  _syncData() async {
+     _setRealEstateData();
     setState(() {
       servicesDataList = _getServicesData();
       locationDataList = _getLocationData();
@@ -407,7 +413,7 @@ class _HomePageState extends State<HomePage>
     return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
   }
 
-  Future<void> _setRealEstateData() async {
+  Future<List<RealEstate>> _setRealEstateData() async {
     var rowData = await dioApi.get("/realEstate/filters/by-Preference");
     String jsonString = json.encode(rowData.data["data"]);
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
@@ -416,19 +422,28 @@ class _HomePageState extends State<HomePage>
     List<RealEstate> realEstate =
         (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
     providerListener().addRealEstateList(listData: realEstate);
+
+    return realEstate;
   }
 
-  AppProvider providerListener() =>
-      Provider.of<AppProvider>(context, listen: false);
+
+
   Future<List<Location>> _getLocationData() async {
     var rowData = await dioApi.get("/locations");
     String jsonString = json.encode(rowData.data["data"]);
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-    List<Location> locationList =
+    List<Location> locationListTemp =
         (data).map((itemWord) => Location.fromJson(itemWord)).toList();
+    List<Location> locationList=[];
+    for (var realEstate in await _setRealEstateData()){
+
+      locationList.addAll(locationListTemp.where((element) => element.id==realEstate.attributes!.location!.id ));
+    }
+    locationList=locationList.toSet().toList();
     locationList.insert(0, Location.fromJson(allLocationAndType));
+
     return locationList;
   }
 
@@ -665,10 +680,13 @@ class _HomePageState extends State<HomePage>
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
-                                  serviceData[index]['subtitle'] ?? "",
-                                  style: const TextStyle(
-                                      color: Colors.white, height: 1),
+                                FittedBox(
+                                  fit: BoxFit.cover,
+                                  child: Text(
+                                    serviceData[index]['subtitle'] ?? "",
+                                    style: const TextStyle(
+                                        color: Colors.white, height: 1),
+                                  ),
                                 ),
                               ],
                             ),

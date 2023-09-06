@@ -41,6 +41,11 @@ class RealEstateAttributes {
   String? secondType;
   DateTime? date;
   String? photo;
+  String? rooms;
+  String? floors;
+  String? vision;
+  String? baptism;
+  String? area;
   Ratings? ratings;
   bool? isFavorite;
   List<String>? images;
@@ -56,6 +61,11 @@ class RealEstateAttributes {
     this.secondType,
     this.date,
     this.photo,
+    this.rooms,
+    this.floors,
+    this.vision,
+    this.baptism,
+    this.area,
     this.ratings,
     this.isFavorite,
     this.images,
@@ -77,6 +87,11 @@ class RealEstateAttributes {
         secondType: json["secondType"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         photo: json["photo"],
+        rooms: json["rooms"],
+        floors: json["floors"],
+        vision: json["vision"],
+        baptism: json["baptism"],
+        area: json["area"],
         ratings:
             json["ratings"] == null ? null : Ratings.fromJson(json["ratings"]),
         isFavorite: json["isFavorite"],
@@ -99,6 +114,11 @@ class RealEstateAttributes {
         "secondType": secondType,
         "date": date?.toIso8601String(),
         "photo": photo,
+        "rooms": rooms,
+        "floors": floors,
+        "vision": vision,
+        "baptism": baptism,
+        "area": area,
         "ratings": ratings?.toJson(),
         "isFavorite": isFavorite,
         "images":

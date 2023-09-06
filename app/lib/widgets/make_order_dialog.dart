@@ -496,7 +496,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                           filled: true,
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 0, horizontal: 5),
-                          fillColor: const Color(0xFF234F68),
+                          fillColor: const Color(0xFFF5F4F8),
                           //<-- SEE HERE
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(

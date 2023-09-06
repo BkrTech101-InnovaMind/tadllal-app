@@ -15,6 +15,7 @@ import 'package:tedllal/model/real_estate_type.dart';
 import 'package:tedllal/model/services.dart';
 import 'package:tedllal/pages/home_page/widgets/locations_filter.dart';
 import 'package:tedllal/pages/home_page/widgets/menu_filter.dart';
+import 'package:tedllal/pages/home_page/widgets/price_filter.dart';
 import 'package:tedllal/pages/home_page/widgets/real_estates_card.dart';
 import 'package:tedllal/pages/home_page/widgets/type_filter.dart';
 import 'package:tedllal/pages/most_requested_services_page/most_requested_services_page.dart';
@@ -360,6 +361,7 @@ class _HomePageState extends State<HomePage>
                                   );
                                 }
                               }),
+                          const PriceFilter(),
                           const SizedBox(height: 20),
                           const RealEstateCard(),
                         ],

@@ -5,6 +5,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:tedllal/model/api_models/location.dart';
 import 'package:tedllal/model/real_estate_type.dart';
 import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/pages_back_button.dart';
 import 'package:tedllal/widgets/save_dialog.dart';
 
 Future<List<Location>> _getLocationData() async {
@@ -182,8 +183,6 @@ class _AddUserPageState extends State<AddCustomerPage> {
       "other_details": _otherDetailsController.text.trim(),
     };
 
-    print("form: $form");
-
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -197,43 +196,51 @@ class _AddUserPageState extends State<AddCustomerPage> {
         },
       ),
     );
-    print("form: $form");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("اضافة عميل"),
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: SafeArea(
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
+        child: Column(
           children: [
-            buildText(),
-            buildForm(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Text widget
-  Widget buildText() {
-    return Container(
-      alignment: Alignment.centerRight,
-      margin: const EdgeInsets.only(top: 50, bottom: 60, right: 20),
-      child: const Text.rich(
-        TextSpan(
-          text: "من خلال هذه الصفحة تستطيع ",
-          style: TextStyle(fontSize: 20, color: Color(0xFF234F68)),
-          children: [
-            TextSpan(
-              text: "إضافة عميل \n",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFFF5F4F8),
+                border: Border(bottom: BorderSide(color: Colors.black38)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const PagesBackButton(),
+                  MaterialButton(
+                    height: 30.0,
+                    minWidth: 50.0,
+                    color: const Color(0xFFF5F4F8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    textColor: const Color(0xFF1F4C6B),
+                    padding: const EdgeInsets.all(16),
+                    onPressed: handleSubmit,
+                    splashColor: const Color(0xFFF5F4F8),
+                    child: const Text(
+                      'إضافة',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            TextSpan(text: "تحت المعرف الخاص بك ")
+            Expanded(
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  buildForm(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -253,7 +260,6 @@ class _AddUserPageState extends State<AddCustomerPage> {
             buildCustomerLocationAndTypeFields(),
             buildCustomerPropertyAndBudgetsFields(),
             buildCustomerDetailsField(),
-            buildSubmitButton(),
             const SizedBox(height: 30),
           ],
         ),
@@ -521,28 +527,6 @@ class _AddUserPageState extends State<AddCustomerPage> {
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
           contentPadding: EdgeInsets.symmetric(vertical: 25),
           hintText: "تفاصيل اخرى",
-        ),
-      ),
-    );
-  }
-
-  Widget buildSubmitButton() {
-    return Container(
-      margin: const EdgeInsets.only(top: 35),
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF8BC83F),
-          fixedSize: const Size(278, 63),
-          side: const BorderSide(color: Color(0xFF8BC83F), width: 2),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-        ),
-        onPressed: () {
-          handleSubmit();
-        },
-        child: const Text(
-          "إضافة",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
     );

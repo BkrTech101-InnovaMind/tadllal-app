@@ -170,11 +170,9 @@ class _AddUserPageState extends State<AddCustomerPage> {
     }
     final budgetFrom = int.tryParse(_budgetFromController.text.trim());
     final budgetTo = int.tryParse(_budgetToController.text.trim());
-    final customerNumber =
-        double.tryParse(_customerNumberController.text.trim());
     final form = {
       "customer_name": _customerNameController.text.trim(),
-      "customer_number": customerNumber,
+      "customer_number": _customerNumberController.text.trim(),
       "location_id": selectedLocationId,
       "type_id": selectedTypeId,
       "property": _propertyController.text.trim(),

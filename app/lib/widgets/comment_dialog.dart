@@ -124,7 +124,7 @@ class _CommentDialogState extends State<CommentDialog> {
             child: RatingBar(
               initialRating: widget.rating,
               direction: Axis.horizontal,
-              allowHalfRating: false,
+              allowHalfRating: true,
               itemCount: 5,
               ratingWidget: RatingWidget(
                 full: const Icon(Icons.star, color: Colors.amber),

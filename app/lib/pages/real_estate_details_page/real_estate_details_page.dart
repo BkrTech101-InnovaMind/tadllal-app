@@ -434,41 +434,65 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                                     title:
                                         const Text("هل متأكد من حذف التعليق ؟"),
                                     actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            dioApi
-                                                .delete(
-                                                    "/comments/comment/${realEstate.attributes!.comments![index].id!}",
-                                                    myData: {
-                                                      "comment":
-                                                          _commentController
-                                                              .text
-                                                              .trim()
-                                                    })
-                                                .then((value) {
-                                                  _syncData();
-                                                })
-                                                .then((value) =>
-                                                    Navigator.pop(context))
-                                                .then(
-                                                  (value) =>
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                        "تم الحذف بنجاح",
-                                                      ),
+                                      MaterialButton(
+                                        height: 30.0,
+                                        minWidth: 50.0,
+                                        color: Colors.redAccent,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                        ),
+                                        textColor: Colors.white,
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        splashColor: Colors.redAccent,
+                                        child: const Text(
+                                          'إلغاء',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        height: 30.0,
+                                        minWidth: 50.0,
+                                        color: const Color(0xFF8BC83F),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                        ),
+                                        textColor: Colors.white,
+                                        onPressed: () {
+                                          dioApi
+                                              .delete(
+                                                  "/comments/comment/${realEstate.attributes!.comments![index].id!}",
+                                                  myData: {
+                                                    "comment":
+                                                        _commentController.text
+                                                            .trim()
+                                                  })
+                                              .then((value) {
+                                                _syncData();
+                                              })
+                                              .then((value) =>
+                                                  Navigator.pop(context))
+                                              .then(
+                                                (value) => ScaffoldMessenger.of(
+                                                        context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      "تم الحذف بنجاح",
                                                     ),
                                                   ),
-                                                );
-                                          },
-                                          child: const Text("حذف")),
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("الغاء"))
+                                                ),
+                                              );
+                                        },
+                                        splashColor: const Color(0xFF8BC83F),
+                                        child: const Text(
+                                          'تأكيد',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ),
                                     ],
                                   );
                                 });

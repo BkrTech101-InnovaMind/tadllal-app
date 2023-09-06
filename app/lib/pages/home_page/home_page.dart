@@ -27,9 +27,13 @@ import 'package:tedllal/widgets/loading_ui/loader2.dart';
 class HalfCircleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, 0);
+    double w = size.width;
+    double h = size.height;
+    final path = Path();
+    path.lineTo(0, h);
+    path.quadraticBezierTo(w / 1.55, h, w / 1.65, 0);
+    path.lineTo(w, 0);
+    path.close();
     return path;
   }
 
@@ -85,7 +89,7 @@ class _HomePageState extends State<HomePage>
             ClipPath(
               clipper: HalfCircleClipper(),
               child: Container(
-                height: 300,
+                height: 200,
                 color: const Color(0xFFE3E3E3),
               ),
             ),
@@ -161,12 +165,10 @@ class _HomePageState extends State<HomePage>
                                   {
                                     if (element.isChecked == true) {
                                       List<RealEstate> temp = data;
-
                                       temp.sort((a, b) => a
                                           .attributes!.ratings!.averageRating!
                                           .compareTo(b.attributes!.ratings!
                                               .averageRating!));
-
                                       setState(() {
                                         Provider.of<AppProvider>(context,
                                                 listen: false)
@@ -405,15 +407,10 @@ class _HomePageState extends State<HomePage>
 
   Future<void> _setRealEstateData() async {
     var rowData = await dioApi.get("/realEstate/filters/by-Preference");
-    // var rowData = await dioApi.get("/realEstate/realty");
-    // log("rowData ${rowData}");
     String jsonString = json.encode(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-
-    // log("data ${data}");
     List<RealEstate> realEstate =
         (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
     providerListener().addRealEstateList(listData: realEstate);
@@ -421,16 +418,12 @@ class _HomePageState extends State<HomePage>
 
   AppProvider providerListener() =>
       Provider.of<AppProvider>(context, listen: false);
-
   Future<List<Location>> _getLocationData() async {
     var rowData = await dioApi.get("/locations");
-    // log("rowData ${rowData}");
     String jsonString = json.encode(rowData.data["data"]);
-    // log("jsonString ${jsonString}");
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-    // log("rowData ${data[0]}");
     List<Location> locationList =
         (data).map((itemWord) => Location.fromJson(itemWord)).toList();
     locationList.insert(0, Location.fromJson(allLocationAndType));
@@ -443,10 +436,8 @@ class _HomePageState extends State<HomePage>
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-
     List<RealEstateType> typeList =
         (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
-
     typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
     return typeList;
   }
@@ -951,43 +942,74 @@ class _HomePageState extends State<HomePage>
                   if (snapshot.hasData && snapshot.hasError == false) {
                     return SizedBox(
                       height: 104,
-                      child: ListView.builder(
+                      child: ListView(
                         scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(left: 15),
-                            child: Column(
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SingleSubServicesPage(
-                                          subServiceDetails:
-                                              snapshot.data![index],
-                                        ),
+                        children: [
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 15,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.only(right: 15),
+                                child: Column(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SingleSubServicesPage(
+                                              subServiceDetails:
+                                                  snapshot.data![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      style: TextButton.styleFrom(
+                                          padding: const EdgeInsets.all(4),
+                                          shape: const CircleBorder()),
+                                      child: CircleAvatar(
+                                        radius: 28,
+                                        backgroundImage: NetworkImage(snapshot
+                                            .data![index].attributes!.image!),
                                       ),
-                                    );
-                                  },
-                                  style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.all(4),
-                                      shape: const CircleBorder()),
-                                  child: CircleAvatar(
-                                    radius: 28,
-                                    backgroundImage: NetworkImage(snapshot
-                                        .data![index].attributes!.image!),
-                                  ),
+                                    ),
+                                    Text(
+                                      snapshot.data![index].attributes!.name!,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  snapshot.data![index].attributes!.name!,
-                                ),
+                              );
+                            },
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(4),
+                              backgroundColor: const Color(0xFFF5F4F8),
+                              foregroundColor: const Color(0xFF234F68),
+                              fixedSize: const Size(double.infinity, 0),
+                            ),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const MostRequestedServicesPage(),
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.subdirectory_arrow_left_outlined),
+                                SizedBox(height: 5),
+                                Text("الكل"),
                               ],
                             ),
-                          );
-                        },
+                          )
+                        ],
                       ),
                     );
                   } else if (snapshot.hasError) {

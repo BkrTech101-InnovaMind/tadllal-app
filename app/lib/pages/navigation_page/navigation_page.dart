@@ -29,7 +29,7 @@ class _NavigationPageState extends State<NavigationPage> {
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset('assets/icons/search-icon.svg'),
-      title: const Text("ألبحث", style: TextStyle(fontSize: 17)),
+      title: const Text("البحث", style: TextStyle(fontSize: 17)),
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset(

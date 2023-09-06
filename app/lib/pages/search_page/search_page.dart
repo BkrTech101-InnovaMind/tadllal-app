@@ -180,7 +180,7 @@ class _SearchPageState extends State<SearchPage> {
                       onPanDown: (_) =>
                           FocusManager.instance.primaryFocus?.unfocus(),
                       child: RefreshIndicator(
-                        onRefresh: refresh,
+                        onRefresh: _refresh,
                         child: Container(
                           margin: const EdgeInsets.only(top: 20),
                           child: ListView(
@@ -222,7 +222,19 @@ class _SearchPageState extends State<SearchPage> {
                                                   margin: const EdgeInsets.only(
                                                       top: 15),
                                                   child: ListTile(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      Navigator.push<void>(
+                                                        context,
+                                                        MaterialPageRoute<void>(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              RealEstateDetailsPage(
+                                                            realEstate: snapshot
+                                                                .data![index],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                     title: Text(
                                                       snapshot.data![index]
                                                           .attributes!.name!,
@@ -380,7 +392,7 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  Future<void> refresh() async {
+  Future<void> _refresh() async {
     _syncData();
   }
 }

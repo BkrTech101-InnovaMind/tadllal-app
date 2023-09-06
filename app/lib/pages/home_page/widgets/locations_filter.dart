@@ -30,7 +30,6 @@ class _LocationFilterState extends State<LocationFilter> {
           SizedBox(
             height: MediaQuery.sizeOf(context).height / 15,
             child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: widget.locationList.length,
               itemBuilder: (context, index) {

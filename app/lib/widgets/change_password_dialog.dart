@@ -18,7 +18,7 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool showSuccessPopup = false;
-  String oldPassword = jsonDecode(LoginInfo().loginInfo!)[password];
+  String? oldPassword = jsonDecode(LoginInfo().loginInfo!)[password];
 
   Map<String, dynamic> passwordValues = {};
 
@@ -123,7 +123,7 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
                       child: TextFormField(
                         keyboardType: TextInputType.name,
                         validator: (value) =>
-                            value == null || value.isEmpty ? "" : null,
+                            value == null || value.isEmpty ? "مطلوب" : null,
                         controller: _currentPasswordController,
                         decoration: const InputDecoration(
                           border:
@@ -147,7 +147,7 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
                         controller: _newPasswordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "";
+                            return "مطلوب";
                           } else if (value.length < 6) {
                             return "كلمة السر يجب أن لا تقل عن 8 أحرف";
                           } else if (value.length > 24) {
@@ -176,7 +176,7 @@ class _ChangePasswordPopUpState extends State<ChangePasswordDialog> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextFormField(
-                        controller: _newPasswordController,
+                        controller: _confirmPasswordController,
                         decoration: const InputDecoration(
                           border:
                               UnderlineInputBorder(borderSide: BorderSide.none),

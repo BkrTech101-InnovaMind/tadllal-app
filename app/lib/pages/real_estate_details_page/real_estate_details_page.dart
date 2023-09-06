@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,21 @@ import 'package:photo_view/photo_view.dart';
 import 'package:tedllal/config/config.dart';
 import 'package:tedllal/config/global.dart';
 import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/model/real_estate_type.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/widgets/comment_dialog.dart';
 import 'package:tedllal/widgets/loading_ui/loader1.dart';
 import 'package:tedllal/widgets/make_order_dialog.dart';
+import 'package:tedllal/widgets/pages_back_button.dart';
+
+Future<List<RealEstateType>> _getTypeData() async {
+  var rowData = await DioApi().get("/types");
+  String jsonString = json.encode(rowData.data["data"]);
+  List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+      .map((e) => e as Map<String, dynamic>)
+      .toList();
+  return (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
+}
 
 class RealEstateDetailsPage extends StatefulWidget {
   final RealEstate realEstate;
@@ -28,6 +41,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
 
   @override
   void initState() {
+    _getTypeData();
     _syncData();
     super.initState();
   }
@@ -62,273 +76,469 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     return realEstate;
   }
 
+  void _onPressed() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context2) => MakeOrderDialog(
+        type: "RealEstate",
+        orderId: int.parse(widget.realEstate.id!),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.realEstate.attributes!.name!),
-        backgroundColor: const Color(0xFF194706),
-        actions: <Widget>[
-          TextButton(
-            child: const Text("طلب"),
-            onPressed: () {
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (context2) => MakeOrderDialog(
-                    type: "RealEstate",
-                    orderId: int.parse(widget.realEstate.id!)),
-              );
-            },
-          ),
-        ],
-      ),
-      body: FutureBuilder<RealEstate>(
-          future: realEstateData,
-          builder: (BuildContext context, AsyncSnapshot<RealEstate> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData && snapshot.hasError == false) {
-                return ListView(
-                  children: [
-                    buildImagesSection(realEstate: snapshot.data!),
-                    buildDetailsSection(realEstate: snapshot.data!),
-                    buildCommentsSection(realEstate: snapshot.data!),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return const Center(
-                    child: Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(errorWhileGetData),
-                ));
-              } else {
-                return const Center(
-                    child: Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(noData),
-                ));
-              }
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: ColorLoader1(),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.lightGreen,
+                border: Border(bottom: BorderSide(color: Color(0xFFF5F4F8))),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const PagesBackButton(),
+                  MaterialButton(
+                    height: 30.0,
+                    minWidth: 50.0,
+                    color: const Color(0xFFF5F4F8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text(loadingDataFromServer),
-                    )
-                  ],
-                ),
-              );
-            } else {
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: CircularProgressIndicator(),
+                    textColor: const Color(0xFF1F4C6B),
+                    padding: const EdgeInsets.all(16),
+                    onPressed: _onPressed,
+                    splashColor: const Color(0xFFF5F4F8),
+                    child: const Text(
+                      'طلب العقار',
+                      style: TextStyle(fontSize: 18),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text(loadingDataFromServer),
-                    )
-                  ],
-                ),
-              );
-            }
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showRatingDialog(),
-        backgroundColor: const Color(0xFF194706),
-        child: const Icon(Icons.add_comment_outlined),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder<RealEstate>(
+                  future: realEstateData,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<RealEstate> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData && snapshot.hasError == false) {
+                        return ListView(
+                          shrinkWrap: true,
+                          children: [
+                            buildImagesSection(realEstate: snapshot.data!),
+                            buildDetailsSection(realEstate: snapshot.data!),
+                            buildCommentsSection(realEstate: snapshot.data!),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                            child: Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text(errorWhileGetData),
+                        ));
+                      } else {
+                        return const Center(
+                            child: Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text(noData),
+                        ));
+                      }
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: ColorLoader1(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text(loadingDataFromServer),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text(loadingDataFromServer),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  }),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showRatingDialog(),
+          backgroundColor: const Color(0xFFF5F4F8),
+          foregroundColor: const Color(0xFF1F4C6B),
+          child: const Icon(Icons.add_comment_outlined),
+        ),
       ),
     );
   }
 
   // Images section
   Widget buildImagesSection({required RealEstate realEstate}) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        viewportFraction: 0.5,
-        autoPlay: true,
-        autoPlayInterval: const Duration(seconds: 3),
-        enlargeCenterPage: true,
-        enableInfiniteScroll: true,
-        aspectRatio: 16 / 9,
-      ),
-      items: realEstate.attributes!.images!.map<Widget>(
-        (image) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        title: Text(realEstate.attributes!.name!),
-                        backgroundColor: const Color(0xFF194706),
-                      ),
-                      body: Center(
-                        child: PhotoView(
-                          loadingBuilder: (context, event) => Center(
-                            child: SizedBox(
-                              width: 30.0,
-                              height: 30.0,
-                              child: CircularProgressIndicator(
-                                backgroundColor: const Color(0xFFE0A410),
-                                value: event == null
-                                    ? 0
-                                    : event.cumulativeBytesLoaded /
-                                        event.expectedTotalBytes!,
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.lightGreen,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 1)
+          ]),
+      child: CarouselSlider(
+        options: CarouselOptions(
+          viewportFraction: 0.5,
+          autoPlay: true,
+          autoPlayInterval: const Duration(seconds: 3),
+          enlargeCenterPage: true,
+          enableInfiniteScroll: true,
+          aspectRatio: 16 / 9,
+        ),
+        items: realEstate.attributes!.images!.map<Widget>(
+          (image) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: Text(realEstate.attributes!.name!),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        body: Center(
+                          child: PhotoView(
+                            loadingBuilder: (context, event) => Center(
+                              child: SizedBox(
+                                width: 30.0,
+                                height: 30.0,
+                                child: CircularProgressIndicator(
+                                  backgroundColor: const Color(0xFFE0A410),
+                                  value: event == null
+                                      ? 0
+                                      : event.cumulativeBytesLoaded /
+                                          event.expectedTotalBytes!,
+                                ),
                               ),
                             ),
+                            imageProvider: CachedNetworkImageProvider(image),
+                            minScale: PhotoViewComputedScale.contained * 0.8,
+                            maxScale: PhotoViewComputedScale.contained * 2,
                           ),
-                          imageProvider: NetworkImage(image),
-                          minScale: PhotoViewComputedScale.contained * 0.8,
-                          maxScale: PhotoViewComputedScale.contained * 2,
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
+                );
+              },
+              child: CachedNetworkImage(
+                imageUrl: image,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              );
-            },
-            child: Image.network(image,
-                fit: BoxFit.contain, filterQuality: FilterQuality.high),
-          );
-        },
-      ).toList(),
+              ),
+            );
+          },
+        ).toList(),
+      ),
     );
   }
 
-// Details section
+  // Details section
   Widget buildDetailsSection({required RealEstate realEstate}) {
+    String state = realEstate.attributes!.secondType!;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title & Type Texts
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Name Text
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title Text
-              Text.rich(
-                TextSpan(
-                  text: "ألعنوان: ",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "\n${realEstate.attributes!.name!}",
-                      style: const TextStyle(fontWeight: FontWeight.normal),
-                    )
-                  ],
+              const Text(
+                "الإسم",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-
-              // Type Text
-              Text.rich(
-                TextSpan(
-                  text: "التصنيف: ",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "\n${realEstate.attributes!.firstType!.name}",
-                      style: const TextStyle(fontWeight: FontWeight.normal),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-
-          // Price & Availability Texts
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Price Text
-              Text.rich(
-                TextSpan(
-                  text: "ألسعر: ",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "\n${realEstate.attributes!.price!}",
-                      style: const TextStyle(fontWeight: FontWeight.normal),
+              Row(
+                children: [
+                  Text(
+                    realEstate.attributes!.name!,
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
                     ),
-                    const TextSpan(
-                        text: " \$",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 20),
+                  const Expanded(
+                    child: Divider(color: Colors.lightGreen, thickness: 3),
+                  ),
+                ],
               ),
             ],
           ),
+          // Type & Rating Texts
           const SizedBox(height: 15),
-
-          // Location & Rating Text
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Location Text
-              Text.rich(
-                TextSpan(
-                  text: "ألموقع: ",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "\n${realEstate.attributes!.location!.name}",
-                      style: const TextStyle(fontWeight: FontWeight.normal),
-                    )
-                  ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "التصنيف",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
+                  ),
+                  subtitle: Text(
+                    realEstate.attributes!.firstType!.name!,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 1)
+                        ]),
+                    child: const Icon(
+                      Icons.type_specimen_outlined,
+                      color: Color(0xFFE0A410),
+                      size: 40,
+                    ),
+                  ),
                 ),
               ),
-
-              // Rating Text
-              Text.rich(
-                TextSpan(
-                  text: "ألتقييم: ",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text:
-                          "\n${realEstate.attributes!.ratings!.averageRating}",
-                      style: const TextStyle(fontWeight: FontWeight.normal),
-                    )
-                  ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "التقييم",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
+                  ),
+                  subtitle: Text(
+                    realEstate.attributes!.ratings!.averageRating!,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 1)
+                        ]),
+                    child: const Icon(
+                      Icons.star_border_outlined,
+                      color: Color(0xFFE0A410),
+                      size: 40,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
+          // Price & state Texts
           const SizedBox(height: 15),
-
+          Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "الحالة",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
+                  ),
+                  subtitle: Text(
+                    state == "for rent" ? "للإيجار" : "للبيع",
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 1)
+                        ]),
+                    child: const Icon(
+                      Icons.home_work_outlined,
+                      color: Color(0xFFE0A410),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "السعر",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
+                  ),
+                  subtitle: Text.rich(
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                    ),
+                    TextSpan(
+                        text: realEstate.attributes!.price.toString(),
+                        children: const [
+                          TextSpan(
+                            text: " \$",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ),
+                  leading: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 1)
+                        ]),
+                    child: const Icon(
+                      Icons.attach_money_outlined,
+                      color: Color(0xFFE0A410),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Location Text
+          const SizedBox(height: 15),
+          ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            title: const Text(
+              "الموقع",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.lightGreen,
+              ),
+            ),
+            subtitle: Text(
+              realEstate.attributes!.locationInfo!,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            leading: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFF5F4F8),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black, blurRadius: 1)
+                  ]),
+              child: const Icon(
+                Icons.location_on_outlined,
+                color: Color(0xFFE0A410),
+                size: 40,
+              ),
+            ),
+          ),
           // Description Text
-          Text.rich(
-            TextSpan(
-              text: "الوصف: ",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                  text: "\n${realEstate.attributes!.description}",
-                  style: const TextStyle(fontWeight: FontWeight.normal),
-                )
-              ],
+          const SizedBox(height: 15),
+          ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            title: const Text(
+              "الوصف",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.lightGreen,
+              ),
+            ),
+            subtitle: Text(
+              realEstate.attributes!.description!,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            leading: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFF5F4F8),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black, blurRadius: 1)
+                  ]),
+              child: const Icon(
+                Icons.description_outlined,
+                color: Color(0xFFE0A410),
+                size: 40,
+              ),
             ),
           ),
         ],
@@ -338,13 +548,16 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
 
 // Comments Section
   Widget buildCommentsSection({required RealEstate realEstate}) {
-    return Column(
-      children: [
-        const SizedBox(height: 15),
-        const Text("التعليقات: ",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        _buildComment(realEstate),
-      ],
+    return Container(
+      margin: const EdgeInsets.only(bottom: 40),
+      child: Column(
+        children: [
+          const SizedBox(height: 15),
+          const Text("التعليقات: ",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          _buildComment(realEstate),
+        ],
+      ),
     );
   }
 

@@ -17,46 +17,25 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
 
+        $user = auth()->user(); // الحصول على المستخدم الحالي
 
-        $user = Auth::user();
+        $data = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->role,
+            'phone' => $this->phone_number,
+            'avatar' => $this->avatar ? url($this->avatar) : null,
+        ];
 
-        if (!$user) {
-            $user = User::find($this->id);
-            return [
-                'id' => (string) $user->id,
-                'attributes' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'phone' => $user->phone_number,
-                    'avatar' => $user->avatar ? url($user->avatar) : null,
-                ]
-            ];
+        // إذا كان المستخدم مسؤولاً، قم بإضافة عدد العملاء وقائمة الطلبات
+        if ($user && $user->role == 'admin') {
+            $data['activated'] = $this->activated == 0 ? 'no' : 'yes';
+            $data['customers_count'] = $this->customers()->count();
+            $data['customer_requests'] = CustomersRequestResource::collection($this->customersRequest);
         }
-        if ($user->role == 'admin') {
-            return [
-                'id' => (string) $this->id,
-                'attributes' => [
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'role' => $this->role,
-                    'phone' => $this->phone_number,
-                    'avatar' => $this->avatar ? url($this->avatar) : null,
-                    'activated' => $this->activated == 0 ? 'no' : 'yes',
-                    // 'registered_by' => $this->registered_by,
-                ]
-            ];
-        } else {
-            return [
-                'id' => (string) $this->id,
-                'attributes' => [
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'role' => $this->role,
-                    'phone' => $this->phone_number,
-                    'avatar' => $this->avatar ? url($this->avatar) : null,
-                ]
-            ];
-        }
+
+        return $data;
+
     }
 }

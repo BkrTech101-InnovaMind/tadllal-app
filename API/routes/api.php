@@ -16,6 +16,7 @@ use App\Http\Controllers\ConstructionServiceController;
 use App\Http\Controllers\CustomerRequestController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RealEstateController;
@@ -128,6 +129,15 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
     Route::get('/', function () {
         return "welcome User";
     });
+    Route::prefix('notifications')->group(function () {
+        Route::get('/all', [NotificationsController::class, 'showAllNotifications']);
+        Route::get('/unread', [NotificationsController::class, 'index']);
+        Route::get('/markAsRead/{id}', [NotificationsController::class, 'markAsRead']);
+        Route::get('/markAllAsRead', [NotificationsController::class, 'markAllNotificationsAsRead']);
+        Route::delete('/deleteById/{id}', [NotificationsController::class, 'deleteNotification']);
+        Route::delete('/deleteAll', [NotificationsController::class, 'deleteAllNotifications']);
+    });
+
     Route::prefix('profile')->group(function () {
         Route::post('update', [AuthController::class, 'updateProfile']);
         Route::post('change-password', [AuthController::class, 'changePassword']);

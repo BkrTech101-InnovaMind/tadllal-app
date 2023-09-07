@@ -55,6 +55,16 @@ class RealEstateWithCommentsResource extends JsonResource
                 'secondType' => $this->type2,
                 'date' => $this->created_at,
                 'photo' => url($this->image),
+                'rooms' => $this->rooms,
+                // عدد الغرف
+                'floors' => $this->floors,
+                // عدد الادوار
+                'vision' => $this->vision,
+                // البصيرة
+                'baptism' => $this->baptism,
+                // التعميد
+                'area' => $this->area,
+                // المساحة
                 'ratings' => $ratings,
                 'isFavorite' => $this->isFavorite,
                 'images' => $this->images->pluck('image')->map(function ($imageName) {

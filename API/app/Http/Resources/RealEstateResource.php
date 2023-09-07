@@ -28,6 +28,17 @@ class RealEstateResource extends JsonResource
     public function toArray(Request $request): array
     {
         $ratings = $this->calculateRatings($this->id);
+        $commentsWithUserInfo = $this->comments->map(function ($comment) {
+            return [
+                'id' => (string) $comment->id,
+                'attributes' => [
+                    'user_id' => $comment->user->id,
+                    'user_name' => $comment->user->name,
+                    'user_image' => $comment->user->avatar,
+                    'comment' => $comment->comment,
+                ]
+            ];
+        });
         return [
             'id' => (string) $this->id,
             'attributes' => [
@@ -62,7 +73,7 @@ class RealEstateResource extends JsonResource
                 'images' => $this->images->pluck('image')->map(function ($imageName) {
                     return url($imageName);
                 })->toArray(),
-
+                'comments' => $commentsWithUserInfo,
             ]
         ];
     }

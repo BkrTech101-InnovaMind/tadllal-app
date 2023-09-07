@@ -1,12 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/model/real_estate_type.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+
+Future<List<RealEstateType>> _getTypeData() async {
+  var rowData = await DioApi().get("/types");
+  String jsonString = json.encode(rowData.data["data"]);
+  List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+      .map((e) => e as Map<String, dynamic>)
+      .toList();
+  return (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
+}
+
+Future<List<RealEstate>> _getRealEstateData() async {
+  var rowData = await DioApi().get("/realEstate/realty");
+  String jsonString = json.encode(rowData.data["data"]);
+  List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+      .map((e) => e as Map<String, dynamic>)
+      .toList();
+  return (data)
+      .map((itemWord) => RealEstate.fromJson(itemWord))
+      .toSet()
+      .toList();
+}
 
 class SearchPageFilters extends StatefulWidget {
-  const SearchPageFilters({super.key, required this.onSelectedSecondType, required this.onSelectedBaptism, required this.onSelectedFirstType, required this.onSelectedVision});
+  const SearchPageFilters(
+      {super.key,
+      required this.onSelectedSecondType,
+      required this.onSelectedBaptism,
+      required this.onSelectedFirstType,
+      required this.onSelectedVision});
   final Function(String selectedSecondType) onSelectedSecondType;
   final Function(String selectedBaptism) onSelectedBaptism;
   final Function(String selectedFirstType) onSelectedFirstType;
   final Function(String selectedVision) onSelectedVision;
-
 
   @override
   State<SearchPageFilters> createState() => _SearchPageFiltersState();
@@ -18,10 +48,22 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
   String selectedFirstType = '';
   String selectedVision = '';
 
-  List<String> secondTypes = ['for rent', 'for sale'];
-  List<String> baptisms = ['itaque', 'dolorum'];
-  List<String> firstTypes = ['dolore', 'ea'];
-  List<String> visions = ['velit', 'nononone'];
+  List<String> secondTypes = ["for sale", "for rent"];
+  List<RealEstate> baptisms = [];
+  List<RealEstateType> firstTypes = [];
+  List<RealEstate> visions = [];
+
+  Future<void> _fetchFiltersData() async {
+    baptisms = await _getRealEstateData();
+    firstTypes = await _getTypeData();
+    visions = await _getRealEstateData();
+  }
+
+  @override
+  void initState() {
+    _fetchFiltersData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +87,15 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: secondTypes.map((type) {
+                          String typeTranslated = type;
+                          type == "for rent"
+                              ? typeTranslated = "للإيجار"
+                              : typeTranslated = "للبيع";
                           return ListTile(
-                            title: Text(type),
+                            title: Text(typeTranslated),
                             onTap: () {
                               setState(() {
-                                selectedSecondType = type;
-
+                                selectedSecondType = typeTranslated;
                               });
                               widget.onSelectedSecondType(type);
                               Navigator.pop(context);
@@ -71,7 +116,6 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                             setState(() {
                               selectedSecondType = "";
                             });
-
                             Navigator.of(context).pop();
                           },
                           splashColor: Colors.redAccent,
@@ -110,21 +154,107 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
+                      title: const Text('التصنيف'),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: firstTypes.map((type) {
+                            return Column(
+                              children: [
+                                ListTile(
+                                  title: Text(type.attributes!.name!),
+                                  onTap: () {
+                                    setState(() {
+                                      selectedFirstType =
+                                          type.attributes!.name!;
+                                    });
+                                    widget.onSelectedFirstType(
+                                        type.attributes!.name!);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                const Divider()
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      actions: [
+                        MaterialButton(
+                          height: 30.0,
+                          minWidth: 50.0,
+                          color: Colors.redAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          textColor: Colors.white,
+                          onPressed: () {
+                            setState(() {
+                              selectedFirstType = "";
+                            });
+                            Navigator.of(context).pop();
+                          },
+                          splashColor: Colors.redAccent,
+                          child: const Text(
+                            'تفريغ',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              decoration: const InputDecoration(
+                hintText: 'التصنيف',
+                border: UnderlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder:
+                    UnderlineInputBorder(borderSide: BorderSide.none),
+              ),
+              controller: TextEditingController(text: selectedFirstType),
+            ),
+          ),
+        ),
+        const SizedBox(width: 5),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5F4F8),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              readOnly: true,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
                       title: const Text('التعميد'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: baptisms.map((baptism) {
-                          return ListTile(
-                            title: Text(baptism),
-                            onTap: () {
-                              setState(() {
-                                selectedBaptism = baptism;
-                              });
-                              widget.onSelectedBaptism(baptism);
-                              Navigator.pop(context);
-                            },
-                          );
-                        }).toList(),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: ListView(
+                          children: baptisms.map((baptism) {
+                            return Column(
+                              children: [
+                                ListTile(
+                                  title: Text(baptism.attributes!.baptism!),
+                                  onTap: () {
+                                    setState(() {
+                                      selectedBaptism =
+                                          baptism.attributes!.baptism!;
+                                    });
+                                    widget.onSelectedBaptism(
+                                        baptism.attributes!.baptism!);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                const Divider()
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
                       actions: [
                         MaterialButton(
@@ -177,88 +307,30 @@ class _SearchPageFiltersState extends State<SearchPageFilters> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('النوع'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: firstTypes.map((type) {
-                          return ListTile(
-                            title: Text(type),
-                            onTap: () {
-                              setState(() {
-                                selectedFirstType = type;
-                              });
-                              widget.onSelectedFirstType(type);
-                              Navigator.pop(context);
-                            },
-                          );
-                        }).toList(),
-                      ),
-                      actions: [
-                        MaterialButton(
-                          height: 30.0,
-                          minWidth: 50.0,
-                          color: Colors.redAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            setState(() {
-                              selectedFirstType = "";
-                            });
-                            Navigator.of(context).pop();
-                          },
-                          splashColor: Colors.redAccent,
-                          child: const Text(
-                            'تفريغ',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              decoration: const InputDecoration(
-                hintText: 'النوع',
-                border: UnderlineInputBorder(borderSide: BorderSide.none),
-                focusedBorder:
-                    UnderlineInputBorder(borderSide: BorderSide.none),
-              ),
-              controller: TextEditingController(text: selectedFirstType),
-            ),
-          ),
-        ),
-        const SizedBox(width: 5),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5F4F8),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              readOnly: true,
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
                       title: const Text('البصيرة'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: visions.map((vision) {
-                          return ListTile(
-                            title: Text(vision),
-                            onTap: () {
-                              setState(() {
-                                selectedVision = vision;
-                              });
-                              widget.onSelectedVision(vision);
-                              Navigator.pop(context);
-                            },
-                          );
-                        }).toList(),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: ListView(
+                          children: visions.map((vision) {
+                            return Column(
+                              children: [
+                                ListTile(
+                                  title: Text(vision.attributes!.vision!),
+                                  onTap: () {
+                                    setState(() {
+                                      selectedVision =
+                                          vision.attributes!.vision!;
+                                    });
+                                    widget.onSelectedVision(
+                                        vision.attributes!.vision!);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                const Divider()
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
                       actions: [
                         MaterialButton(

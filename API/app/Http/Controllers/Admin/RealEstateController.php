@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Notifications\NewPropertyNotification;
 use Illuminate\Http\Request;
 use App\Models\RealEstate;
 use App\Http\Requests\StoreRealEstateRequest;
 use App\Http\Requests\UpdateRealEstateRequest;
 use App\Http\Resources\RealEstateResource;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Rating;
 use App\Traits\HttpResponses;
@@ -70,6 +73,8 @@ class RealEstateController extends Controller
 
         // Associate the images with the real estate
         $realEstate->images()->createMany($images);
+        $usersToNotify = User::get();
+        Notification::send($usersToNotify, new NewPropertyNotification($realEstate));
         return new RealEstateResource($realEstate);
     }
 

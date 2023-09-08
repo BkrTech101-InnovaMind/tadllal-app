@@ -369,18 +369,18 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
               filled: true,
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-              fillColor: const Color(0xFF234F68),
+              // fillColor: const Color(0xFF234F68),
               //<-- SEE HERE
               enabledBorder: OutlineInputBorder(
                 borderSide:
-                    const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                    const BorderSide(width: 1, color: Color(0xFF234F68)),
                 //<-- SEE HERE
                 borderRadius: BorderRadius.circular(10.0),
               ),
               focusedBorder: const OutlineInputBorder(
                   gapPadding: 1,
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                  borderSide: BorderSide(color: Color(0xFF234F68))),
               disabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(width: 1, color: Color(0xFF234F68)),
@@ -412,18 +412,18 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xFF234F68),
+                  // fillColor: const Color(0xFFF5F4F8),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                        const BorderSide(width: 1, color: Color(0xFF234F68)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                      borderSide: BorderSide(color: Color(0xFF234F68))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 1, color: Color(0xFF234F68)),
@@ -449,18 +449,18 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xFF234F68),
+                  // fillColor: const Color(0xFFF5F4F8),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                        const BorderSide(width: 1, color: Color(0xFF234F68)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                      borderSide: BorderSide(color: Color(0xFF234F68))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 1, color: Color(0xFF234F68)),
@@ -494,17 +494,17 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xFF234F68),
+                  // fillColor: const Color(0xFF234F68),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                        const BorderSide(width: 1, color: Color(0xFF234F68)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                      borderSide: BorderSide(color: Color(0xFF234F68))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 1, color: Color(0xFF1F4C6B)),
@@ -530,18 +530,18 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xFF234F68),
+                  // fillColor: const Color(0xFF234F68),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                        const BorderSide(width: 1, color: Color(0xFF234F68)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                      borderSide: BorderSide(color: Color(0xFF234F68))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 1, color: Color(0xFF234F68)),
@@ -565,17 +565,17 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xFF234F68),
+                  // fillColor: const Color(0xFF234F68),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                        const BorderSide(width: 1, color: Color(0xFF234F68)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                      borderSide: BorderSide(color: Color(0xFF234F68))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 1, color: Color(0xFF234F68)),
@@ -613,18 +613,18 @@ class _ForgetPasswordDialogState extends State<ForgetPasswordDialog> {
                   filled: true,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  fillColor: const Color(0xFF234F68),
+                  // fillColor: const Color(0xFF234F68),
                   //<-- SEE HERE
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF5F4F8)),
+                        const BorderSide(width: 1, color: Color(0xFF234F68)),
                     //<-- SEE HERE
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: const OutlineInputBorder(
                       gapPadding: 1,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: Color(0xFFF5F4F8))),
+                      borderSide: BorderSide(color: Color(0xFF234F68))),
                   disabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 1, color: Color(0xFF234F68)),

@@ -35,7 +35,7 @@ class RealEstateDetailsPage extends StatefulWidget {
 class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   final DioApi dioApi = DioApi();
   Future<RealEstate> realEstateData = Future(() => RealEstate());
-  List<RealEstate> linkedRealEstateList=[];
+  List<RealEstate> linkedRealEstateList = [];
   final TextEditingController _commentController = TextEditingController();
   String commentId = "";
   double rating = 0;
@@ -55,8 +55,8 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     setState(() {
       realEstateData = _getRealEstateData();
       realEstateData.then((value) {
-        _getLinkedRealEstateDataList(mainRealEstate: value).then((value) => linkedRealEstateList);
-
+        _getLinkedRealEstateDataList(mainRealEstate: value)
+            .then((value) => linkedRealEstateList);
       });
     });
   }
@@ -81,16 +81,20 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     return realEstate;
   }
 
-
-  Future<List<RealEstate>> _getLinkedRealEstateDataList({required RealEstate mainRealEstate}) async {
-    var rowData =
-    await dioApi.get("/realEstate/realty");
+  Future<List<RealEstate>> _getLinkedRealEstateDataList(
+      {required RealEstate mainRealEstate}) async {
+    var rowData = await dioApi.get("/realEstate/realty");
     String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List).map((e) => e as Map<String, dynamic>)
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
         .toList();
-    List<RealEstate> realEstate =(data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
-    realEstate=realEstate.where((element) => element.attributes!.firstType!.name==mainRealEstate.attributes!.firstType!.name).toList();
-
+    List<RealEstate> realEstate =
+        (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
+    realEstate = realEstate
+        .where((element) =>
+            element.attributes!.firstType!.name ==
+            mainRealEstate.attributes!.firstType!.name)
+        .toList();
     return realEstate;
   }
 

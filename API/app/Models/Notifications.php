@@ -13,6 +13,7 @@ class Notifications extends Model
         'user_id',
         'real_estates_id',
         'status',
+        'read_at',
     ];
 
     public function user()

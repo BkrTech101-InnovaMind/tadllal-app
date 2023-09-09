@@ -8,6 +8,7 @@ import 'package:tedllal/config/config.dart';
 import 'package:tedllal/config/global.dart';
 import 'package:tedllal/methods/api_provider.dart';
 import 'package:tedllal/model/api_models/location.dart';
+import 'package:tedllal/model/api_models/notifications.dart';
 import 'package:tedllal/model/api_models/user.dart';
 import 'package:tedllal/model/filter_option.dart';
 import 'package:tedllal/model/real_estate.dart';
@@ -54,17 +55,20 @@ class _HomePageState extends State<HomePage>
   @override
   bool get wantKeepAlive => true;
   final DioApi dioApi = DioApi();
+
   final Map<String, dynamic> allLocationAndType = {
     "id": "0",
     "attributes": {"name": "الكل"}
   };
   AppProvider providerListener() =>
       Provider.of<AppProvider>(context, listen: false);
+
   Future<List<Services>> servicesDataList = Future(() => []);
   Future<List<Services>> subServicesDataList = Future(() => []);
   Future<List<Location>> locationDataList = Future(() => []);
   Future<List<RealEstateType>> typeDataList = Future(() => []);
-  List<RealEstate> real=[];
+  Future<List<Notifications>> notificationsDataList = Future(() => []);
+  List<RealEstate> real = [];
   @override
   void initState() {
     if (kDebugMode) {
@@ -196,7 +200,7 @@ class _HomePageState extends State<HomePage>
                         ),
                         Row(
                           children: [
-                            buildNotificationsIcon(true),
+                            buildNotificationsIcon(),
                             const SizedBox(
                               width: 5,
                             ),
@@ -362,12 +366,11 @@ class _HomePageState extends State<HomePage>
                                   );
                                 }
                               }),
-                           PriceFilter(onPricePressed: ( from ,to){
-                             Provider.of<AppProvider>(context,
-                                 listen: false)
-                                 .filterRealEstateListByPrice(from: from,to: to);
-
-                           }),
+                          PriceFilter(onPricePressed: (from, to) {
+                            Provider.of<AppProvider>(context, listen: false)
+                                .filterRealEstateListByPrice(
+                                    from: from, to: to);
+                          }),
                           const SizedBox(height: 20),
                           const RealEstateCard(),
                         ],
@@ -384,13 +387,22 @@ class _HomePageState extends State<HomePage>
   }
 
   _syncData() async {
-     _setRealEstateData();
+    _setRealEstateData();
     setState(() {
       servicesDataList = _getServicesData();
       locationDataList = _getLocationData();
       typeDataList = _getTypeData();
       subServicesDataList = _getSubServicesData();
+      notificationsDataList = _getNotifications();
     });
+  }
+
+  Future<List<Notifications>> _getNotifications() async {
+    var date = await DioApi().get("/notifications/unread");
+    List<dynamic> notificationsData = date.data["data"];
+    return notificationsData
+        .map((data) => Notifications.fromJson(data))
+        .toList();
   }
 
   Future<List<Services>> _getServicesData() async {
@@ -426,8 +438,6 @@ class _HomePageState extends State<HomePage>
     return realEstate;
   }
 
-
-
   Future<List<Location>> _getLocationData() async {
     var rowData = await dioApi.get("/locations");
     String jsonString = json.encode(rowData.data["data"]);
@@ -436,12 +446,12 @@ class _HomePageState extends State<HomePage>
         .toList();
     List<Location> locationListTemp =
         (data).map((itemWord) => Location.fromJson(itemWord)).toList();
-    List<Location> locationList=[];
-    for (var realEstate in await _setRealEstateData()){
-
-      locationList.addAll(locationListTemp.where((element) => element.id==realEstate.attributes!.location!.id ));
+    List<Location> locationList = [];
+    for (var realEstate in await _setRealEstateData()) {
+      locationList.addAll(locationListTemp.where(
+          (element) => element.id == realEstate.attributes!.location!.id));
     }
-    locationList=locationList.toSet().toList();
+    locationList = locationList.toSet().toList();
     locationList.insert(0, Location.fromJson(allLocationAndType));
 
     return locationList;
@@ -455,12 +465,12 @@ class _HomePageState extends State<HomePage>
         .toList();
     List<RealEstateType> typeListTemp =
         (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
-    List<RealEstateType> typeList=[];
-    for (var realEstate in await _setRealEstateData()){
-
-      typeList.addAll(typeListTemp.where((element) => element.id==realEstate.attributes!.firstType!.id ));
+    List<RealEstateType> typeList = [];
+    for (var realEstate in await _setRealEstateData()) {
+      typeList.addAll(typeListTemp.where(
+          (element) => element.id == realEstate.attributes!.firstType!.id));
     }
-    typeList=typeList.toSet().toList();
+    typeList = typeList.toSet().toList();
     typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
     return typeList;
   }
@@ -551,61 +561,69 @@ class _HomePageState extends State<HomePage>
   }
 
 // Notifications icon widget
-  Widget buildNotificationsIcon(bool hasNotification) {
-    return Container(
-      decoration:
-          const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-      child: TextButton(
-        style: TextButton.styleFrom(
-            shape: const CircleBorder(), padding: const EdgeInsets.all(4)),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NotificationPage(
-                isHasNotification: hasNotification,
-              ),
+  Widget buildNotificationsIcon() {
+    return FutureBuilder<List<Notifications>>(
+      future: notificationsDataList,
+      builder: (context, snapshot) {
+        bool hasNotification = snapshot.hasData && snapshot.data!.isNotEmpty;
+        return Container(
+          decoration:
+              const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(4),
             ),
-          );
-        },
-        child: Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFF8bc83f), width: 2),
-              ),
-              child: const Icon(
-                Icons.notifications_none_sharp,
-                size: 28,
-              ),
-            ),
-            Visibility(
-              visible: hasNotification,
-              child: Positioned(
-                right: 10,
-                top: 10,
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
+                ),
+              );
+              setState(() => hasNotification = false);
+            },
+            child: Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    border:
+                        Border.all(color: const Color(0xFF8bc83f), width: 2),
                   ),
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFFD5F4A),
-                    ),
+                  child: const Icon(
+                    Icons.notifications_none_sharp,
+                    size: 28,
                   ),
                 ),
-              ),
-            )
-          ],
-        ),
-      ),
+                Visibility(
+                  visible: hasNotification,
+                  child: Positioned(
+                    right: 10,
+                    top: 10,
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFFD5F4A),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

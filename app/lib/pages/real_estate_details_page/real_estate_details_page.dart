@@ -226,77 +226,115 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
 
   // Images section
   Widget buildImagesSection({required RealEstate realEstate}) {
-    return Container(
-      decoration: const BoxDecoration(
-          color: Colors.lightGreen,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(25),
-            bottomRight: Radius.circular(25),
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 1)
-          ]),
-      child: CarouselSlider(
-        options: CarouselOptions(
-          viewportFraction: 0.5,
-          autoPlay: true,
-          autoPlayInterval: const Duration(seconds: 3),
-          enlargeCenterPage: true,
-          enableInfiniteScroll: true,
-          aspectRatio: 16 / 9,
-        ),
-        items: realEstate.attributes!.images!.map<Widget>(
-          (image) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: Text(realEstate.attributes!.name!),
-                          backgroundColor: Colors.transparent,
-                        ),
-                        body: Center(
-                          child: PhotoView(
-                            loadingBuilder: (context, event) => Center(
-                              child: SizedBox(
-                                width: 30.0,
-                                height: 30.0,
-                                child: CircularProgressIndicator(
-                                  backgroundColor: const Color(0xFFE0A410),
-                                  value: event == null
-                                      ? 0
-                                      : event.cumulativeBytesLoaded /
-                                          event.expectedTotalBytes!,
+    return realEstate.attributes!.images!.isNotEmpty
+        ? Container(
+            decoration: const BoxDecoration(
+                color: Colors.lightGreen,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 1)
+                ]),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                viewportFraction: 0.5,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                enlargeCenterPage: true,
+                enableInfiniteScroll: true,
+                aspectRatio: 16 / 9,
+              ),
+              items: realEstate.attributes!.images!.map<Widget>(
+                (image) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return Scaffold(
+                              appBar: AppBar(
+                                title: Text(realEstate.attributes!.name!),
+                                backgroundColor: Colors.transparent,
+                              ),
+                              body: Center(
+                                child: PhotoView(
+                                  loadingBuilder: (context, event) => Center(
+                                    child: SizedBox(
+                                      width: 30.0,
+                                      height: 30.0,
+                                      child: CircularProgressIndicator(
+                                        backgroundColor:
+                                            const Color(0xFFE0A410),
+                                        value: event == null
+                                            ? 0
+                                            : event.cumulativeBytesLoaded /
+                                                event.expectedTotalBytes!,
+                                      ),
+                                    ),
+                                  ),
+                                  imageProvider:
+                                      CachedNetworkImageProvider(image),
+                                  minScale:
+                                      PhotoViewComputedScale.contained * 0.8,
+                                  maxScale:
+                                      PhotoViewComputedScale.contained * 2,
                                 ),
                               ),
-                            ),
-                            imageProvider: CachedNetworkImageProvider(image),
-                            minScale: PhotoViewComputedScale.contained * 0.8,
-                            maxScale: PhotoViewComputedScale.contained * 2,
-                          ),
+                            );
+                          },
                         ),
                       );
                     },
+                    child: CachedNetworkImage(
+                      imageUrl: image,
+                      fit: BoxFit.contain,
+                      filterQuality: FilterQuality.high,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+          )
+        : Container(
+            height: 200,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+                color: Colors.lightGreen,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 1)
+                ]),
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  "لا يوجد صور",
+                  style: TextStyle(
+                    fontSize: 30,
                   ),
-                );
-              },
-              child: CachedNetworkImage(
-                imageUrl: image,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
                 ),
               ),
-            );
-          },
-        ).toList(),
-      ),
-    );
+            ),
+          );
   }
 
   // Details section

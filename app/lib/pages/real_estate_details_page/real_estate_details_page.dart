@@ -82,9 +82,12 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     List<RealEstate> realEstate =
         (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
     realEstate = realEstate
-        .where((element) =>
-            element.attributes!.firstType!.name ==
-            mainRealEstate.attributes!.firstType!.name)
+        .where(
+          (element) =>
+              element.attributes!.firstType!.name ==
+                  mainRealEstate.attributes!.firstType!.name &&
+              element.id != mainRealEstate.id,
+        )
         .toList();
     return realEstate;
   }

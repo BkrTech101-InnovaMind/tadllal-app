@@ -819,6 +819,10 @@ class _HomePageState extends State<HomePage>
                                     ),
                                     Text(
                                       snapshot.data![index].attributes!.name!,
+                                      textScaleFactor: 0.70,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ],
                                 ),

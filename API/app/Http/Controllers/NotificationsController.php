@@ -59,9 +59,9 @@ class NotificationsController extends Controller
 
     public function showAllNotifications()
     {
-
-        $readNotifications = auth()->user()->readNotifications;
         $unreadNotifications = auth()->user()->unreadNotifications;
+        $readNotifications = auth()->user()->readNotifications;
+
 
         $allNotifications = $readNotifications->concat($unreadNotifications);
 

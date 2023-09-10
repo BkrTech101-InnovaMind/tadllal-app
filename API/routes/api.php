@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\OrdersController as AdminOrdersController;
 use App\Http\Controllers\Admin\RealEstateController as AdminRealEstateController;
 use App\Http\Controllers\Admin\ServicesOrdersController;
 use App\Http\Controllers\Admin\StatisticsController;
+use App\Http\Controllers\Admin\NewServicesController as AdminNewServices;
 use App\Http\Controllers\Admin\SubConstructionServiceController as AdminSubConstructionServiceController;
 use App\Http\Controllers\Admin\TypesController as AdminTypesController;
 use App\Http\Controllers\Admin\UsersController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ConstructionServiceController;
 use App\Http\Controllers\CustomerRequestController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\NewServicesController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RatingController;
@@ -23,6 +25,7 @@ use App\Http\Controllers\RealEstateController;
 use App\Http\Controllers\SubConstructionServiceController;
 use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UserPreferenceController;
+use App\Models\NewServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +101,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
         Route::post('/{id}/edit', [AdminConstructionServiceController::class, 'updateService']);
         Route::get('/{id}', [AdminConstructionServiceController::class, 'showSubServices']);
     });
+    Route::prefix('NewServices')->group(function () {
+        Route::resource('/services', AdminNewServices::class);
+        Route::post('/{id}/edit', [AdminNewServices::class, 'updateService']);
+        Route::get('/byType/{type}', [AdminNewServices::class, 'getServicesByType']);
+    });
+
     Route::prefix('subServices')->group(function () {
         Route::resource('/services', AdminSubConstructionServiceController::class);
         Route::get('/{id}', [AdminSubConstructionServiceController::class, 'show']);
@@ -175,6 +184,10 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
         Route::prefix('service')->group(function () {
             Route::post('/new/{id}', [OrdersController::class, 'submitServiceOrder']);
         });
+
+        Route::prefix('newService')->group(function () {
+            Route::post('/new/{id}', [OrdersController::class, 'submitNewServiceOrder']);
+        });
     });
     Route::prefix('preferences')->group(function () {
         //Add User Preference
@@ -201,6 +214,13 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'app'], function () 
             Route::get('/', [SubConstructionServiceController::class, 'index']);
             Route::get('/{constructionServiceId}', [SubConstructionServiceController::class, 'showSubServices']);
         });
+
+
+
+    });
+    Route::prefix('NewServices')->group(function () {
+        Route::resource('/services', NewServicesController::class);
+        Route::get('/byType/{type}', [NewServicesController::class, 'getServicesByType']);
     });
 
 });

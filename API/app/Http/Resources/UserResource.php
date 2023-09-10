@@ -20,7 +20,7 @@ class UserResource extends JsonResource
         $user = auth()->user(); // الحصول على المستخدم الحالي
 
         $data = [
-            'id' => (string) $user->id,
+            'id' => (string) $this->id,
             'attributes' => [
                 'name' => $this->name,
                 'email' => $this->email,

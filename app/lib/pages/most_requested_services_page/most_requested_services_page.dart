@@ -51,9 +51,27 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
           child: Column(
             children: [
               Container(
-                alignment: Alignment.centerRight,
-                margin: const EdgeInsets.symmetric(vertical: 15),
-                child: const PagesBackButton(),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF5F4F8),
+                  border: Border(bottom: BorderSide(color: Colors.black38)),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                child: Row(
+                  children: [
+                    const PagesBackButton(),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "خدماتنا الاكثر طلباً",
+                          style:
+                              TextStyle(fontSize: 18, color: Color(0xFF1F4C6B)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: FutureBuilder<List<Services>>(

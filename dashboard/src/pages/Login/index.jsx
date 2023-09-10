@@ -5,9 +5,10 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
 
-const API_URL = process.env.NEXT_PUBLIC_DASHBOARD_LOGIN
+const URL = process.env.NEXT_PUBLIC_API_LOGIN_URL;
 
 export default function Index() {
+
   const router = useRouter()
 
   const [email, setEmail] = useState("")
@@ -27,7 +28,7 @@ export default function Index() {
       const response = await axios({
         method: "post",
         url: "login",
-        baseURL: API_URL,
+        baseURL: URL,
         data: data,
         headers: headers,
       })

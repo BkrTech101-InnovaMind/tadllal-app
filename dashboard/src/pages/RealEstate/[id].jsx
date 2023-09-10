@@ -82,6 +82,7 @@ export default function Details() {
                   {jsonData.attributes.locationInfo}
                 </p>
               </div>
+
               <div className='mt-6 flex flex-row'>
                 <h1 className='text-1xl font-semibold ml-1'>التقييم:</h1>
                 <RatingStars

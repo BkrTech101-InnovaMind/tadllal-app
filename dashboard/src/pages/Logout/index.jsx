@@ -16,7 +16,7 @@ const LogoutPage = () => {
       const response = await axios({
         method: "post",
         url: "logout",
-        baseURL: API_URL,
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
         headers: headers,
       })
 

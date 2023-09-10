@@ -12,6 +12,7 @@ import {
   FaMapLocationDot,
   FaSitemap,
   FaToolbox,
+  FaUserTie,
   FaUsers,
 } from "react-icons/fa6"
 export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
@@ -25,11 +26,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
 
   return (
     <div
-      className={`${
-        mainServicesOpen
-          ? " bg-minueBg w-1/4 h-screen  text-minueColor p-4 text-right shadow-slate-50 show"
-          : "hidden hide"
-      } sm:hidden `}
+      className={`${mainServicesOpen
+        ? " bg-minueBg w-1/4 h-screen  text-minueColor p-4 text-right shadow-slate-50 show"
+        : "hidden hide"
+        } sm:hidden `}
     >
       <div
         dir='ltr'
@@ -54,11 +54,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/'
-            className={`block ${
-              isActiveLink("/")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             {/* <AiFillHome /> */}
             <FaHouse />
@@ -68,11 +67,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/RealEstate'
-            className={`block ${
-              isActiveLink("/RealEstate")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/RealEstate")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             <FaBuilding />
             العقارات
@@ -81,11 +79,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Locations'
-            className={`block ${
-              isActiveLink("/Locations")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/Locations")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             <FaMapLocationDot />
             المواقع
@@ -95,11 +92,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Types'
-            className={`block ${
-              isActiveLink("/Types")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/Types")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             <FaSitemap />
             انواع العقارات
@@ -109,11 +105,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Services'
-            className={`block ${
-              isActiveLink("/Services")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/Services")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             <FaToolbox />
             خدمات انشائية وتوريدات
@@ -123,11 +118,10 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Orders'
-            className={`block ${
-              isActiveLink("/Orders")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/Orders")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             <FaInbox />
             الطلبات
@@ -135,12 +129,23 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         </li>
         <li>
           <Link
+            href='/Customers'
+            className={`block ${isActiveLink("/Customers")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
+          >
+            <FaUserTie />
+            طلبات العملاء
+          </Link>
+        </li>
+        <li>
+          <Link
             href='/Users'
-            className={`block ${
-              isActiveLink("/Users")
-                ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
-                : "hover:bg-munueHover"
-            } px-2 py-1 rounded`}
+            className={`block ${isActiveLink("/Users")
+              ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
+              : "hover:bg-munueHover"
+              } px-2 py-1 rounded`}
           >
             <FaUsers />
             المستخدمين

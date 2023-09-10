@@ -107,6 +107,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum', 'admin']
         Route::get('/byType/{type}', [AdminNewServices::class, 'getServicesByType']);
     });
 
+    Route::prefix('NewServicesOrders')->group(function () {
+        Route::put('/approve/{orderId}', [AdminNewServices::class, 'approveServiceOrder']);
+        Route::get('/', [AdminNewServices::class, 'getAllServicesOrders']);
+        Route::get('/approved', [AdminNewServices::class, 'getApprovedServiceOrders']);
+        Route::get('/pending', [AdminNewServices::class, 'getPendingServiceOrders']);
+        Route::post('/delete/{orderId}', [AdminNewServices::class, 'destroyServiceOrder']);
+    });
     Route::prefix('subServices')->group(function () {
         Route::resource('/services', AdminSubConstructionServiceController::class);
         Route::get('/{id}', [AdminSubConstructionServiceController::class, 'show']);

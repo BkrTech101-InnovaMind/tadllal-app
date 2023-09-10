@@ -10,53 +10,89 @@ export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  async function checkUserStatus() {
-    const headers = {
-      "Content-Type": `application/vnd.api+json`,
-      Accept: `application/vnd.api+json`,
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    }
-    try {
-      const response = await axios.get("user", {
-        baseURL: API_URL,
-        headers: headers,
-      })
-      const userData = response.data
-      setUser(userData)
-    } catch (error) {
-      setUser(null)
-    }
-    setLoading(true)
-    if (
-      !localStorage.getItem("authToken") &&
-      !user &&
-      router.pathname !== "/Login"
-    ) {
-      router.push("/Login")
-    }
-    if (
-      localStorage.getItem("authToken") &&
-      user &&
-      router.pathname === "/Login"
-    ) {
-      router.push("/")
-    }
-  }
 
+  // async function checkUserStatus() {
+  //   const headers = {
+  //     "Content-Type": `application/vnd.api+json`,
+  //     Accept: `application/vnd.api+json`,
+  //     Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+  //   }
+  //   try {
+  //     const response = await axios.get("user", {
+  //       baseURL: API_URL,
+  //       headers: headers,
+  //     })
+  //     const userData = response.data
+
+  //     setUser(userData)
+  //   } catch (error) {
+  //     setUser(null)
+  //     if (error.response.data.message == 'Unauthenticated.') {
+  //       router.push("/Login")
+  //     }
+
+  //   }
+  //   setLoading(true);
+  //   if (!localStorage.getItem("authToken") && !user && router.pathname !== "/Login") {
+  //     router.push("/Login")
+  //   }
+  //   if (
+  //     localStorage.getItem("authToken") &&
+  //     user &&
+  //     router.pathname === "/Login"
+  //   ) {
+  //     router.push("/")
+  //   }
+
+
+  // }
+
+
+  async function checkUserStatus() {
+    const authToken = localStorage.getItem("authToken")
+
+    if (!authToken) {
+      // إذا لم يكن هناك توكن مخزن في localStorage، قم بتوجيه المستخدم مباشرة إلى صفحة الدخول.
+      router.replace("/Login")
+    } else {
+      const headers = {
+        "Content-Type": "application/vnd.api+json",
+        Accept: "application/vnd.api+json",
+        Authorization: `Bearer ${authToken}`,
+      }
+
+      try {
+        const response = await axios.get("user", {
+          baseURL: API_URL,
+          headers: headers,
+        })
+        const userData = response.data
+        setUser(userData)
+      } catch (error) {
+        setUser(null)
+        if (error.response.data.message === 'Unauthenticated.') {
+          // إذا كان المستخدم غير مصرح به، قم بتوجيهه مباشرة إلى صفحة الدخول.
+          router.push("/Login")
+        }
+      }
+    }
+
+    setLoading(true)
+  }
+  // useEffect(() => {
+  //   checkUserStatus()
+  // }, [router.pathname, router])
   useEffect(() => {
     checkUserStatus()
-  }, [router.pathname, router])
-
+  }, [])
   return (
     <>
-      {!loading ? (
-        <LoadingIndicator />
+      {user || router.pathname == "/Login" ? (
+        <Component {...pageProps} />
       ) : (
-        <>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </>
+        <LoadingIndicator />
       )}
+      <ToastContainer />
     </>
   )
 }

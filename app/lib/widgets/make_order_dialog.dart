@@ -581,7 +581,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
       if (widget.type == "RealEstate") {
         data = dioApi.post("/orders/new/${widget.orderId}", myData: formValue);
       } else if (widget.type == "Service") {
-        data = dioApi.post("/orders/service/new/${widget.orderId}",
+        data = dioApi.post("/orders/newService/new/${widget.orderId}",
             myData: formValue);
       }
     });

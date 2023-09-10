@@ -5,7 +5,7 @@ import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
 import api from "@/api/api"
 import { fetchLocations, fetchTypes } from "@/api/fetchData"
-import { countMatchingItems } from "@/api/filtersData"
+import { countMatchingItems, filterRealEstatesByPrice } from "@/api/filtersData"
 import { realEstateTypes, status } from "@/data/arrays"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator "
@@ -20,7 +20,8 @@ export default function Index() {
   const router = useRouter()
   const [realEstates, setRealEstates] = useState([])
   const [searchResults, setSearchResults] = useState([])
-
+  const [minPrice, setMinPrice] = useState(""); // حد الأدنى للسعر
+  const [maxPrice, setMaxPrice] = useState(""); // حد الأقصى للسعر
   const [typesOptions, setTypesOptions] = useState([])
   const [locationsOptions, setLocationsOptions] = useState([])
   const [statistics, setStatistics] = useState({
@@ -219,6 +220,13 @@ export default function Index() {
     const filteredResults = tableSearch(searchTerm, realEstates, searchedField)
     setSearchResults(filteredResults)
   }
+  const handleSearchByPrice = () => {
+    // تطبيق الفلترة باستخدام الدالة الجديدة
+    const filteredResults = filterRealEstatesByPrice(minPrice, maxPrice, realEstates);
+
+    // قم بتحديث نتائج البحث
+    setSearchResults(filteredResults);
+  };
 
   const handleTypeSelect = (selectedType) => {
     const filterdField = "firstType"
@@ -287,6 +295,7 @@ export default function Index() {
       toast.error("خطأ أثناء حذف العقار")
     }
   }
+
 
   const handleView = (item) => {
     router.push({
@@ -366,9 +375,21 @@ export default function Index() {
                     options={status.data}
                     onSelect={handleStatusSelect}
                   />
-                  {/* <DropDownList />
-                            <DropDownList />
-                            <DropDownList /> */}
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="الحد الأدنى للسعر"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="الحد الأقصى للسعر"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                    />
+                    <button onClick={handleSearchByPrice}>ابحث بناءً عن الأسعار</button>
+                  </div>
                 </div>
                 <div className='flex justify-between border-t-2 pt-5'>
                   <div>
@@ -376,7 +397,7 @@ export default function Index() {
                     <Link href='/RealEstate/New'>
                       <PrimaryBt type='add' name='إضافة عقار جديد' />
                     </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>

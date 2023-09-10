@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-const API_URL = "https://tadllal.alqatta.com/api/dashboard/"
 const LogoutPage = () => {
   const router = useRouter()
   const logout = async () => {
@@ -14,7 +13,7 @@ const LogoutPage = () => {
       const response = await axios({
         method: "post",
         url: "logout",
-        baseURL: API_URL,
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
         headers: headers,
       })
 

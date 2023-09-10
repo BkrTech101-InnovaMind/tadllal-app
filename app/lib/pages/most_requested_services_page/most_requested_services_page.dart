@@ -33,7 +33,7 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
   }
 
   Future<List<Services>> _getSubServicesData() async {
-    var rowData = await dioApi.get("/services/sub-services");
+    var rowData = await dioApi.get("/NewServices/services/");
     String jsonString = json.encode(rowData.data["data"]);
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)

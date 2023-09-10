@@ -21,6 +21,7 @@ import 'package:tedllal/pages/home_page/widgets/real_estates_card.dart';
 import 'package:tedllal/pages/home_page/widgets/type_filter.dart';
 import 'package:tedllal/pages/most_requested_services_page/most_requested_services_page.dart';
 import 'package:tedllal/pages/notification_page/notification_page.dart';
+import 'package:tedllal/pages/single_general_services_page/single_general_services_page.dart';
 import 'package:tedllal/pages/single_sub_service_page/single_sub_service_page.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/services/helpers.dart';
@@ -63,7 +64,6 @@ class _HomePageState extends State<HomePage>
   AppProvider providerListener() =>
       Provider.of<AppProvider>(context, listen: false);
 
-  Future<List<Services>> servicesDataList = Future(() => []);
   Future<List<Services>> subServicesDataList = Future(() => []);
   Future<List<Location>> locationDataList = Future(() => []);
   Future<List<RealEstateType>> typeDataList = Future(() => []);
@@ -83,6 +83,84 @@ class _HomePageState extends State<HomePage>
 
   Future<void> refresh() async {
     _syncData();
+  }
+
+  _syncData() async {
+    _setRealEstateData();
+    setState(() {
+      locationDataList = _getLocationData();
+      typeDataList = _getTypeData();
+      subServicesDataList = _getSubServicesData();
+      notificationsDataList = _getNotifications();
+    });
+  }
+
+  Future<List<Notifications>> _getNotifications() async {
+    var date = await DioApi().get("/notifications/unread");
+    List<dynamic> notificationsData = date.data["data"];
+    return notificationsData
+        .map((data) => Notifications.fromJson(data))
+        .toList();
+  }
+
+  Future<List<Services>> _getSubServicesData() async {
+    var rowData = await dioApi.get("/NewServices/services/");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
+  }
+
+  Future<List<RealEstate>> _setRealEstateData() async {
+    var rowData = await dioApi.get("/realEstate/filters/by-Preference");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+    List<RealEstate> realEstate =
+        (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
+    providerListener().addRealEstateList(listData: realEstate);
+
+    return realEstate;
+  }
+
+  Future<List<Location>> _getLocationData() async {
+    var rowData = await dioApi.get("/locations");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+    List<Location> locationListTemp =
+        (data).map((itemWord) => Location.fromJson(itemWord)).toList();
+    List<Location> locationList = [];
+    for (var realEstate in await _setRealEstateData()) {
+      locationList.addAll(locationListTemp.where(
+          (element) => element.id == realEstate.attributes!.location!.id));
+    }
+    locationList = locationList.toSet().toList();
+    locationList.insert(0, Location.fromJson(allLocationAndType));
+
+    return locationList;
+  }
+
+  Future<List<RealEstateType>> _getTypeData() async {
+    var rowData = await dioApi.get("/types");
+    String jsonString = json.encode(rowData.data["data"]);
+    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+    List<RealEstateType> typeListTemp =
+        (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
+    List<RealEstateType> typeList = [];
+    for (var realEstate in await _setRealEstateData()) {
+      typeList.addAll(typeListTemp.where(
+          (element) => element.id == realEstate.attributes!.firstType!.id));
+    }
+    typeList = typeList.toSet().toList();
+    typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
+    return typeList;
   }
 
   @override
@@ -386,99 +464,9 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  _syncData() async {
-    _setRealEstateData();
-    setState(() {
-      servicesDataList = _getServicesData();
-      locationDataList = _getLocationData();
-      typeDataList = _getTypeData();
-      subServicesDataList = _getSubServicesData();
-      notificationsDataList = _getNotifications();
-    });
-  }
-
-  Future<List<Notifications>> _getNotifications() async {
-    var date = await DioApi().get("/notifications/unread");
-    List<dynamic> notificationsData = date.data["data"];
-    return notificationsData
-        .map((data) => Notifications.fromJson(data))
-        .toList();
-  }
-
-  Future<List<Services>> _getServicesData() async {
-    var rowData = await dioApi.get("/services");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-
-    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
-  }
-
-  Future<List<Services>> _getSubServicesData() async {
-    var rowData = await dioApi.get("/services/sub-services");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-
-    return (data).map((itemWord) => Services.fromJson(itemWord)).toList();
-  }
-
-  Future<List<RealEstate>> _setRealEstateData() async {
-    var rowData = await dioApi.get("/realEstate/filters/by-Preference");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-    List<RealEstate> realEstate =
-        (data).map((itemWord) => RealEstate.fromJson(itemWord)).toList();
-    providerListener().addRealEstateList(listData: realEstate);
-
-    return realEstate;
-  }
-
-  Future<List<Location>> _getLocationData() async {
-    var rowData = await dioApi.get("/locations");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-    List<Location> locationListTemp =
-        (data).map((itemWord) => Location.fromJson(itemWord)).toList();
-    List<Location> locationList = [];
-    for (var realEstate in await _setRealEstateData()) {
-      locationList.addAll(locationListTemp.where(
-          (element) => element.id == realEstate.attributes!.location!.id));
-    }
-    locationList = locationList.toSet().toList();
-    locationList.insert(0, Location.fromJson(allLocationAndType));
-
-    return locationList;
-  }
-
-  Future<List<RealEstateType>> _getTypeData() async {
-    var rowData = await dioApi.get("/types");
-    String jsonString = json.encode(rowData.data["data"]);
-    List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
-    List<RealEstateType> typeListTemp =
-        (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
-    List<RealEstateType> typeList = [];
-    for (var realEstate in await _setRealEstateData()) {
-      typeList.addAll(typeListTemp.where(
-          (element) => element.id == realEstate.attributes!.firstType!.id));
-    }
-    typeList = typeList.toSet().toList();
-    typeList.insert(0, RealEstateType.fromJson(allLocationAndType));
-    return typeList;
-  }
-
 // User image widget
   Widget buildUserImage() {
     String userImage = Config().user.attributes!.avatar ?? "";
-
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
@@ -631,11 +619,13 @@ class _HomePageState extends State<HomePage>
   Widget buildService() {
     final serviceData = [
       {
+        'id': '1',
         'image': 'assets/images/services.png',
         'title': 'خدمات إنشائية \n وصيانة',
         'subtitle': 'خدمات تصميم وتنفيذ',
       },
       {
+        'id': '2',
         'image': 'assets/images/resources.png',
         'title': 'موارد بناء وتوريدات',
         'subtitle': 'أطلب أي مواد تحتاجها لبناء \n حلمك',
@@ -666,7 +656,16 @@ class _HomePageState extends State<HomePage>
             itemCount: serviceData.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SingleGeneralServicesPage(
+                        serviceId: "${serviceData[index]["id"]}",
+                      ),
+                    ),
+                  );
+                },
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
@@ -744,209 +743,6 @@ class _HomePageState extends State<HomePage>
       ],
     );
   }
-
-  // * Uncomment this widget and comment the previous one to change the services
-  // * from the api instead of hard coding
-  // Widget buildService() {
-  //   var size = MediaQuery.of(context).size;
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 10),
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           margin: const EdgeInsets.all(10),
-  //           child: const Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Text(
-  //                 "خدمات إنشائية وتوريدات",
-  //                 style: TextStyle(
-  //                     color: Color(0xFF234F68), fontWeight: FontWeight.w900),
-  //               ),
-  //               // TextButton(
-  //               //   onPressed: () {
-  //               //     Navigator.push(
-  //               //       context,
-  //               //       MaterialPageRoute(
-  //               //           builder: (context) => const GeneralServicesPage()),
-  //               //     );
-  //               //   },
-  //               //   child: const Text(
-  //               //     "رؤية الكل",
-  //               //     style: TextStyle(color: Color(0xFF234F68)),
-  //               //   ),
-  //               // ),
-  //             ],
-  //           ),
-  //         ),
-  //         FutureBuilder<List<Services>>(
-  //             future: servicesDataList,
-  //             builder: (BuildContext context,
-  //                 AsyncSnapshot<List<Services>> snapshot) {
-  //               if (snapshot.connectionState == ConnectionState.done) {
-  //                 if (snapshot.hasData && snapshot.hasError == false) {
-  //                   return SizedBox(
-  //                     height: 140,
-  //                     child: ListView.builder(
-  //                       itemExtent: size.width / 2,
-  //                       shrinkWrap: true,
-  //                       scrollDirection: Axis.horizontal,
-  //                       itemCount: snapshot.data!.length,
-  //                       itemBuilder: (context, index) {
-  //                         return GestureDetector(
-  //                           onTap: () {
-  //                             Navigator.push(
-  //                                 context,
-  //                                 MaterialPageRoute(
-  //                                     builder: (context) =>
-  //                                         SingleGeneralServicesPage(
-  //                                           servicesDetails:
-  //                                               snapshot.data![index],
-  //                                         )));
-  //                           },
-  //                           child: Container(
-  //                             padding: const EdgeInsets.all(4),
-  //                             decoration: BoxDecoration(
-  //                               borderRadius: BorderRadius.circular(25),
-  //                             ),
-  //                             child: Stack(
-  //                               children: [
-  //                                 Positioned.fill(
-  //                                   child: ClipRRect(
-  //                                     borderRadius: BorderRadius.circular(25),
-  //                                     child: ColorFiltered(
-  //                                       colorFilter: ColorFilter.mode(
-  //                                         Colors.black.withOpacity(0.3),
-  //                                         BlendMode.srcATop,
-  //                                       ),
-  //                                       child: Image.network(
-  //                                         snapshot
-  //                                             .data![index].attributes!.image!,
-  //                                         fit: BoxFit.fill,
-  //                                       ),
-  //                                     ),
-  //                                   ),
-  //                                 ),
-  //                                 Column(
-  //                                   mainAxisAlignment:
-  //                                       MainAxisAlignment.spaceBetween,
-  //                                   crossAxisAlignment:
-  //                                       CrossAxisAlignment.start,
-  //                                   children: [
-  //                                     Container(
-  //                                       margin: const EdgeInsets.only(
-  //                                           top: 10, right: 30),
-  //                                       child: Column(
-  //                                         crossAxisAlignment:
-  //                                             CrossAxisAlignment.start,
-  //                                         children: [
-  //                                           Text(
-  //                                             snapshot.data![index].attributes!
-  //                                                     .name ??
-  //                                                 "",
-  //                                             style: const TextStyle(
-  //                                               color: Colors.white,
-  //                                               fontWeight: FontWeight.bold,
-  //                                               height: 1,
-  //                                             ),
-  //                                           ),
-  //                                           const SizedBox(height: 10),
-  //                                           Text(
-  //                                             snapshot.data![index].attributes!
-  //                                                     .description ??
-  //                                                 "",
-  //                                             style: const TextStyle(
-  //                                                 fontSize: 10,
-  //                                                 color: Colors.white,
-  //                                                 height: 1),
-  //                                             overflow: TextOverflow.ellipsis,
-  //                                           ),
-  //                                         ],
-  //                                       ),
-  //                                     ),
-  //                                     Container(
-  //                                       padding: const EdgeInsets.symmetric(
-  //                                         vertical: 10,
-  //                                         horizontal: 23,
-  //                                       ),
-  //                                       decoration: const BoxDecoration(
-  //                                         borderRadius: BorderRadius.only(
-  //                                           topLeft: Radius.circular(25),
-  //                                         ),
-  //                                         color: Color(0xFF234F68),
-  //                                       ),
-  //                                       child: const Icon(
-  //                                         Icons.arrow_forward_sharp,
-  //                                         size: 30,
-  //                                         color: Colors.white,
-  //                                       ),
-  //                                     ),
-  //                                   ],
-  //                                 )
-  //                               ],
-  //                             ),
-  //                           ),
-  //                         );
-  //                       },
-  //                     ),
-  //                   );
-  //                 } else if (snapshot.hasError) {
-  //                   print("DATA ERROR ${snapshot.error}");
-  //                   return const Center(
-  //                       child: Padding(
-  //                     padding: EdgeInsets.only(top: 16),
-  //                     child: Text(errorWhileGetData),
-  //                   ));
-  //                 } else {
-  //                   return const Center(
-  //                       child: Padding(
-  //                     padding: EdgeInsets.only(top: 16),
-  //                     child: Text(noData),
-  //                   ));
-  //                 }
-  //               } else if (snapshot.connectionState ==
-  //                   ConnectionState.waiting) {
-  //                 return const Center(
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     crossAxisAlignment: CrossAxisAlignment.center,
-  //                     children: <Widget>[
-  //                       SizedBox(
-  //                         width: 60,
-  //                         height: 60,
-  //                         child: ColorLoader2(),
-  //                       ),
-  //                       Padding(
-  //                         padding: EdgeInsets.only(top: 16),
-  //                         child: Text(loadingDataFromServer),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 );
-  //               } else {
-  //                 return const Center(
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     crossAxisAlignment: CrossAxisAlignment.center,
-  //                     children: <Widget>[
-  //                       SizedBox(
-  //                         width: 60,
-  //                         height: 60,
-  //                         child: CircularProgressIndicator(),
-  //                       ),
-  //                       Padding(
-  //                         padding: EdgeInsets.only(top: 16),
-  //                         child: Text(loadingDataFromServer),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 );
-  //               }
-  //             })
-  //       ],
-  //     ),
-  //   );
-  // }
 
 // Most Requested widget
   Widget buildMostRequest() {

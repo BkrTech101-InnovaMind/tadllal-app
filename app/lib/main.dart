@@ -21,6 +21,13 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => AppProvider()),
     ],
     child: MaterialApp(
+      builder: (context, child) {
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,

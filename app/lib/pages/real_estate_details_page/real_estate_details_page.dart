@@ -11,6 +11,7 @@ import 'package:tedllal/model/real_estate.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/widgets/comment_dialog.dart';
 import 'package:tedllal/widgets/loading_ui/loader1.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 import 'package:tedllal/widgets/make_order_dialog.dart';
 import 'package:tedllal/widgets/pages_back_button.dart';
 
@@ -41,11 +42,12 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   }
 
   _syncData() {
-    setState(() {
-      realEstateData = _getRealEstateData();
-      realEstateData.then((value) {
-        _getLinkedRealEstateDataList(mainRealEstate: value)
-            .then((value) => linkedRealEstateList);
+    realEstateData = _getRealEstateData();
+    realEstateData.then((value) {
+      _getLinkedRealEstateDataList(mainRealEstate: value).then((value) {
+        setState(() {
+          linkedRealEstateList = value;
+        });
       });
     });
   }
@@ -145,6 +147,11 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                           children: [
                             buildImagesSection(realEstate: snapshot.data!),
                             buildDetailsSection(realEstate: snapshot.data!),
+                            buildSameType(
+                              linkedRealEstateFuture:
+                                  _getLinkedRealEstateDataList(
+                                      mainRealEstate: snapshot.data!),
+                            ),
                             buildCommentsSection(realEstate: snapshot.data!),
                           ],
                         );
@@ -347,12 +354,19 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
               Row(
                 children: [
-                  Text(
-                    realEstate.attributes!.name!,
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.lightGreen,
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width / 1.5,
+                    ),
+                    child: Text(
+                      realEstate.attributes!.name!,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightGreen,
+                        overflow: TextOverflow.fade,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -362,6 +376,49 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                 ],
               ),
             ],
+          ),
+          // Details Text
+          const SizedBox(height: 25),
+          const Text(
+            "التفاصيل :",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          // Description Text
+          const SizedBox(height: 15),
+          ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            title: const Text(
+              "الوصف",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.lightGreen,
+              ),
+            ),
+            subtitle: Text(
+              realEstate.attributes!.description!,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            leading: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFF5F4F8),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black, blurRadius: 1)
+                  ]),
+              child: const Icon(
+                Icons.description_outlined,
+                color: Color(0xFFE0A410),
+                size: 40,
+              ),
+            ),
           ),
           // Type & Rating Texts
           const SizedBox(height: 15),
@@ -522,6 +579,83 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ],
           ),
+          // Area & Rooms Texts
+          const SizedBox(height: 15),
+          Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "المساحة",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
+                  ),
+                  subtitle: Text(
+                    realEstate.attributes!.area!,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 1)
+                        ]),
+                    child: const Icon(
+                      Icons.space_bar_outlined,
+                      color: Color(0xFFE0A410),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "الغرف",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
+                  ),
+                  subtitle: Text(
+                    realEstate.attributes!.rooms!,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFF5F4F8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 1)
+                        ]),
+                    child: const Icon(
+                      Icons.meeting_room_outlined,
+                      color: Color(0xFFE0A410),
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
           // Location Text
           const SizedBox(height: 15),
           ListTile(
@@ -556,58 +690,259 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ),
           ),
-          // Description Text
           const SizedBox(height: 15),
-          ListTile(
-            contentPadding: const EdgeInsets.all(0),
-            title: const Text(
-              "الوصف",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.lightGreen,
-              ),
-            ),
-            subtitle: Text(
-              realEstate.attributes!.description!,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            leading: Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  color: const Color(0xFFF5F4F8),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black, blurRadius: 1)
-                  ]),
-              child: const Icon(
-                Icons.description_outlined,
-                color: Color(0xFFE0A410),
-                size: 40,
-              ),
-            ),
-          ),
-          buildMoreDetails()
+          buildMoreDetails(realEstate)
         ],
       ),
     );
   }
 
   // More Details
-  Widget buildMoreDetails() {
-    return Container();
+  Widget buildMoreDetails(RealEstate realEstate) {
+    return Visibility(
+      visible: realEstate.attributes!.vision! != "" ||
+          realEstate.attributes!.baptism! != "",
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.lightGreen,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            const Text(
+              "تفاصيل إضافية: ",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                children: [
+                  // Vision & Baptism Texts
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Visibility(
+                        visible: realEstate.attributes!.vision! != "",
+                        child: Text.rich(
+                          TextSpan(
+                            text: "البصيرة",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: " : ${realEstate.attributes!.vision!}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: realEstate.attributes!.baptism! != "",
+                        child: Text.rich(
+                          TextSpan(
+                            text: "التعميد",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: " : ${realEstate.attributes!.baptism!}",
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Same Type
+  Widget buildSameType(
+      {required Future<List<RealEstate>> linkedRealEstateFuture}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.all(15),
+          child: const Text(
+            "عناصر مشابهة :",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        FutureBuilder<List<RealEstate>>(
+          future: linkedRealEstateFuture,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<RealEstate>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: SizedBox(
+                  height: 240,
+                  child: Column(
+                    children: [
+                      ColorLoader2(),
+                      Text("يجري جلب البيانات"),
+                    ],
+                  ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('خطأ: ${snapshot.error}'),
+              );
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text('لا توجد عناصر مشابهة'),
+              );
+            } else {
+              List<RealEstate> linkedRealEstateList = snapshot.data!;
+              return _buildSameTypeCarousel(
+                  linkedRealEstateList: linkedRealEstateList);
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSameTypeCarousel(
+      {required List<RealEstate> linkedRealEstateList}) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        viewportFraction: 0.5,
+        autoPlay: true,
+        autoPlayInterval: const Duration(seconds: 3),
+        enlargeCenterPage: true,
+        enableInfiniteScroll: linkedRealEstateList.length > 3,
+        aspectRatio: 16 / 9.6,
+      ),
+      items: linkedRealEstateList
+          .map<Widget>(
+            (realEstate) => GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RealEstateDetailsPage(
+                      realEstate: realEstate,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                decoration: const BoxDecoration(
+                  color: Colors.lightGreen,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0),
+                      blurRadius: 1,
+                    )
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Real Estate Image
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: CachedNetworkImage(
+                        imageUrl: realEstate.attributes!.photo!,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
+                    // Real Estate Details
+                    Expanded(
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(0),
+                        title: const Text(
+                          "العنوان",
+                          textScaleFactor: 0.9,
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                          ),
+                        ),
+                        subtitle: Text(
+                          realEstate.attributes!.name!,
+                          textScaleFactor: 1.2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text.rich(
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                      TextSpan(text: "التقييم", children: [
+                        TextSpan(
+                          text:
+                              ": ${realEstate.attributes!.ratings!.averageRating!}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      ]),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+          .toList(),
+    );
   }
 
 // Comments Section
   Widget buildCommentsSection({required RealEstate realEstate}) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 40),
+      margin: const EdgeInsets.all(15),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 15),
           const Text("التعليقات: ",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           _buildComment(realEstate),

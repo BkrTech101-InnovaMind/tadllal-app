@@ -146,6 +146,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData && snapshot.hasError == false) {
                         return ListView(
+                          physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           children: [
                             buildImagesSection(realEstate: snapshot.data!),

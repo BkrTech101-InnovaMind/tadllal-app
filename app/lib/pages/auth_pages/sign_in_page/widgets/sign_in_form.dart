@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
-import 'package:tadllal/services/helpers.dart';
-import 'package:tadllal/services/http.dart';
-import 'package:tadllal/widgets/forget_password_dialog.dart';
-import 'package:tadllal/widgets/sinin_sinup_dialog.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/api_models/signin_signup_request.dart';
+import 'package:tedllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
+import 'package:tedllal/services/helpers.dart';
+import 'package:tedllal/services/http.dart';
+import 'package:tedllal/widgets/forget_password_dialog.dart';
+import 'package:tedllal/widgets/signin_signup_dialog.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -17,20 +17,20 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool password = true;
 
   @override
   void initState() {
-    _phoneController.text = "zabobaker7355@gmail.com";
+    _emailController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77920";
     super.initState();
   }
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -40,28 +40,30 @@ class _SignInFormState extends State<SignInForm> {
       return;
     }
 
-    setBaseUrl(APP_API_URI);
-    SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest(
-        email: _phoneController.text.toString().trim(),
+    setBaseUrl(appApiUri);
+    SignInSignUpRequest signInSignUpRequest = SignInSignUpRequest(
+        email: _emailController.text.toString().trim(),
         password: _passwordController.text.toString().trim());
 
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (BuildContext context2) => SinInSinUpDialog(
-        sinInSinUpRequest: sinInSinUpRequest,
-        type: SININ_TYPE,
+      builder: (BuildContext context2) => SignInSignUpDialog(
+        signInSignUpRequest: signInSignUpRequest,
+        type: signInType,
         onLogin: (response) async {
           if (response.message ==
               "Account is not activated Please check your email for activation instructions.") {
             await updateUserDetails(
-                    response: response, sinInSinUpRequest: sinInSinUpRequest)
+                    response: response,
+                    signInSignUpRequest: signInSignUpRequest)
                 .whenComplete(
               () => _navigateToAouthCode(),
             );
           } else {
             await updateUserDetails(
-                    response: response, sinInSinUpRequest: sinInSinUpRequest)
+                    response: response,
+                    signInSignUpRequest: signInSignUpRequest)
                 .whenComplete(
               () => _navigateToNavigationPage(),
             );
@@ -81,7 +83,7 @@ class _SignInFormState extends State<SignInForm> {
       context,
       MaterialPageRoute(
           builder: (context) => CodeAuthenticationPage(
-                email: _phoneController.text.trim(),
+                email: _emailController.text.trim(),
               )),
     );
   }
@@ -103,15 +105,15 @@ class _SignInFormState extends State<SignInForm> {
               validator: (value) => value == null || value.isEmpty
                   ? "الرجاء ادخال رقم الهاتف"
                   : null,
-              controller: _phoneController,
+              controller: _emailController,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.phone_iphone_outlined),
+                prefixIcon: Icon(Icons.email_outlined),
                 prefixIconColor: Colors.black,
                 border: UnderlineInputBorder(borderSide: BorderSide.none),
                 focusedBorder:
                     UnderlineInputBorder(borderSide: BorderSide.none),
                 contentPadding: EdgeInsets.symmetric(vertical: 25),
-                hintText: "رقم الهاتف",
+                hintText: "البريد الإلكتروني",
               ),
             ),
           ),
@@ -156,12 +158,12 @@ class _SignInFormState extends State<SignInForm> {
               ),
               GestureDetector(
                 onTap: () {
-                  setBaseUrl(APP_API_URI);
+                  setBaseUrl(appApiUri);
                   showDialog(
                     barrierDismissible: false,
                     context: context,
                     builder: (context2) => ForgetPasswordDialog(
-                        email: _phoneController.text.trim()),
+                        email: _emailController.text.trim()),
                   );
                 },
                 child: const Text(

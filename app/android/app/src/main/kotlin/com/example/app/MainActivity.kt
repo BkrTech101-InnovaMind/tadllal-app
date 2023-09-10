@@ -1,4 +1,4 @@
-package com.tadllal.app
+package com.tedllal.app
 
 import io.flutter.embedding.android.FlutterActivity
 

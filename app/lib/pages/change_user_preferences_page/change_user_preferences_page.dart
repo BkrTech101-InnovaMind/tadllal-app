@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/model/api_molels/user_preference.dart';
-import 'package:tadllal/model/real_estate_type.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
-
-import '../../config/global.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/api_models/user_preference.dart';
+import 'package:tedllal/model/real_estate_type.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
+import 'package:tedllal/widgets/pages_back_button.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class ChangeUserPreferencesPage extends StatefulWidget {
   const ChangeUserPreferencesPage({super.key});
@@ -68,7 +68,6 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
     List<UserPreference> preferencesList = await _getPreferencesData();
     for (var type in typeList) {
       RealEstateType temp = type;
-      print(temp.toJson());
       for (var preferences in preferencesList) {
         if (preferences.id == type.id) {
           temp.isChecked = true;
@@ -116,20 +115,47 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
     );
   }
 
+  void _onPressed() {
+    showDialog(context: context, builder: (_) => buildDialog());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('تغيير المفضلة'),
-        backgroundColor: const Color(0xFF194706),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFFF5F4F8),
+                border: Border(bottom: BorderSide(color: Colors.black38)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const PagesBackButton(),
+                  MaterialButton(
+                    height: 30.0,
+                    minWidth: 50.0,
+                    color: const Color(0xFFF5F4F8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    textColor: const Color(0xFF1F4C6B),
+                    padding: const EdgeInsets.all(16),
+                    onPressed: _onPressed,
+                    splashColor: const Color(0xFFF5F4F8),
+                    child: const Text(
+                      'تعديل',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             buildTypesGrid(),
-            buildSubmitButton(),
           ],
         ),
       ),
@@ -146,129 +172,135 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
           if (snapshot.hasData && snapshot.hasError == false) {
             realEstateType = snapshot.data!;
             return Expanded(
-              child: DynamicHeightGridView(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                itemCount: realEstateType.length,
-                builder: (context, index) {
-                  bool isChecked = realEstateType[index].isChecked!;
-                  return Card(
-                    color: isChecked ? const Color(0xFF1F4C6B) : Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          realEstateType[index].isChecked =
-                              !realEstateType[index].isChecked!;
-                        });
-                      },
-                      style: TextButton.styleFrom(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
+              child: Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: DynamicHeightGridView(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  itemCount: realEstateType.length,
+                  builder: (context, index) {
+                    bool isChecked = realEstateType[index].isChecked!;
+                    return Card(
+                      color: isChecked ? const Color(0xFF1F4C6B) : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            realEstateType[index].isChecked =
+                                !realEstateType[index].isChecked!;
+                          });
+                        },
+                        style: TextButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: SizedBox.fromSize(
+                                      child: CachedNetworkImage(
+                                        imageUrl: realEstateType[index]
+                                            .attributes!
+                                            .image!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  left: 15,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: isChecked ? null : Colors.white,
+                                      gradient: isChecked
+                                          ? LinearGradient(
+                                              colors: [
+                                                const Color(0xFF1F4C6B)
+                                                    .withAlpha(200),
+                                                const Color(0xFF8BC83F)
+                                              ],
+                                            )
+                                          : null,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: isChecked
+                                            ? Colors.white
+                                            : Colors.black,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              realEstateType[index].attributes!.name!,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: isChecked
+                                    ? Colors.white
+                                    : const Color(0xFF252B5C),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            alignment: AlignmentDirectional.center,
-                            children: [
-                              SizedBox(
-                                height: 150,
-                                width: 150,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: SizedBox.fromSize(
-                                    child: CachedNetworkImage(
-                                      imageUrl: realEstateType[index]
-                                          .attributes!
-                                          .image!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 10,
-                                left: 15,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: isChecked ? null : Colors.white,
-                                    gradient: isChecked
-                                        ? LinearGradient(
-                                            colors: [
-                                              const Color(0xFF1F4C6B)
-                                                  .withAlpha(200),
-                                              const Color(0xFF8BC83F)
-                                            ],
-                                          )
-                                        : null,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6),
-                                    child: Icon(
-                                      Icons.check,
-                                      color: isChecked
-                                          ? Colors.white
-                                          : Colors.black,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            realEstateType[index].attributes!.name!,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                              color: isChecked
-                                  ? Colors.white
-                                  : const Color(0xFF252B5C),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             );
           } else if (snapshot.hasError) {
             return const Center(
                 child: Padding(
               padding: EdgeInsets.only(top: 16),
-              child: Text(NO_DATA),
+              child: Text(noData),
             ));
           } else {
             return const Center(
                 child: Padding(
               padding: EdgeInsets.only(top: 16),
-              child: Text(NO_DATA),
+              child: Text(noData),
             ));
           }
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: ColorLoader2(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(LOADING_DATA_FROM_SERVER),
-                )
-              ],
+          return Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: ColorLoader2(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text(loadingDataFromServer),
+                  )
+                ],
+              ),
             ),
           );
         } else {
@@ -284,39 +316,13 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(LOADING_DATA_FROM_SERVER),
+                  child: Text(loadingDataFromServer),
                 )
               ],
             ),
           );
         }
       },
-    );
-  }
-
-  // Profile Editor Submit Button widget
-  Widget buildSubmitButton() {
-    return Container(
-      margin: const EdgeInsets.only(top: 15, bottom: 10),
-      color: Colors.transparent,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          foregroundColor: const Color(0xFF1F4C6B),
-          fixedSize: const Size(278, 63),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          side: const BorderSide(color: Color(0xFF8BC83F), width: 3),
-        ),
-        onPressed: () {
-          showDialog(context: context, builder: (_) => buildDialog());
-        },
-        child: const Text(
-          "تعديل",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 
@@ -327,17 +333,35 @@ class _ChangeUserPreferencesPageState extends State<ChangeUserPreferencesPage> {
         textAlign: TextAlign.center,
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("لا"),
+        MaterialButton(
+          height: 30.0,
+          minWidth: 50.0,
+          color: Colors.redAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          textColor: Colors.white,
+          onPressed: () => Navigator.of(context).pop(),
+          splashColor: Colors.redAccent,
+          child: const Text(
+            'إلغاء',
+            style: TextStyle(fontSize: 12),
+          ),
         ),
-        TextButton(
-          onPressed: () {
-            handleSubmit();
-          },
-          child: const Text("تأكيد"),
+        MaterialButton(
+          height: 30.0,
+          minWidth: 50.0,
+          color: Colors.lightGreenAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          textColor: Colors.white,
+          onPressed: handleSubmit,
+          splashColor: Colors.lightGreenAccent,
+          child: const Text(
+            'تأكيد',
+            style: TextStyle(fontSize: 12),
+          ),
         ),
       ],
     );

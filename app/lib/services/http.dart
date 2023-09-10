@@ -1,13 +1,13 @@
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/services/dio_helper.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/services/dio_helper.dart';
 
 initApiConfig() async {
   if (Config().baseUrl != null) {
     await DioHelper.init(Config().baseUrl!);
     await DioHelper.initCookies();
   } else {
-    Config.set("baseUrl", APP_API_URI);
+    Config.set("baseUrl", appApiUri);
     await DioHelper.init(Config().baseUrl!);
     await DioHelper.initCookies();
   }
@@ -22,7 +22,6 @@ Future<void> setBaseUrl(url) async {
       isSSL == true) {
     url = "https://$url";
   }
-  print("HTTP IS $url");
   await Config.set('baseUrl', url);
   await DioHelper.init(url);
 }

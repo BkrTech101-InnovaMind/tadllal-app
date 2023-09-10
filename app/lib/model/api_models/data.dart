@@ -1,4 +1,4 @@
-import 'package:tadllal/model/api_molels/user.dart';
+import 'package:tedllal/model/api_models/user.dart';
 
 class Data {
   User? user;

@@ -1,10 +1,10 @@
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tadllal/pages/favorites_page/favorites_page.dart';
-import 'package:tadllal/pages/home_page/home_page.dart';
-import 'package:tadllal/pages/search_page/search_page.dart';
-import 'package:tadllal/pages/user_page/profile_page.dart';
+import 'package:tedllal/pages/favorites_page/favorites_page.dart';
+import 'package:tedllal/pages/home_page/home_page.dart';
+import 'package:tedllal/pages/search_page/search_page.dart';
+import 'package:tedllal/pages/user_page/profile_page.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -29,7 +29,7 @@ class _NavigationPageState extends State<NavigationPage> {
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset('assets/icons/search-icon.svg'),
-      title: const Text("ألبحث", style: TextStyle(fontSize: 17)),
+      title: const Text("البحث", style: TextStyle(fontSize: 17)),
     ),
     FlashyTabBarItem(
       icon: SvgPicture.asset(

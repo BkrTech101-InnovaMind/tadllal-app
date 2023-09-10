@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/model/api_molels/login_response.dart';
-import 'package:tadllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
-import 'package:tadllal/widgets/code_authentication_dialog.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/model/api_models/login_response.dart';
+import 'package:tedllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
+import 'package:tedllal/widgets/code_authentication_dialog.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class CodeAuthenticationPage extends StatefulWidget {
   final String email;

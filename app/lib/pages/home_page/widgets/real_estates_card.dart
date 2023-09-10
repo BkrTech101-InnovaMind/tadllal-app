@@ -3,14 +3,14 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:tadllal/methods/api_provider.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/error_dialog.dart';
+import 'package:tedllal/methods/api_provider.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/error_dialog.dart';
 
 class RealEstateCard extends StatefulWidget {
-  const RealEstateCard({Key? key}) : super(key: key);
+  const RealEstateCard({super.key});
 
   @override
   State<RealEstateCard> createState() => _RealEstateCardState();
@@ -80,12 +80,18 @@ class _RealEstateCardState extends State<RealEstateCard> {
               appProvider.filteredRealEstateList[index].attributes!.isFavorite!;
           String secondType =
               appProvider.filteredRealEstateList[index].attributes!.secondType!;
+          String secondTypeText;
           Color backgroundColor;
-          if (secondType == "for rent") {
-            backgroundColor = const Color(0xFFA82727);
-          } else {
-            backgroundColor = const Color(0xFFFA712D);
-          }
+          secondType == "for rent"
+              ? {
+                  backgroundColor = const Color(0xFFA82727).withOpacity(0.7),
+                  secondTypeText = "للإيجار"
+                }
+              : {
+                  backgroundColor = const Color(0xFFFA712D).withOpacity(0.7),
+                  secondTypeText = "للبيع"
+                };
+
           return TextButton(
             style: TextButton.styleFrom(padding: const EdgeInsets.all(5)),
             onPressed: () {
@@ -139,7 +145,7 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                                   appProvider: appProvider);
                                             },
                                             child: Container(
-                                              padding: const EdgeInsets.all(15),
+                                              padding: const EdgeInsets.all(10),
                                               decoration: BoxDecoration(
                                                 color: favoriteColor
                                                     ? const Color(0xFF8BC83F)
@@ -151,7 +157,7 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                               ),
                                               child: SvgPicture.asset(
                                                 "assets/icons/favorites-icon.svg",
-                                                width: 20,
+                                                width: 17,
                                                 colorFilter: ColorFilter.mode(
                                                   favoriteColor
                                                       ? Colors.white
@@ -172,7 +178,7 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(12))),
                                       child: Text(
-                                        secondType,
+                                        secondTypeText,
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),

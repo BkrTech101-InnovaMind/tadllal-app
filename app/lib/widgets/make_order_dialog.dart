@@ -2,8 +2,8 @@ import 'package:colorful_circular_progress_indicator/colorful_circular_progress_
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/services/api/dio_api.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/services/api/dio_api.dart';
 
 class MakeOrderDialog extends StatefulWidget {
   final int orderId;
@@ -36,7 +36,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
       contentPadding: EdgeInsets.zero,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Consts.padding),
+        borderRadius: BorderRadius.circular(Consist.padding),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -47,8 +47,8 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
               const EdgeInsets.only(top: 5, right: 20, left: 20, bottom: 5),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: const Color(0xff103c5b),
-            borderRadius: BorderRadius.circular(Consts.padding),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(Consist.padding),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
@@ -66,16 +66,19 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("حفظ البيانات",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15)),
+                          Text(
+                            "حفظ البيانات",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Cairo",
+                              color: Color(0xFF234F68),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
                           Divider(
                               height: 10,
-                              color: Colors.white,
+                              color: Colors.black,
                               thickness: 1.5,
                               indent: 1,
                               endIndent: 1),
@@ -85,23 +88,24 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               ColorfulCircularProgressIndicator(
                                 colors: [
                                   Color(0xfff48923),
-                                  Colors.white,
+                                  Colors.lightGreenAccent,
                                   Colors.red
                                 ],
                                 strokeWidth: 5,
                                 indicatorHeight: 40,
                                 indicatorWidth: 40,
                               ),
-                              SizedBox(
-                                width: 30,
+                              SizedBox(width: 30),
+                              Text(
+                                "جاري حفظ البيانات يرجى الانتظار",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: "Cairo",
+                                  color: Color(0xFF234F68),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                ),
                               ),
-                              Text("جاري حفظ البيانات يرجى الانتظار",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: "Cairo",
-                                      color: Color(0xfff48923),
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12)),
                             ],
                           ),
                         ],
@@ -117,12 +121,12 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
                             const Divider(
                                 height: 10,
-                                color: Colors.white,
+                                color: Colors.black,
                                 thickness: 1.5,
                                 indent: 1,
                                 endIndent: 1),
@@ -131,18 +135,21 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               children: [
                                 Icon(
                                   Icons.done_outline_outlined,
-                                  color: Color(0xfff48923),
+                                  color: Colors.lightGreenAccent,
                                 ),
                                 SizedBox(
                                   width: 30,
                                 ),
-                                Text("تم الحفظ",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: "Cairo",
-                                        color: Color(0xfff48923),
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12)),
+                                Text(
+                                  "تم الحفظ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: "Cairo",
+                                    color: Color(0xFF234F68),
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(height: 15.0),
@@ -152,7 +159,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 MaterialButton(
                                   height: 30.0,
                                   minWidth: 50.0,
-                                  color: const Color(0xFFBD6611),
+                                  color: Colors.redAccent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
@@ -179,12 +186,12 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
                             const Divider(
                                 height: 10,
-                                color: Colors.white,
+                                color: Colors.black,
                                 thickness: 1.5,
                                 indent: 1,
                                 endIndent: 1),
@@ -193,20 +200,21 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               children: [
                                 const Icon(
                                   Icons.error_outline,
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                 ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
+                                const SizedBox(width: 30),
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width / 2,
-                                  child: Text(snapshot.error.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          fontFamily: "Cairo",
-                                          color: Color(0xfff48923),
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 12)),
+                                  child: Text(
+                                    snapshot.error.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontFamily: "Cairo",
+                                      color: Color(0xFF234F68),
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -217,7 +225,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 MaterialButton(
                                   height: 30.0,
                                   minWidth: 50.0,
-                                  color: const Color(0xFFBD6611),
+                                  color: Colors.redAccent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
@@ -237,7 +245,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 MaterialButton(
                                   height: 30.0,
                                   minWidth: 50.0,
-                                  color: const Color(0xFFBD6611),
+                                  color: const Color(0xFF8BC83F),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
@@ -264,12 +272,12 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
+                                    color: Color(0xFF234F68),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
                             const Divider(
                                 height: 10,
-                                color: Colors.white,
+                                color: Colors.black,
                                 thickness: 1.5,
                                 indent: 1,
                                 endIndent: 1),
@@ -280,22 +288,22 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                   flex: 1,
                                   child: Icon(
                                     Icons.error_outline,
-                                    color: Color(0xfff48923),
+                                    color: Colors.redAccent,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 30,
-                                ),
+                                SizedBox(width: 30),
                                 Expanded(
                                   flex: 9,
                                   child: Text(
-                                      "حدث خطاء اثناء الحفظ يرجى إعادة المحاولة",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: "Cairo",
-                                          color: Color(0xfff48923),
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 12)),
+                                    "حدث خطاء اثناء الحفظ يرجى إعادة المحاولة",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "Cairo",
+                                      color: Color(0xFF234F68),
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -306,7 +314,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 MaterialButton(
                                   height: 30.0,
                                   minWidth: 50.0,
-                                  color: const Color(0xFFBD6611),
+                                  color: Colors.redAccent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
@@ -326,7 +334,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 MaterialButton(
                                   height: 30.0,
                                   minWidth: 50.0,
-                                  color: const Color(0xFFBD6611),
+                                  color: const Color(0xFF8BC83F),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
@@ -334,7 +342,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                   onPressed: () {
                                     _getData();
                                   },
-                                  splashColor: Colors.redAccent,
+                                  splashColor: const Color(0xFF8BC83F),
                                   child: const Text(
                                     'إعادة المحاولة',
                                     style: TextStyle(fontSize: 12),
@@ -354,7 +362,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: "Cairo",
-                                  color: Color(0xfff48923),
+                                  color: Colors.redAccent,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15)),
                           const Divider(
@@ -368,21 +376,21 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                             children: [
                               Icon(
                                 Icons.error_outline,
-                                color: Color(0xfff48923),
+                                color: Colors.redAccent,
                               ),
-                              SizedBox(
-                                width: 30,
-                              ),
+                              SizedBox(width: 30),
                               FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text(
-                                    "حدث خطاء اثناء الحفظ يرجى إعادة المحاولة",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: "Cairo",
-                                        color: Color(0xfff48923),
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12)),
+                                  "حدث خطاء اثناء الحفظ يرجى إعادة المحاولة",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: "Cairo",
+                                    color: Color(0xFF234F68),
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -393,7 +401,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: Colors.redAccent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -413,7 +421,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               MaterialButton(
                                 height: 30.0,
                                 minWidth: 50.0,
-                                color: const Color(0xFFBD6611),
+                                color: const Color(0xFF8BC83F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -421,7 +429,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                                 onPressed: () {
                                   _getData();
                                 },
-                                splashColor: Colors.redAccent,
+                                splashColor: const Color(0xFF8BC83F),
                                 child: const Text(
                                   'إعادة المحاولة',
                                   style: TextStyle(fontSize: 12),
@@ -442,7 +450,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontFamily: "Cairo",
-                              color: Color(0xfff48923),
+                              color: Color(0xFF234F68),
                               fontWeight: FontWeight.bold,
                               fontSize: 15)),
                       const Divider(
@@ -456,7 +464,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                         children: [
                           Icon(
                             Icons.info_outline,
-                            color: Color(0xfff48923),
+                            color: Color(0xFF8BC83F),
                           ),
                           SizedBox(
                             width: 10,
@@ -464,15 +472,16 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                           Flexible(
                             fit: FlexFit.loose,
                             child: Text(
-                                "تم اخذ تفاصيل طلبك اَليا، هل هناك تفاصيل اخرى تود إضافتها ؟.",
-                                textAlign: TextAlign.center,
-                                softWrap: false,
-                                // overflow: TextOverflow.fade,
-                                style: TextStyle(
-                                    fontFamily: "Cairo",
-                                    color: Color(0xfff48923),
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12)),
+                              "سيتم اخذ تفاصيل طلبك اَليا، هل هناك تفاصيل اخرى تود إضافتها ؟.",
+                              textAlign: TextAlign.center,
+                              softWrap: false,
+                              style: TextStyle(
+                                fontFamily: "Cairo",
+                                color: Color(0xFF234F68),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -484,15 +493,14 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                         keyboardType: TextInputType.multiline,
                         style: lightDetailsTextFieldTheme,
                         decoration: InputDecoration(
-                          // floatingLabelAlignment: FloatingLabelAlignment.center,
                           filled: true,
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 0, horizontal: 5),
-                          fillColor: const Color(0xff375c77),
+                          fillColor: const Color(0xFFF5F4F8),
                           //<-- SEE HERE
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                                width: 1, color: Color(0xff707070)),
+                                width: 1, color: Color(0xFFF5F4F8)),
                             //<-- SEE HERE
                             borderRadius: BorderRadius.circular(5.0),
                           ),
@@ -500,7 +508,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                               gapPadding: 1,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5.0)),
-                              borderSide: BorderSide(color: Color(0xfff48923))),
+                              borderSide: BorderSide(color: Color(0xFF234F68))),
 
                           labelText: 'تفاصيل اضافية',
                           labelStyle: lightDetailsLabelTextFieldTheme,
@@ -514,7 +522,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: Colors.redAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -534,7 +542,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
                           MaterialButton(
                             height: 30.0,
                             minWidth: 50.0,
-                            color: const Color(0xFFBD6611),
+                            color: const Color(0xFF8BC83F),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -552,7 +560,7 @@ class _MakeOrderDialogState extends State<MakeOrderDialog> {
 
                               _getData();
                             },
-                            splashColor: Colors.redAccent,
+                            splashColor: const Color(0xFF8BC83F),
                             child: const Text(
                               'تاكيد',
                               style: TextStyle(fontSize: 12),

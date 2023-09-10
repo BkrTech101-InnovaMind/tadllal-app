@@ -5,9 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/model/api_molels/user.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/model/api_models/user.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class ProfileEditorPage extends StatefulWidget {
   const ProfileEditorPage({super.key});
@@ -133,10 +133,6 @@ class _ProfileEditorState extends State<ProfileEditorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("تعديل الملف الشخصي"),
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         child: ListView(

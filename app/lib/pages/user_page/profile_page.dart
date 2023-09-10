@@ -5,14 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tadllal/components/change_password_pop_up.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/model/api_molels/user.dart';
-import 'package:tadllal/pages/add_user_page/add_user_page.dart';
-import 'package:tadllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
-import 'package:tadllal/services/helpers.dart';
-import 'package:tadllal/widgets/logout_dialog.dart';
-import 'package:tadllal/widgets/save_dialog.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/model/api_models/user.dart';
+import 'package:tedllal/pages/add_customer_page/add_customer_page.dart';
+import 'package:tedllal/pages/change_user_preferences_page/change_user_preferences_page.dart';
+import 'package:tedllal/services/helpers.dart';
+import 'package:tedllal/widgets/change_password_dialog.dart';
+import 'package:tedllal/widgets/logout_dialog.dart';
+import 'package:tedllal/widgets/save_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -47,7 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     originalUserData = {
       "name": nameController.text,
-      "email": emailController.text,
       "phone": phoneNumberController.text,
       "avatar": userImage,
     };
@@ -64,7 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
   void handleSubmit() {
     final editedForm = {
       "name": nameController.text,
-      // "email": emailController.text,
       "phone": phoneNumberController.text,
       "avatar": userImage,
     };
@@ -77,7 +75,6 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       },
     );
-    print("editedForm $editedForm");
     if (changedFields.isNotEmpty) {
       _onEdit();
     }
@@ -119,7 +116,6 @@ class _ProfilePageState extends State<ProfilePage> {
       formData = FormData.fromMap({
         "name": nameController.text.trim(),
         "phone": phoneNumberController.text.trim(),
-        // "email": emailController.text.trim(),
       });
     }
     _showSaveDialog();
@@ -132,22 +128,18 @@ class _ProfilePageState extends State<ProfilePage> {
       userRole = "شركة";
     } else if (user.attributes!.role == "marketer") {
       userRole = "مسوق";
+    } else if (user.attributes!.role == "admin") {
+      userRole = "مدير";
     } else {
       userRole = "مستخدم قياسي";
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("الملف الشخصي"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.only(top: 20),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Stack(
-              // fit: StackFit.expand,
               children: [
                 Positioned(
                   top: 30,
@@ -212,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             const SizedBox(height: 7),
                                             TextFormField(
                                               controller: emailController,
-                                              enabled: isEditeMode,
+                                              enabled: false,
                                               decoration: const InputDecoration(
                                                 contentPadding:
                                                     EdgeInsets.symmetric(
@@ -304,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return const ChangePasswordPopUp();
+                                                return const ChangePasswordDialog();
                                               },
                                             );
                                           },
@@ -358,21 +350,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const AddUserPage()),
+                                                const AddCustomerPage()),
                                       );
                                     },
                                     style: OutlinedButton.styleFrom(
                                       backgroundColor: const Color(0xFF8BC83F),
                                       foregroundColor: Colors.white,
-                                      // padding: const EdgeInsets.symmetric(
-                                      //     horizontal: 10, vertical: 10),
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)),
                                       ),
                                     ),
                                     child: const Text(
-                                      "إضافة مستخدم جديد",
+                                      "إضافة عميل",
                                       style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
@@ -622,16 +612,20 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 5),
-          content: Text(
-            source == ImageSource.camera
-                ? "تم رفض الوصول الى الكيمرة"
-                : "تم رفض الوصول الى معرض الصور",
-          ),
-        ),
-      );
+      _showSnackMessage(source);
     }
+  }
+
+  void _showSnackMessage(source) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Text(
+          source == ImageSource.camera
+              ? "تم رفض الوصول الى الكاميرا"
+              : "تم رفض الوصول الى المعرض",
+        ),
+      ),
+    );
   }
 }

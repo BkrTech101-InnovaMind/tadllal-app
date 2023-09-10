@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/app_starter_intro_screen/app_starter_intro_screen.dart';
+import 'package:tedllal/pages/app_starter_intro_screen/app_starter_intro_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -48,20 +48,15 @@ class OnBoardingScreen extends StatelessWidget {
                       child: Image.asset('assets/images/logo.png', height: 180),
                     ),
                     const SizedBox(height: 20),
-                    const Text.rich(
+                    const Text(
+                      "تدلل للعقار",
                       textAlign: TextAlign.center,
-                      TextSpan(
-                        text: "تدلل \n",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        children: [
-                          TextSpan(text: "للخدمات العقارية"),
-                        ],
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

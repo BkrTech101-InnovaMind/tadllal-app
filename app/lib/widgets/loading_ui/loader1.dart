@@ -9,7 +9,7 @@ class ColorLoader1 extends StatefulWidget {
 
   const ColorLoader1(
       {super.key,
-      this.color1 = Colors.deepOrangeAccent,
+      this.color1 = Colors.amber,
       this.color2 = Colors.yellow,
       this.color3 = Colors.lightGreen});
 

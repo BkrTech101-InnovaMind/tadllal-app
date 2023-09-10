@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/methods/in_intro_tour_preferences.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/pages/real_estate_details_page/real_estate_details_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/utils/in_intro_tour.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
-import 'package:tadllal/widgets/error_dialog.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/methods/in_intro_tour_preferences.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/utils/in_intro_tour.dart';
+import 'package:tedllal/widgets/error_dialog.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -29,7 +29,7 @@ class _FavoritesPageState extends State<FavoritesPage>
   @override
   void initState() {
     setState(() {
-      realStateDataList = _getrealEstateData();
+      realStateDataList = _getRealEstateData();
 
       realStateDataList.then((value) {
         if (value.isNotEmpty) {
@@ -58,11 +58,6 @@ class _FavoritesPageState extends State<FavoritesPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("مفضلاتي", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
       body: Container(
         margin: const EdgeInsets.only(top: 30),
         child: RefreshIndicator(
@@ -71,9 +66,15 @@ class _FavoritesPageState extends State<FavoritesPage>
           },
           child: ListView(
             children: [
-              const Text(
-                "هنا يتم استعراض ماقمت بتفضيله من عناصر ",
-                style: TextStyle(fontSize: 18, color: Color(0xFF234F68)),
+              const Center(
+                child: Text(
+                  "مفضلاتي ",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color(0xFF234F68),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               FutureBuilder<List<RealEstate>>(
@@ -108,13 +109,36 @@ class _FavoritesPageState extends State<FavoritesPage>
                                             title: const Text(
                                                 'هل انت متأكد من الحذف ؟'),
                                             actions: [
-                                              TextButton(
+                                              MaterialButton(
+                                                height: 30.0,
+                                                minWidth: 50.0,
+                                                color: Colors.redAccent,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                                textColor: Colors.white,
                                                 onPressed: () {
-                                                  Navigator.pop(context);
+                                                  Navigator.of(context).pop();
                                                 },
-                                                child: const Text("لا"),
+                                                splashColor: Colors.redAccent,
+                                                child: const Text(
+                                                  'إلغاء',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
                                               ),
-                                              TextButton(
+                                              MaterialButton(
+                                                height: 30.0,
+                                                minWidth: 50.0,
+                                                color: const Color(0xFF8BC83F),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                                textColor: Colors.white,
                                                 onPressed: () {
                                                   dioApi
                                                       .delete(
@@ -149,8 +173,14 @@ class _FavoritesPageState extends State<FavoritesPage>
                                                     );
                                                   });
                                                 },
-                                                child: const Text("نعم"),
-                                              )
+                                                splashColor:
+                                                    const Color(0xFF8BC83F),
+                                                child: const Text(
+                                                  'تأكيد',
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         );
@@ -214,14 +244,15 @@ class _FavoritesPageState extends State<FavoritesPage>
                         return const Center(
                             child: Padding(
                           padding: EdgeInsets.only(top: 16),
-                          child: Text(ERROR_WHILE_GET_DATA),
+                          child: Text(errorWhileGetData),
                         ));
                       } else {
                         return const Center(
-                            child: Padding(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Text(NO_DATA),
-                        ));
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text(noData),
+                          ),
+                        );
                       }
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
@@ -237,7 +268,7 @@ class _FavoritesPageState extends State<FavoritesPage>
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 16),
-                              child: Text(LOADING_DATA_FROM_SERVER),
+                              child: Text(loadingDataFromServer),
                             )
                           ],
                         ),
@@ -255,7 +286,7 @@ class _FavoritesPageState extends State<FavoritesPage>
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 16),
-                              child: Text(LOADING_DATA_FROM_SERVER),
+                              child: Text(loadingDataFromServer),
                             )
                           ],
                         ),
@@ -283,7 +314,7 @@ class _FavoritesPageState extends State<FavoritesPage>
     });
   }
 
-  Future<List<RealEstate>> _getrealEstateData() async {
+  Future<List<RealEstate>> _getRealEstateData() async {
     var rowData = await dioApi.get("/favorites/show");
     String jsonString = json.encode(rowData.data["favorites"]);
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
@@ -294,7 +325,7 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   _syncData() {
     setState(() {
-      realStateDataList = _getrealEstateData();
+      realStateDataList = _getRealEstateData();
     });
   }
 

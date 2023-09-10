@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/pages/auth_pages/sign_in_page/widgets/sign_in_form.dart';
-import 'package:tadllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
-import 'package:tadllal/pages/auth_pages/widgets/share_button.dart';
+import 'package:tedllal/pages/auth_pages/sign_in_page/widgets/sign_in_form.dart';
+import 'package:tedllal/pages/auth_pages/sign_up_page/sign_up_page.dart';
+import 'package:tedllal/pages/auth_pages/widgets/share_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});

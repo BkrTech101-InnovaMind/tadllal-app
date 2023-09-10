@@ -8,21 +8,11 @@ import 'package:photo_view/photo_view.dart';
 import 'package:tedllal/config/config.dart';
 import 'package:tedllal/config/global.dart';
 import 'package:tedllal/model/real_estate.dart';
-import 'package:tedllal/model/real_estate_type.dart';
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/widgets/comment_dialog.dart';
 import 'package:tedllal/widgets/loading_ui/loader1.dart';
 import 'package:tedllal/widgets/make_order_dialog.dart';
 import 'package:tedllal/widgets/pages_back_button.dart';
-
-Future<List<RealEstateType>> _getTypeData() async {
-  var rowData = await DioApi().get("/types");
-  String jsonString = json.encode(rowData.data["data"]);
-  List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
-      .map((e) => e as Map<String, dynamic>)
-      .toList();
-  return (data).map((itemWord) => RealEstateType.fromJson(itemWord)).toList();
-}
 
 class RealEstateDetailsPage extends StatefulWidget {
   final RealEstate realEstate;
@@ -42,7 +32,6 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
 
   @override
   void initState() {
-    _getTypeData();
     _syncData();
     super.initState();
   }
@@ -601,9 +590,15 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ),
           ),
+          buildMoreDetails()
         ],
       ),
     );
+  }
+
+  // More Details
+  Widget buildMoreDetails() {
+    return Container();
   }
 
 // Comments Section

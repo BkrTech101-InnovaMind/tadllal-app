@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\ConstructionService;
+use App\Models\NewServices;
 use App\Models\RealEstateImage;
 use App\Models\SubConstructionService;
 use App\Models\User;
@@ -31,5 +32,6 @@ class DatabaseSeeder extends Seeder
         // ConstructionService::factory(50)->create();
         // SubConstructionService::factory(150)->create();
         // UserComment::factory(50)->create();
+        NewServices::factory(200)->create();
     }
 }

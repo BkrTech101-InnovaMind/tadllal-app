@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NewServices;
+use App\Models\NewServicesOrders;
 use App\Models\ServicesOrders;
 use App\Models\SubConstructionService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -67,6 +69,36 @@ class OrdersController extends Controller
         ServicesOrders::create([
             'user_id' => $user->id,
             'sub_construction_services_id' => $service->id,
+            'message' => $validatedData['message'],
+        ]);
+
+        return $this->success([
+            'message' => 'Your order has been submitted successfully.',
+        ]);
+    }
+
+    public function submitNewServiceOrder(Request $request, $NewserviceId)
+    {
+
+        $user = Auth::user();
+        try {
+            $service = NewServices::findOrFail($NewserviceId);
+        } catch (ModelNotFoundException $exception) {
+            return $this->error('Error', ['message' => 'Service not found..'], 404);
+        }
+        // Validation rules
+        $validatedData = $request->validate([
+            'message' => 'required|string|max:255',
+        ], [
+            'message.required' => 'The message field is required.',
+            'message.string' => 'The message field must be a string.',
+            'message.max' => 'The message field should not exceed 255 characters.',
+        ]);
+
+        // Save order information in the "orders" table
+        NewServicesOrders::create([
+            'user_id' => $user->id,
+            'new_services_id' => $service->id,
             'message' => $validatedData['message'],
         ]);
 

@@ -30,10 +30,10 @@ export default function Index() {
       const ordersData = await api.get(endpoint, authToken)
       setOrders(ordersData.orders)
 
-      const servicesOrdersData = await api.get("servicesOrders", authToken)
+      const servicesOrdersData = await api.get("NewServicesOrders", authToken)
       setSevices(servicesOrdersData.orders)
 
-      console.log(ordersData)
+
     } catch (error) {
       console.error("Error fetching orders:", error)
     }
@@ -54,7 +54,7 @@ export default function Index() {
       setSearchResults("")
       setData(orders)
     } else if (selectedId == 2) {
-      setEndpoint("servicesOrders")
+      setEndpoint("NewServicesOrders")
       setSearchResults("")
       setData(sevices)
     }
@@ -200,7 +200,7 @@ export default function Index() {
       approveLink = "/orders/approve/"
     }
     if (type == "service") {
-      approveLink = "servicesOrders/approve/"
+      approveLink = "NewServicesOrders/approve/"
     }
     try {
       const formDataForApi = new FormData()
@@ -294,17 +294,14 @@ export default function Index() {
             width={50}
             height={50}
             className='w-10 h-10 rounded-full ml-2'
-            src={item.sub_construction_service.attributes.image}
+            src={item.service.attributes.image}
             alt='Jese image'
           />
           <div className='pl-3'>
-            <div className='text-base font-semibold'>
-              {item.sub_construction_service.attributes.name}
+            <div className='text-base font-semibold whitespace-nowrap'>
+              {item.service.attributes.name}
             </div>
-            <div className='font-normal text-gray-500'>
-              تابعة للخدمة :{" "}
-              {item.sub_construction_service.attributes.construction}
-            </div>
+            <div className='font-normal text-gray-500'> {item.service.attributes.type == 1 ? "خدمات انشائية وصيانة" : "موارد بناء وتوريدات"}</div>
           </div>
         </div>
       ),
@@ -415,11 +412,8 @@ export default function Index() {
                 </div>
                 <div className='flex justify-between border-t-2 pt-5'>
                   <div>
-                    {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
-                    <Link href='/RealEstate/New'>
-                      <PrimaryBt type='add' name='إضافة عقار جديد' />
-                    </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>

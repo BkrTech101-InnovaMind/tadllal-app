@@ -2,7 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["via.placeholder.com", "tadllal.alqatta.com"],
+
+    domains: [
+      "127.0.0.1",
+      "via.placeholder.com",
+      "tedallalapi.vercel.app",
+      "tadllal.alqatta.com",
+    ],
+
   },
 }
 

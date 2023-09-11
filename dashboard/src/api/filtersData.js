@@ -29,7 +29,7 @@ export const tableFilters = (filter, data, searchedField, other = null) => {
 
     const filteredResults = data.filter((item) =>
         !other ? item.attributes[searchedField].id === filter
-            : item.attributes[searchedField] === filter
+            : item.attributes[searchedField] == filter
     );
     return filteredResults;
 };

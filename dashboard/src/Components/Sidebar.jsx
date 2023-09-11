@@ -67,7 +67,7 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/RealEstate'
-            className={`block ${isActiveLink("/RealEstate")
+            className={`block ${isActiveLink("/RealEstate") || router.pathname.startsWith("/RealEstate/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}
@@ -79,7 +79,7 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Locations'
-            className={`block ${isActiveLink("/Locations")
+            className={`block ${isActiveLink("/Locations") || router.pathname.startsWith("/Locations/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}
@@ -92,7 +92,7 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Types'
-            className={`block ${isActiveLink("/Types")
+            className={`block ${isActiveLink("/Types") || router.pathname.startsWith("/Types/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}
@@ -104,8 +104,8 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
 
         <li>
           <Link
-            href='/Services'
-            className={`block ${isActiveLink("/Services")
+            href='/MyServices'
+            className={`block ${isActiveLink("/MyServices") || router.pathname.startsWith("/MyServices/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}
@@ -118,7 +118,7 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Orders'
-            className={`block ${isActiveLink("/Orders")
+            className={`block ${isActiveLink("/Orders") || router.pathname.startsWith("/Orders/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}
@@ -130,7 +130,7 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Customers'
-            className={`block ${isActiveLink("/Customers")
+            className={`block ${isActiveLink("/Customers") || router.pathname.startsWith("/Customers/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}
@@ -142,7 +142,7 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         <li>
           <Link
             href='/Users'
-            className={`block ${isActiveLink("/Users")
+            className={`block ${isActiveLink("/Users") || router.pathname.startsWith("/Users/")
               ? "text-white bg-gradient-to-br from-minueActiveGraideint-100 to-minueActiveGraideint-70"
               : "hover:bg-munueHover"
               } px-2 py-1 rounded`}

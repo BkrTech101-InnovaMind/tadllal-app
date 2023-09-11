@@ -22,7 +22,7 @@ import { AiFillBank } from "react-icons/ai"
 import { FaUserTie } from "react-icons/fa"
 import { FiCheckCircle, FiUsers } from "react-icons/fi"
 import { toast } from "react-toastify"
-
+import Modal from "react-modal"
 export default function Index() {
   const router = useRouter()
   const [users, setUsers] = useState([])
@@ -34,6 +34,8 @@ export default function Index() {
     usersNotActive: "",
   })
   const [loading, setLoading] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
   async function fetchUsers() {
     const authToken = localStorage.getItem("authToken")
 
@@ -144,6 +146,11 @@ export default function Index() {
         </select>
       </div>
     )
+  }
+  function handleView(item) {
+
+    setCurrentUser(item)
+    setModalIsOpen(true)
   }
 
   const handleOptionSelect = (selectedId) => {
@@ -261,7 +268,50 @@ export default function Index() {
       ),
     },
   ]
+  const columns2 = [
+    { key: "id", label: "الرقم" },
+    {
+      key: "realEstate",
+      label: "العقار",
+      render: (item) => (
+        <div>
+          {item.attributes.property}
+        </div>
+      ),
+    },
+    {
+      key: "customer",
+      label: "العميل",
+      render: (item) => <div className='flex flex-col'>
+        <div>{item.attributes.customer.name}</div>
+        <div>{item.attributes.customer.phone_number}</div>
+      </div>,
+    },
+    {
+      key: "location",
+      label: "الموقع ",
+      render: (item) => <div>{item.attributes.location.name}</div>,
+    },
+    {
+      key: "type",
+      label: "النوع ",
+      render: (item) => <div>{item.attributes.type.name}</div>,
+    },
+    {
+      key: "budget",
+      label: "الميزانية",
+      render: (item) => <div dir="ltr">{item.attributes.budget.from} - {item.attributes.budget.to} {item.attributes.budget.currency}</div>,
+    },
+    {
+      key: "message",
+      label: "تفاصيل الطلب ",
+      render: (item) => <div>{item.attributes.other_details}</div>,
+    },
 
+
+
+
+  ]
   const data = [
     {
       number: 1,
@@ -381,7 +431,7 @@ export default function Index() {
                     <Link href='/Users/New'>
                       <PrimaryBt type='add' name='إضافة مستخدم جديد' />
                     </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>
@@ -398,9 +448,86 @@ export default function Index() {
               onEdit={handleEdit}
               onDelete={handleDelete}
               extraButtonType='view'
-              myFunction={handleDelete}
+              myFunction={handleView}
             />
           </div>
+
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={() => setModalIsOpen(false)}
+            contentLabel='تفاصيل الخدمة'
+            overlayClassName='fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50'
+          >
+            <div className='flex justify-between  m-0' dir='rtl'>
+              <h2 className='text-xl font-semibold text-black '>
+                تفاصيل المستخدم
+              </h2>
+              <button
+                onClick={() => setModalIsOpen(false)}
+                className='text-gray-600 hover:text-gray-800 focus:outline-none'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  className='w-6 h-6'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M5.293 5.293a1 1 0 0 1 1.414 0L10 8.586l3.293-3.293a1 1 0 0 1 1.414 1.414L11.414 10l3.293 3.293a1 1 0 0 1-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 0 1-1.414-1.414L8.586 10 5.293 6.707a1 1 0 0 1 0-1.414z'
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {currentUser && (
+              <div className='text-black text-center '>
+                <div
+                  className=' my-6 flex flex-row items-center mt-9'
+                  dir='rtl'
+                >
+                  <h1 className='ml-2 font-semibold'>اسم المستخدم :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.name}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'>ايميل المستخدم :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.email}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'> رقم الهاتف :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.phone}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'> نوع المستخدم  :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.role == "admin"
+                      ? "مدير" : currentUser.attributes.role == "company"
+                        ? "شركة" : currentUser.attributes.role == "marketer"
+                          ? "مسوق" : "مستخدم"}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'> عدد العملاء  :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.customers_count}
+                  </p>
+                </div>
+                <div>
+                  {
+                    currentUser.attributes.customer_requests.length > 0 &&
+                    <CustomTable columns={columns2} data={currentUser.attributes.customer_requests} />
+                  }
+
+                </div>
+              </div>
+            )}
+          </Modal>
         </Layout>
       )}
     </>

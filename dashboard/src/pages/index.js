@@ -142,16 +142,16 @@ export default function Home() {
             width={50}
             height={50}
             className='w-10 h-10 rounded-full ml-2'
-            src={item.sub_construction_service.attributes.image}
+            src={item.service.attributes.image}
             alt='Jese image'
           />
           <div className='pl-3'>
-            <div className='text-base font-semibold'>
-              {item.sub_construction_service.attributes.name}
+            <div className='text-base font-semibold whitespace-nowrap'>
+              {item.service.attributes.name}
             </div>
             <div className='font-normal text-gray-500'>
-              تابعة للخدمة :{" "}
-              {item.sub_construction_service.attributes.construction}
+
+              {item.service.attributes.type == 1 ? "خدمات انشائية وصيانة" : "موارد بناء وتوريدات"}
             </div>
           </div>
         </div>

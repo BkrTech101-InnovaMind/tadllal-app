@@ -21,6 +21,11 @@ export default function New() {
     photo: null,
     firstType: "",
     locationInfo: "",
+    rooms: "",
+    floors: "",
+    vision: "",
+    baptism: "",
+    area: "",
     secondType: "", // An array to hold selected event types
     images: [], // Uploaded file (event image)
   })
@@ -51,6 +56,7 @@ export default function New() {
       "firstType",
       "secondType",
       "photo",
+      "area",
     ]
 
     for (const field of requiredFields) {
@@ -86,8 +92,13 @@ export default function New() {
       formDataForApi.append("locationInfo", formData.locationInfo)
       formDataForApi.append("firstType", formData.firstType)
       formDataForApi.append("secondType", formData.secondType)
-      formDataForApi.append("photo", formData.photo)
 
+      formDataForApi.append("rooms", formData.rooms)
+      formDataForApi.append("floors", formData.floors)
+      formDataForApi.append("vision", formData.vision)
+      formDataForApi.append("baptism", formData.baptism)
+      formDataForApi.append("area", formData.area)
+      formDataForApi.append("photo", formData.photo)
       // Multiple images handling
       if (formData.images.length > 0) {
         formData.images.forEach((image) => {
@@ -231,10 +242,73 @@ export default function New() {
               }
             />
             <TextBox
+              type='text'
+              id='rooms'
+              label='عدد الغرف'
+              name='rooms'
+              placeholder='ادخل عدد الغرف '
+              value={formData.rooms}
+              onChange={(e) =>
+                setFormData({ ...formData, rooms: e.target.value })
+              }
+            />
+            <TextBox
+              type='text'
+              id='floors'
+              label='عدد الادوار '
+              name='floors'
+              placeholder='   ادخل عدد الادوار'
+              value={formData.floors}
+              onChange={(e) =>
+                setFormData({ ...formData, floors: e.target.value })
+              }
+
+            />
+            <TextBox
+              type='text'
+              id='vision'
+              label=' البصيرة'
+              name='vision'
+              placeholder='ادخل البصيرة '
+              value={formData.vision}
+              onChange={(e) =>
+                setFormData({ ...formData, vision: e.target.value })
+              }
+
+            />
+            <TextBox
+              type='text'
+              id='baptism'
+              label=' التعميد'
+              name='baptism'
+              placeholder='ادخل  التعميد'
+              value={formData.baptism}
+              onChange={(e) =>
+                setFormData({ ...formData, baptism: e.target.value })
+              }
+
+            />
+            <TextBox
+              type='text'
+              id='area'
+              label=' المساحة'
+              name='area'
+              placeholder='ادخل  المساحة'
+              value={formData.area}
+              onChange={(e) =>
+                setFormData({ ...formData, area: e.target.value })
+              }
+              error={
+                formData.area == "" && isFormSubmitted
+                  ? "هذا الحقل إجباري"
+                  : false
+              }
+            />
+            <TextBox
               type='file'
               id='photo'
               label=' صورة العقار الرئيسية'
-              name='price'
+              name='photo'
               placeholder='ادخل صورة العقار'
               onChange={(e) =>
                 setFormData({ ...formData, photo: e.target.files[0] })

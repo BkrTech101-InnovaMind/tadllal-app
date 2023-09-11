@@ -17,8 +17,8 @@ class StatisticsResource extends JsonResource
         return [
             'statistics' => [
                 'realEstatesCount' => $this->resource['realEstatesCount'],
-                'mainServicesCount' => $this->resource['mainServicesCount'],
-                'subServicesCount' => $this->resource['subServicesCount'],
+                // 'mainServicesCount' => $this->resource['mainServicesCount'],
+                // 'subServicesCount' => $this->resource['subServicesCount'],
                 'realEstateOrdersCount' => $this->resource['realEstateOrdersCount'],
                 'serviceOrdersCount' => $this->resource['serviceOrdersCount'],
                 'totalServices' => $this->resource['totalServices'],

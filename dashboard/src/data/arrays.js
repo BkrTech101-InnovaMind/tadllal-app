@@ -35,23 +35,49 @@ export const realEstateTypes = {
 };
 
 
-// export const status = {
-//     "data": [
-//         {
-//             "id": "available",
-//             "attributes": {
-//                 "name": "متاح",
-//             }
-//         },
-//         {
-//             "id": "Unavailable",
-//             "attributes": {
-//                 "name": "غير متاح",
-//             }
-//         },
+export const customersArray = {
+    "status": [
+        {
+            "id": "pending",
+            "attributes": {
+                "name": "قيد الانتظار",
+            }
+        },
+        {
+            "id": "review",
+            "attributes": {
+                "name": "تحت المراجعة",
+            }
+        },
+        {
+            "id": "communicated",
+            "attributes": {
+                "name": "تم التواصل",
+            }
+        },
 
-//     ]
-// };
+    ],
+    "communication": [
+        {
+            "id": "pending",
+            "attributes": {
+                "name": "قيد الانتظار",
+            }
+        },
+        {
+            "id": "successful",
+            "attributes": {
+                "name": "تم بنجاح",
+            }
+        },
+        {
+            "id": "unsuccessful",
+            "attributes": {
+                "name": "لم يتم بنجاح",
+            }
+        },
+    ]
+};
 
 export const usersFiltersArray = {
     "userType": [

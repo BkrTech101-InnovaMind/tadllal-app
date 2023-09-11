@@ -5,7 +5,7 @@ import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
 import api from "@/api/api"
 import { fetchLocations, fetchTypes } from "@/api/fetchData"
-import { countMatchingItems, filterRealEstatesByPrice } from "@/api/filtersData"
+import { countMatchingItems, filterRealEstatesByPrice, tableFilters } from "@/api/filtersData"
 import { realEstateTypes, status } from "@/data/arrays"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator "
@@ -15,11 +15,24 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { GiCash, GiHouse, GiHouseKeys, GiKeyLock } from "react-icons/gi"
 import { toast } from "react-toastify"
-
+import qs from "qs"
+import { BiHomeAlt, BiUser } from "react-icons/bi"
+import { FaToolbox } from "react-icons/fa6"
+import { IoMdCheckmarkCircle, IoMdCloseCircle } from "react-icons/io"
+import { HiOutlineClipboardCheck, HiOutlineClock } from "react-icons/hi"
+import { FaCheckCircle } from "react-icons/fa"
+import { customersArray } from "@/data/arrays"
 export default function index() {
     const [loading, setLoading] = useState(false)
     const [customers, setCustomers] = useState([])
     const [searchResults, setSearchResults] = useState([])
+    const [statistics, setStatistics] = useState({
+        totalCustomers: "",
+        successfulRequests: "",
+        unsuccessfulRequests: "",
+        pendingRequests: "",
+    })
+
 
     async function fetchCustomers() {
         const authToken = localStorage.getItem("authToken")
@@ -33,11 +46,92 @@ export default function index() {
         setLoading(true)
     }
 
+    async function myStatistics() {
+        const status = "communication_status"
+        const request_status = "request_status"
+        setStatistics({
+            ...statistics,
+            totalCustomers: customers.length,
+            successfulRequests: countMatchingItems(
+                "successful",
+                customers,
+                status,
+                true
+            ),
+            unsuccessfulRequests: countMatchingItems(
+                "unsuccessful",
+                customers,
+                status,
+                true
+            ),
+            pendingRequests: countMatchingItems(
+                "pending",
+                customers,
+                request_status,
+                true
+            ),
+        })
+    }
+
     useEffect(() => {
         fetchCustomers()
     }, [])
 
+    useEffect(() => {
+        myStatistics()
+    }, [customers])
+    const requestStatusOptions = [
+        { value: "pending", label: "قيد الانتظار", color: "text-red-700" },
+        { value: "review", label: "تحت المراجعة", color: "text-yellow-600" },
+        { value: "communicated", label: "تم التواصل", color: "text-green-700" },
+    ];
 
+    const communicationStatusOptions = [
+        { value: "pending", label: "قيد الانتظار", color: "text-yellow-600" },
+        { value: "successful", label: "تم بنجاح", color: "text-green-700" },
+        { value: "unsuccessful", label: "لم يتم بنجاح", color: "text-red-700" },
+    ];
+
+    const handleDropdownChange = async (e, itemId, type) => {
+        let endpoint = type == "Request" ? "editRequestStatus" : "editCommunicationStatus";
+        if (type == "communication") {
+            const customer = customers.find((customer) => customer.id === itemId);
+            if (customer && customer.attributes.request_status != "communicated") {
+                return toast.error("لتغييرها الرجاء جعل حالة الطلب تم التواصل")
+            }
+        }
+        const authToken = localStorage.getItem("authToken")
+        try {
+            const formDataForApi =
+                type == "Request" ? {
+                    request_status: e,
+                }
+                    : {
+                        communication_status: e,
+                    }
+            const encodedData = qs.stringify(formDataForApi)
+            await api.put(`customerRequests/${endpoint}/${itemId}`, encodedData, authToken)
+            toast.success("تم تحديث حالة الطلب بنجاح")
+            const updatedCustomers = customers.map((customer) => {
+                if (customer.id === itemId) {
+                    return type == "Request" ? { ...customer, attributes: { ...customer.attributes, request_status: e } }
+                        : { ...customer, attributes: { ...customer.attributes, communication_status: e } }
+                }
+                return customer
+            })
+            setCustomers(updatedCustomers)
+        } catch (error) {
+            console.error("Error updating realty data:", error)
+            toast.error("حدث خطأ أثناء تحديث البيانات.")
+        }
+    }
+
+    const handleStatusSelect = (selectedStatues, type) => {
+        const filterField = type == "Request" ? "request_status" : "communication_status";
+        const filteredResults = tableFilters(selectedStatues, customers, filterField, true);
+
+        setSearchResults(filteredResults);
+    }
     const columns = [
         { key: "id", label: "الرقم" },
         {
@@ -103,13 +197,60 @@ export default function index() {
         {
             key: "status",
             label: "حالة الطلب  ",
-            render: (item) => <div>{item.attributes.request_status}</div>,
+            render: (item) => (
+                <div className='flex items-center'>
+                    <select
+                        className={
+                            item.attributes.request_status === "pending"
+                                ? "text-red-700"
+                                : item.attributes.request_status == "communicated"
+                                    ? "text-green-700"
+                                    : "text-yellow-600"
+                        }
+                        value={item.attributes.request_status}
+                        onChange={(e) => handleDropdownChange(e.target.value, item.id, "Request")}>
+                        {requestStatusOptions.map((option) => (
+                            <option key={option.value}
+                                value={option.value}
+                                className={option.color}
+                                disabled={option.value === item.attributes.request_status}
+                            >
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            ),
         },
 
         {
             key: "communication",
             label: "حالة التواصل  ",
-            render: (item) => <div>{item.attributes.communication_status}</div>,
+            render: (item) => (
+                <div className='flex items-center'>
+                    <select
+                        className={
+                            item.attributes.communication_status === "pending"
+                                ? "text-yellow-600"
+                                : item.attributes.communication_status == "successful"
+                                    ? "text-green-700"
+                                    : "text-red-700"
+                        }
+                        value={item.attributes.communication_status}
+                        onChange={(e) => handleDropdownChange(e.target.value, item.id, "communication")}>
+                        {communicationStatusOptions.map((option) => (
+                            <option key={option.value}
+                                value={option.value}
+                                className={option.color}
+                                disabled={option.value === item.attributes.communication_status}
+                            >
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            ),
+
         },
 
     ]
@@ -155,40 +296,40 @@ export default function index() {
                         className='grid grid-cols-4 my-0 gap-4 md:grid-cols-1 py-0 text-black w-full'
                         dir='rtl'
                     >
-                        {/* <Card
-                  id='1'
-                  icon={<BiHomeAlt size={69} color='#3498db' />} // أيقونة تمثيل طلبات العقارات مع لون أزرق ملائم
-                  title='طلبات العقارات'
-                  value={orders.length}
-                  label='العدد الاجمالي'
-                  color='#3498db'
-                />
-                <Card
-                  id=''
-                  icon={<FaToolbox size={69} color='#e67e22' />} // أيقونة تمثيل طلبات الخدمات مع لون برتقالي ملائم
-                  title='طلبات الخدمات'
-                  value={sevices.length}
-                  label='العدد الاجمالي'
-                  color='#e67e22'
-                />
-                <Card
-                  id='1'
-                  icon={<IoMdCheckmarkCircle size={69} color='#27ae60' />} // أيقونة تمثيل الموافق عليها مع لون أخضر ملائم
-                  title='الموافق عليها'
-                  value={getApprovedServicesCount() + getApprovedOrdersCount()}
-                  label='العدد الاجمالي'
-                  color='#27ae60'
-                /> */}
-                        {/* <Card
-                  id='1'
-                  icon={<HiOutlineClipboardCheck size={69} color='#f39c12' />} // أيقونة تمثيل تحت المراجعة مع لون أصفر ملائم
-                  title='تحت المراجعة'
-                  value={
-                    getUnderReviewServicesCount() + getUnderReviewOrdersCount()
-                  }
-                  label='العدد الاجمالي'
-                  color='#f39c12'
-                /> */}
+                        <Card
+                            id='1'
+                            icon={<BiUser size={69} color='#3498db' />} // أيقونة تمثيل طلبات العقارات مع لون أزرق ملائم
+                            title=' طلبات العملاء'
+                            value={statistics.totalCustomers}
+                            label='العدد الاجمالي'
+                            color='#3498db'
+                        />
+                        <Card
+                            id=''
+                            icon={<FaCheckCircle size={69} color='#27ae60' />} // أيقونة تمثيل طلبات الخدمات مع لون برتقالي ملائم
+                            title='تمت بنجاح'
+                            value={statistics.successfulRequests}
+                            label='العدد الاجمالي'
+                            color='#27ae60 '
+                        />
+                        <Card
+                            id='1'
+                            icon={<IoMdCloseCircle size={69} color='#EE4B2B' />} // أيقونة تمثيل الموافق عليها مع لون أخضر ملائم
+                            title=' لم تتم بنجاح'
+                            value={statistics.unsuccessfulRequests}
+                            label='العدد الاجمالي'
+                            color='#EE4B2B'
+                        />
+                        <Card
+                            id='1'
+                            icon={<HiOutlineClock size={69} color='#f39c12' />} // أيقونة تمثيل تحت المراجعة مع لون أصفر ملائم
+                            title='الطلبات المعلقه'
+                            value={
+                                statistics.pendingRequests
+                            }
+                            label='العدد الاجمالي'
+                            color='#f39c12 '
+                        />
                     </div>
                     <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
                         {/* filter container */}
@@ -199,27 +340,22 @@ export default function index() {
                                     <p>خيارات البحث</p>
                                 </div>
                                 <div className='flex w-full '>
-                                    {/* <DropDownList
-                        title='اختر نوع الطلب'
-                        options={array.data}
-                        onSelect={handleOptionSelect}
-                      />
-                      <DropDownList
-                        title='اختر حالة الطلب'
-                        options={array2.data}
-                        onSelect={handleStatusSelect}
-                      />
-    
-                      {/* <DropDownList />
-                                <DropDownList />
-                                <DropDownList /> */}
+                                    <DropDownList
+                                        title='اختر حالة الطلب'
+                                        options={customersArray.status}
+                                        onSelect={(selectedStatus) => handleStatusSelect(selectedStatus, 'Request')}
+                                    />
+                                    <DropDownList
+                                        title='اختر حالة التواصل'
+                                        options={customersArray.communication}
+                                        onSelect={(selectedStatus) => handleStatusSelect(selectedStatus, 'communication')}
+                                    />
+
+
                                 </div>
                                 <div className='flex justify-between border-t-2 pt-5'>
                                     <div>
-                                        {/* <PrimaryBt type="add" name="إضافة عقار جديد" onClick={() => { }} /> */}
-                                        <Link href='/RealEstate/New'>
-                                            <PrimaryBt type='add' name='إضافة عقار جديد' />
-                                        </Link>
+
                                         <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                                     </div>
 

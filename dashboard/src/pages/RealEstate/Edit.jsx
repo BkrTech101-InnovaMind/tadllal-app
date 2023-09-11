@@ -24,6 +24,11 @@ export default function EditRealty() {
     locationInfo: "",
     firstType: "",
     secondType: "",
+    rooms: "",
+    floors: "",
+    vision: "",
+    baptism: "",
+    area: "",
     photo: null,
     images: [],
     state: "",
@@ -37,6 +42,11 @@ export default function EditRealty() {
     locationInfo: "",
     firstType: "",
     secondType: "",
+    rooms: "",
+    floors: "",
+    vision: "",
+    baptism: "",
+    area: "",
     photo: null,
     images: [],
     state: "",
@@ -73,6 +83,13 @@ export default function EditRealty() {
         locationInfo: realtyData.attributes.locationInfo,
         firstType: realtyData.attributes.firstType,
         secondType: realtyData.attributes.secondType,
+
+        rooms: realtyData.attributes.rooms,
+        floors: realtyData.attributes.floors,
+        vision: realtyData.attributes.vision,
+        baptism: realtyData.attributes.baptism,
+        area: realtyData.attributes.area,
+
         photo: realtyData.attributes.photo,
         images: realtyData.attributes.images,
         state: realtyData.attributes.state,
@@ -85,6 +102,13 @@ export default function EditRealty() {
         locationInfo: realtyData.attributes.locationInfo,
         firstType: realtyData.attributes.firstType,
         secondType: realtyData.attributes.secondType,
+
+        rooms: realtyData.attributes.rooms,
+        floors: realtyData.attributes.floors,
+        vision: realtyData.attributes.vision,
+        baptism: realtyData.attributes.baptism,
+        area: realtyData.attributes.area,
+
         photo: realtyData.attributes.photo,
         images: realtyData.attributes.images,
         state: realtyData.attributes.state,
@@ -134,6 +158,44 @@ export default function EditRealty() {
       if (formData.state && formData.state !== oldFormData.state) {
         formDataForApi.append("state", formData.state)
       }
+
+
+      if (
+        formData.rooms &&
+        formData.rooms !== oldFormData.rooms
+      ) {
+        formDataForApi.append("rooms", formData.rooms)
+      }
+
+      if (
+        formData.floors &&
+        formData.floors !== oldFormData.floors
+      ) {
+        formDataForApi.append("floors", formData.floors)
+      }
+
+      if (
+        formData.vision &&
+        formData.vision !== oldFormData.vision
+      ) {
+        formDataForApi.append("vision", formData.vision)
+      }
+
+      if (
+        formData.baptism &&
+        formData.baptism !== oldFormData.baptism
+      ) {
+        formDataForApi.append("baptism", formData.baptism)
+      }
+
+      if (
+        formData.area &&
+        formData.area !== oldFormData.area
+      ) {
+        formDataForApi.append("area", formData.area)
+      }
+
+
       if (formData.photo) {
         if (
           formData.photo instanceof File &&
@@ -161,7 +223,12 @@ export default function EditRealty() {
         formDataForApi.getAll("secondType").length === 0 &&
         formDataForApi.getAll("photo").length === 0 &&
         formDataForApi.getAll("images[]").length === 0 &&
-        formDataForApi.getAll("state").length === 0
+        formDataForApi.getAll("state").length === 0 &&
+        formDataForApi.getAll("rooms").length === 0 &&
+        formDataForApi.getAll("floors").length === 0 &&
+        formDataForApi.getAll("vision").length === 0 &&
+        formDataForApi.getAll("baptism").length === 0 &&
+        formDataForApi.getAll("area").length === 0
       ) {
         toast.warning("لم تقم بتعديل أي شيء")
         router.push("/RealEstate")
@@ -264,6 +331,60 @@ export default function EditRealty() {
                   selectedValue={formData.secondType}
                   onSelect={(e) => setFormData({ ...formData, secondType: e })}
                 />
+
+                <TextBox
+                  type='text'
+                  id='rooms'
+                  label='عدد الغرف'
+                  name='rooms'
+                  placeholder='أدخل عدد الغرف'
+                  value={formData.rooms}
+                  onChange={(e) => setFormData({ ...formData, rooms: e.target.value })}
+                />
+
+                <TextBox
+                  type='text'
+                  id='floors'
+                  label='عدد الأدوار'
+                  name='floors'
+                  placeholder='أدخل عدد الأدوار'
+                  value={formData.floors}
+                  onChange={(e) => setFormData({ ...formData, floors: e.target.value })}
+                />
+
+                <TextBox
+                  type='text'
+                  id='area'
+                  label='المساحة'
+                  name='area'
+                  placeholder='أدخل المساحة بالمتر المربع'
+                  value={formData.area}
+                  onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                />
+
+
+                <TextBox
+                  type='text'
+                  id='vision'
+                  label='البصيرة'
+                  name='vision'
+                  placeholder='أدخل البصيرة'
+                  value={formData.vision}
+                  onChange={(e) => setFormData({ ...formData, vision: e.target.value })}
+                />
+
+
+                <TextBox
+                  type='text'
+                  id='baptism'
+                  label='التعميد'
+                  name='baptism'
+                  placeholder='أدخل التعميد'
+                  value={formData.baptism}
+                  onChange={(e) => setFormData({ ...formData, baptism: e.target.value })}
+                />
+
+
                 <div className='flex flex-col'>
                   <label className='text-right mb-2'>الصورة الرئيسية</label>
                   {formData.photo && (

@@ -5,7 +5,7 @@ import { useState } from "react"
 import { FaStar, FaStarHalfAlt } from "react-icons/fa"
 import RatingStars from "react-rating-stars-component"
 import "tailwindcss/tailwind.css"
-
+import defaultPhoto from "@/images/applogo.png"
 function formatDate(dateString) {
   const date = new Date(dateString)
   const year = date.getFullYear()
@@ -72,7 +72,7 @@ export default function Details() {
                 </h1>
                 <h1 className='text-1xl'>{jsonData.attributes.description}</h1>
               </div>
-              <div className='flex flex-row justify-center mt-6 '>
+              <div className='flex flex-row justify-start mt-6 '>
                 <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
                   {" "}
                   الموقع :
@@ -83,6 +83,56 @@ export default function Details() {
                 </p>
               </div>
 
+              <div className='flex flex-row justify-start mt-6 '>
+                <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
+                  {" "}
+                  عدد الغرف :
+                </h1>
+                <p>
+                  {jsonData.attributes.rooms}
+                </p>
+              </div>
+              <div className='flex flex-row justify-start mt-6 '>
+                <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
+                  {" "}
+                  عدد الادوار :
+                </h1>
+                <p>
+                  {jsonData.attributes.floors}
+                </p>
+              </div>
+              <div className='flex flex-row justify-start mt-6 '>
+                <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
+                  {" "}
+                  المساحة:
+                </h1>
+                <p>
+                  {jsonData.attributes.area}
+                </p>
+              </div>
+              <div className='flex flex-col justify-start py-2  mt-6 border-y-2 '>
+                <h1 className="text-3xl">معلومات البصيرة</h1>
+                <div className='flex flex-col justify-start mt-6 '>
+                  <div className="flex flex-row justify-start mt-6 ">
+                    <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
+                      البصيرة :
+                    </h1>
+                    <p>
+                      {jsonData.attributes.vision}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-row justify-start mt-6 ">
+
+                    <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
+                      التعميد
+                    </h1>
+                    <p>
+                      {jsonData.attributes.baptism}
+                    </p>
+                  </div>
+                </div>
+              </div>
               <div className='mt-6 flex flex-row'>
                 <h1 className='text-1xl font-semibold ml-1'>التقييم:</h1>
                 <RatingStars
@@ -117,6 +167,9 @@ export default function Details() {
                     // layout='responsive'
                     width={2000}
                     height={1000}
+                    onError={(e) => {
+                      e.target.src = defaultPhoto;
+                    }}
                   />
                 </div>
                 <div className='flex flex-col p-0'>
@@ -130,6 +183,9 @@ export default function Details() {
                       onClick={() =>
                         handleThumbnailClick(jsonData.attributes.photo)
                       }
+                      onError={(e) => {
+                        e.target.src = defaultPhoto;
+                      }}
                     />
                   </div>
 

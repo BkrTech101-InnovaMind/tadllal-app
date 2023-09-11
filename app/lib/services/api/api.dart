@@ -1,8 +1,8 @@
 abstract class Api {
-  // Future<LoginResponse> login({required sinInSinUpRequest sinInSinUpRequest});
+  // Future<LoginResponse> login({required signInSignUpRequest signInSignUpRequest});
 
   Future<List<dynamic>> fetchList({
-    required List<dynamic> fieldnames,
+    required List<dynamic> fieldNames,
     required String doctype,
     // required DoctypeDoc meta,
     required String orderBy,

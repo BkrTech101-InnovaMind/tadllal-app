@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/real_estate_type.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/real_estate_type.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 
 class ChoseFavPage extends StatefulWidget {
   const ChoseFavPage({super.key, required this.onTypePressed});
@@ -219,13 +219,13 @@ class _ChoseFavPageState extends State<ChoseFavPage>
             return const Center(
                 child: Padding(
               padding: EdgeInsets.only(top: 16),
-              child: Text(NO_DATA),
+              child: Text(noData),
             ));
           } else {
             return const Center(
                 child: Padding(
               padding: EdgeInsets.only(top: 16),
-              child: Text(NO_DATA),
+              child: Text(noData),
             ));
           }
         } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -241,7 +241,7 @@ class _ChoseFavPageState extends State<ChoseFavPage>
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(LOADING_DATA_FROM_SERVER),
+                  child: Text(loadingDataFromServer),
                 )
               ],
             ),
@@ -259,7 +259,7 @@ class _ChoseFavPageState extends State<ChoseFavPage>
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 16),
-                  child: Text(LOADING_DATA_FROM_SERVER),
+                  child: Text(loadingDataFromServer),
                 )
               ],
             ),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/model/api_molels/location.dart';
-import 'package:tadllal/model/real_estate.dart';
-import 'package:tadllal/model/real_estate_type.dart';
+import 'package:tedllal/model/api_models/location.dart';
+import 'package:tedllal/model/real_estate.dart';
+import 'package:tedllal/model/real_estate_type.dart';
 
 class AppProvider extends ChangeNotifier {
   List<RealEstate> realEstateList = [];
   List<RealEstate> filteredRealEstateList = [];
   Location? location = Location();
   RealEstateType? type = RealEstateType();
+  double? price=0;
 
   void filterRealEstateListByType({required RealEstateType type}) {
     this.type = type;
@@ -63,6 +64,24 @@ class AppProvider extends ChangeNotifier {
                     element.attributes!.firstType!.id == type!.id))
             .toList();
       }
+    }
+
+    notifyListeners();
+  }
+
+  void filterRealEstateListByPrice({required double from,required double to}) {
+
+    if (from ==0 &&to==0) {
+      filteredRealEstateList = realEstateList;
+    } else{
+      if((from !=0 && to!=0)&&( from==to)){
+        filteredRealEstateList=realEstateList.where((element) =>
+        element.attributes!.price! >= from).toList();
+      }else{
+        filteredRealEstateList=realEstateList.where((element) =>
+        element.attributes!.price! >= from && element.attributes!.price! <= to).toList();
+      }
+
     }
 
     notifyListeners();

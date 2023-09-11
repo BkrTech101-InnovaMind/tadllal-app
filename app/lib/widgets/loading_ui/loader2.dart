@@ -14,9 +14,9 @@ class ColorLoader2 extends StatefulWidget {
 
 class _ColorLoader2State extends State<ColorLoader2>
     with SingleTickerProviderStateMixin {
-  late Animation<double> animation_rotation;
-  late Animation<double> animation_radius_in;
-  late Animation<double> animation_radius_out;
+  late Animation<double> animationRotation;
+  late Animation<double> animationRadiusIn;
+  late Animation<double> animationRadiusOut;
   late AnimationController controller;
 
   late double radius;
@@ -35,21 +35,21 @@ class _ColorLoader2State extends State<ColorLoader2>
         duration: const Duration(milliseconds: 3000),
         vsync: this);
 
-    animation_rotation = Tween(begin: 0.0, end: 1.0).animate(
+    animationRotation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.0, 1.0, curve: Curves.linear),
       ),
     );
 
-    animation_radius_in = Tween(begin: 1.0, end: 0.0).animate(
+    animationRadiusIn = Tween(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.75, 1.0, curve: Curves.elasticIn),
       ),
     );
 
-    animation_radius_out = Tween(begin: 0.0, end: 1.0).animate(
+    animationRadiusOut = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.0, 0.25, curve: Curves.elasticOut),
@@ -59,9 +59,9 @@ class _ColorLoader2State extends State<ColorLoader2>
     controller.addListener(() {
       setState(() {
         if (controller.value >= 0.75 && controller.value <= 1.0) {
-          radius = widget.radius * animation_radius_in.value;
+          radius = widget.radius * animationRadiusIn.value;
         } else if (controller.value >= 0.0 && controller.value <= 0.25) {
-          radius = widget.radius * animation_radius_out.value;
+          radius = widget.radius * animationRadiusOut.value;
         }
       });
     });
@@ -81,7 +81,7 @@ class _ColorLoader2State extends State<ColorLoader2>
       //color: Colors.black12,
       child: Center(
         child: RotationTransition(
-          turns: animation_rotation,
+          turns: animationRotation,
           child: Center(
             child: Stack(
               children: <Widget>[
@@ -99,7 +99,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.amber,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -109,7 +109,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.deepOrangeAccent,
+                    color: Colors.amber,
                   ),
                 ),
                 Transform.translate(
@@ -119,7 +119,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.pinkAccent,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -129,7 +129,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.purple,
+                    color: Colors.amber,
                   ),
                 ),
                 Transform.translate(
@@ -139,7 +139,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.yellow,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -149,7 +149,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.lightGreen,
+                    color: Colors.amber,
                   ),
                 ),
                 Transform.translate(
@@ -159,7 +159,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.orangeAccent,
+                    color: Colors.green.shade400,
                   ),
                 ),
                 Transform.translate(
@@ -169,7 +169,7 @@ class _ColorLoader2State extends State<ColorLoader2>
                   ),
                   child: Dot(
                     radius: dotRadius,
-                    color: Colors.blueAccent,
+                    color: Colors.amber,
                   ),
                 ),
               ],

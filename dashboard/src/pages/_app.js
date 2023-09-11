@@ -1,5 +1,5 @@
 import "@/styles/globals.css"
-import LoadingIndicator from "@/utils/LoadingIndicator "
+import LoadingIndicator from "@/utils/LoadingIndicator"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"

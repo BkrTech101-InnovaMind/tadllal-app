@@ -1,6 +1,6 @@
-# tadllal
+# tedllal
 
-Tadllal, is a real estate application that allows users to buy and sell properties. Real estate companies can also create accounts to showcase their properties. The app enables users to search for properties and view details such as location, size, and images. It streamlines the process and enhances the customer experience in the real estate market.
+Tedllal, is a real estate application that allows users to buy and sell properties. Real estate companies can also create accounts to showcase their properties. The app enables users to search for properties and view details such as location, size, and images. It streamlines the process and enhances the customer experience in the real estate market.
 
 ## Getting Started
 

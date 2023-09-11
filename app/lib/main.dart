@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import 'package:tadllal/methods/api_provider.dart';
-import 'package:tadllal/pages/auth_pages/auth_pages.dart';
-import 'package:tadllal/pages/navigation_page/navigation_page.dart';
-import 'package:tadllal/pages/splash/splash_screen.dart';
-import 'package:tadllal/pages/splash/success_sign_in_splash_screen/success_sign_in_splash_screen.dart';
-import 'package:tadllal/services/helpers.dart';
-import 'package:tadllal/services/http.dart';
+import 'package:tedllal/methods/api_provider.dart';
+import 'package:tedllal/pages/auth_pages/auth_pages.dart';
+import 'package:tedllal/pages/navigation_page/navigation_page.dart';
+import 'package:tedllal/pages/splash/splash_screen.dart';
+import 'package:tedllal/pages/splash/success_sign_in_splash_screen/success_sign_in_splash_screen.dart';
+import 'package:tedllal/services/helpers.dart';
+import 'package:tedllal/services/http.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +21,13 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => AppProvider()),
     ],
     child: MaterialApp(
+      builder: (context, child) {
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
@@ -31,7 +38,7 @@ Future<void> main() async {
       supportedLocales: const [
         Locale("ar", "YE"), // OR Locale('ar', 'AE') OR Other RTL locales
       ],
-      title: 'Tadllal App',
+      title: 'Tedllal App',
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.

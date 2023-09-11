@@ -4,7 +4,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tadllal/config/config.dart';
+import 'package:tedllal/config/config.dart';
 
 class DioHelper {
   static Dio? dio;
@@ -57,7 +57,7 @@ class DioHelper {
     return headers;
   }
 
-  static Map<String, dynamic>? getRegesterHeader() {
+  static Map<String, dynamic>? getRegisterHeader() {
     Map<String, dynamic> headers = {};
 
     headers["Content-Type"] = "application/vnd.api+json";

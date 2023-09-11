@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tadllal/model/filter_option.dart';
+import 'package:tedllal/model/filter_option.dart';
 
 class MenuFilter extends StatefulWidget {
   const MenuFilter({super.key, required this.onFiltersChecked});
@@ -14,7 +14,6 @@ class _MenuFilterState extends State<MenuFilter> {
   List<FilterOption> options = [
     FilterOption(label: 'للبيع', isChecked: false),
     FilterOption(label: 'للإيجار', isChecked: false),
-    FilterOption(label: 'متاح', isChecked: false),
     FilterOption(label: 'التقييم', isChecked: false),
   ];
 

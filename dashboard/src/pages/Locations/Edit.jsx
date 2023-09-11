@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-import LoadingIndicator from "@/utils/LoadingIndicator "
+import LoadingIndicator from "@/utils/LoadingIndicator"
 import qs from "qs"
 
 export default function Update() {

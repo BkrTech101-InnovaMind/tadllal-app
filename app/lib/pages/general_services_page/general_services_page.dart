@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/services.dart';
-import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/services.dart';
+import 'package:tedllal/pages/single_sub_service_page/single_sub_service_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
 
 class GeneralServicesPage extends StatefulWidget {
   const GeneralServicesPage({super.key});
@@ -188,13 +188,13 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                             return const Center(
                                                 child: Padding(
                                               padding: EdgeInsets.only(top: 16),
-                                              child: Text(ERROR_WHILE_GET_DATA),
+                                              child: Text(errorWhileGetData),
                                             ));
                                           } else {
                                             return const Center(
                                                 child: Padding(
                                               padding: EdgeInsets.only(top: 16),
-                                              child: Text(NO_DATA),
+                                              child: Text(noData),
                                             ));
                                           }
                                         } else if (subServices
@@ -216,7 +216,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                                   padding:
                                                       EdgeInsets.only(top: 16),
                                                   child: Text(
-                                                      LOADING_DATA_FROM_SERVER),
+                                                      loadingDataFromServer),
                                                 )
                                               ],
                                             ),
@@ -239,7 +239,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                                                   padding:
                                                       EdgeInsets.only(top: 16),
                                                   child: Text(
-                                                      LOADING_DATA_FROM_SERVER),
+                                                      loadingDataFromServer),
                                                 )
                                               ],
                                             ),
@@ -268,13 +268,13 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                   return const Center(
                       child: Padding(
                     padding: EdgeInsets.only(top: 16),
-                    child: Text(ERROR_WHILE_GET_DATA),
+                    child: Text(errorWhileGetData),
                   ));
                 } else {
                   return const Center(
                       child: Padding(
                     padding: EdgeInsets.only(top: 16),
-                    child: Text(NO_DATA),
+                    child: Text(noData),
                   ));
                 }
               } else if (generalServices.connectionState ==
@@ -291,7 +291,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 16),
-                        child: Text(LOADING_DATA_FROM_SERVER),
+                        child: Text(loadingDataFromServer),
                       )
                     ],
                   ),
@@ -309,7 +309,7 @@ class _GeneralServicesPageState extends State<GeneralServicesPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 16),
-                        child: Text(LOADING_DATA_FROM_SERVER),
+                        child: Text(loadingDataFromServer),
                       )
                     ],
                   ),

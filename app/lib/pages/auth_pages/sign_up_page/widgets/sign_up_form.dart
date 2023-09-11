@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/api_molels/sinin_sinup_request.dart';
-import 'package:tadllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
-import 'package:tadllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
-import 'package:tadllal/services/helpers.dart';
-import 'package:tadllal/services/http.dart';
-import 'package:tadllal/widgets/sinin_sinup_dialog.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/api_models/signin_signup_request.dart';
+import 'package:tedllal/pages/auth_pages/code_auth_page/code_auth_page.dart';
+import 'package:tedllal/pages/auth_pages/sign_in_page/sign_in_page.dart';
+import 'package:tedllal/services/helpers.dart';
+import 'package:tedllal/services/http.dart';
+import 'package:tedllal/widgets/signin_signup_dialog.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
@@ -19,14 +19,14 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final _userNameController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool password = true;
 
   @override
   void initState() {
     _userNameController.text = "أبوبكر صديق محمد مهدي";
-    _phoneController.text = "zabobaker7355@gmail.com";
+    _emailController.text = "zabobaker7355@gmail.com";
     _passwordController.text = "@Abo77920";
     super.initState();
   }
@@ -38,27 +38,28 @@ class _SignUpFormState extends State<SignUpForm> {
 
     final form = {
       "name": _userNameController.text.toString(),
-      "email": _phoneController.text.toString(),
+      "email": _emailController.text.toString(),
       "password": _passwordController.text.toString(),
       "password_confirmation": _passwordController.text.toString(),
       "device_name": "mobile",
     };
 
-    await setBaseUrl(APP_API_URI);
+    await setBaseUrl(appApiUri);
     _showTheDialog(form);
   }
 
   void _showTheDialog(form) {
-    SinInSinUpRequest sinInSinUpRequest = SinInSinUpRequest.fromJson(form);
+    SignInSignUpRequest signInSignUpRequest =
+        SignInSignUpRequest.fromJson(form);
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (BuildContext context2) => SinInSinUpDialog(
-        sinInSinUpRequest: sinInSinUpRequest,
-        type: SINUP_TYPE,
+      builder: (BuildContext context2) => SignInSignUpDialog(
+        signInSignUpRequest: signInSignUpRequest,
+        type: signUpType,
         onLogin: (response) async {
           await updateUserDetails(
-              response: response, sinInSinUpRequest: sinInSinUpRequest);
+              response: response, signInSignUpRequest: signInSignUpRequest);
           _navigateToSignInPage(response);
         },
       ),
@@ -71,7 +72,7 @@ class _SignUpFormState extends State<SignUpForm> {
       context,
       MaterialPageRoute(
           builder: (context) => CodeAuthenticationPage(
-                email: _phoneController.text.trim(),
+                email: _emailController.text.trim(),
               )),
       (Route<dynamic> route) => false,
     );
@@ -115,11 +116,11 @@ class _SignUpFormState extends State<SignUpForm> {
             child: TextFormField(
               keyboardType: TextInputType.emailAddress,
               validator: (value) => value == null || value.isEmpty
-                  ? "الرجاء ادخال رقم الهاتف"
+                  ? "الرجاء ادخال البريد الإلكتروني"
                   : null,
-              controller: _phoneController,
+              controller: _emailController,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.phone_iphone_outlined),
+                prefixIcon: Icon(Icons.email_outlined),
                 prefixIconColor: Colors.black,
                 border: UnderlineInputBorder(borderSide: BorderSide.none),
                 focusedBorder:

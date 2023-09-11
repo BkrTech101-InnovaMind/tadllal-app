@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/global.dart';
-import 'package:tadllal/model/services.dart';
-import 'package:tadllal/pages/single_sub_service_page/single_sub_service_page.dart';
-import 'package:tadllal/services/api/dio_api.dart';
-import 'package:tadllal/widgets/LodingUi/Loder2.dart';
+import 'package:tedllal/config/global.dart';
+import 'package:tedllal/model/services.dart';
+import 'package:tedllal/pages/single_sub_service_page/single_sub_service_page.dart';
+import 'package:tedllal/services/api/dio_api.dart';
+import 'package:tedllal/widgets/loading_ui/loader2.dart';
+import 'package:tedllal/widgets/pages_back_button.dart';
 
 class MostRequestedServicesPage extends StatefulWidget {
   const MostRequestedServicesPage({super.key});
@@ -32,7 +33,7 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
   }
 
   Future<List<Services>> _getSubServicesData() async {
-    var rowData = await dioApi.get("/services/sub-services");
+    var rowData = await dioApi.get("/NewServices/services/");
     String jsonString = json.encode(rowData.data["data"]);
     List<Map<String, dynamic>> data = (jsonDecode(jsonString) as List)
         .map((e) => e as Map<String, dynamic>)
@@ -44,102 +45,132 @@ class _MostRequestedServicesPageState extends State<MostRequestedServicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("ألخدمات الاكثر طلباً"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        child: FutureBuilder<List<Services>>(
-            future: subServicesDataList,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<Services>> subServices) {
-              if (subServices.connectionState == ConnectionState.done) {
-                if (subServices.hasData && subServices.hasError == false) {
-                  return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: subServices.data!.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.only(top: 10),
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SingleSubServicesPage(
-                                  subServiceDetails: subServices.data![index],
-                                ),
-                              ),
-                            );
-                          },
-                          leading: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  subServices.data![index].attributes!.image!)),
-                          title:
-                              Text(subServices.data![index].attributes!.name!),
-                          subtitle: Text(
-                            subServices.data![index].attributes!.description!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+      body: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF5F4F8),
+                  border: Border(bottom: BorderSide(color: Colors.black38)),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                child: Row(
+                  children: [
+                    const PagesBackButton(),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "خدماتنا الاكثر طلباً",
+                          style:
+                              TextStyle(fontSize: 18, color: Color(0xFF1F4C6B)),
                         ),
-                      );
-                    },
-                  );
-                } else if (subServices.hasError) {
-                  return const Center(
-                      child: Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text(ERROR_WHILE_GET_DATA),
-                  ));
-                } else {
-                  return const Center(
-                      child: Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text(NO_DATA),
-                  ));
-                }
-              } else if (subServices.connectionState ==
-                  ConnectionState.waiting) {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: ColorLoader2(),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16),
-                        child: Text(LOADING_DATA_FROM_SERVER),
-                      )
-                    ],
-                  ),
-                );
-              } else {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircularProgressIndicator(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16),
-                        child: Text(LOADING_DATA_FROM_SERVER),
-                      )
-                    ],
-                  ),
-                );
-              }
-            }),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: FutureBuilder<List<Services>>(
+                    future: subServicesDataList,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Services>> subServices) {
+                      if (subServices.connectionState == ConnectionState.done) {
+                        if (subServices.hasData &&
+                            subServices.hasError == false) {
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: subServices.data!.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SingleSubServicesPage(
+                                          subServiceDetails:
+                                              subServices.data![index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(subServices
+                                          .data![index].attributes!.image!)),
+                                  title: Text(subServices
+                                      .data![index].attributes!.name!),
+                                  subtitle: Text(
+                                    subServices
+                                        .data![index].attributes!.description!,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        } else if (subServices.hasError) {
+                          return const Center(
+                              child: Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text(errorWhileGetData),
+                          ));
+                        } else {
+                          return const Center(
+                              child: Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text(noData),
+                          ));
+                        }
+                      } else if (subServices.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: ColorLoader2(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text(loadingDataFromServer),
+                              )
+                            ],
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text(loadingDataFromServer),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    }),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

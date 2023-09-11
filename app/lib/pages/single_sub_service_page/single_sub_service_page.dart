@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/model/services.dart';
-import 'package:tadllal/widgets/make_order_dialog.dart';
+import 'package:tedllal/model/services.dart';
+import 'package:tedllal/widgets/make_order_dialog.dart';
+import 'package:tedllal/widgets/pages_back_button.dart';
 
 class SingleSubServicesPage extends StatefulWidget {
   final Services subServiceDetails;
@@ -11,33 +12,76 @@ class SingleSubServicesPage extends StatefulWidget {
 }
 
 class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
+  void _onPressed() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context2) => MakeOrderDialog(
+          type: "Service", orderId: int.parse(widget.subServiceDetails.id!)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("تفاصيل الخدمة"),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF194706),
-      ),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              "${widget.subServiceDetails.attributes!.image}",
-            ),
-            fit: BoxFit.fill,
-          ),
-        ),
+      body: SafeArea(
         child: Container(
-          margin: const EdgeInsets.only(top: 75),
-          color: Colors.black.withOpacity(0.3),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildServiceCard(),
-              ],
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                "${widget.subServiceDetails.attributes!.image}",
+              ),
+              fit: BoxFit.fill,
             ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Color(0xFFF5F4F8))),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const PagesBackButton(),
+                    MaterialButton(
+                      height: 30.0,
+                      minWidth: 50.0,
+                      color: const Color(0xFFF5F4F8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      textColor: const Color(0xFF1F4C6B),
+                      padding: const EdgeInsets.all(16),
+                      onPressed: _onPressed,
+                      splashColor: const Color(0xFFF5F4F8),
+                      child: const Text(
+                        'طلب الخدمة',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  constraints: const BoxConstraints.expand(),
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 75),
+                    color: Colors.black.withOpacity(0.3),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          buildServiceCard(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -80,37 +124,7 @@ class _SingleSubServicesPageState extends State<SingleSubServicesPage> {
             ),
           ),
           const SizedBox(height: 20),
-          buildOrderButton(),
         ],
-      ),
-    );
-  }
-
-  Widget buildOrderButton() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: const Color(0xFF194706).withOpacity(0.8),
-          fixedSize: const Size(150, 63),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-        onPressed: () {
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context2) => MakeOrderDialog(
-                type: "Service",
-                orderId: int.parse(widget.subServiceDetails.id!)),
-          );
-        },
-        child: const Text(
-          "أطلب ألان",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
       ),
     );
   }

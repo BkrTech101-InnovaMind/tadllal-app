@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tadllal/config/config.dart';
-import 'package:tadllal/pages/app_starter_intro_screen/widgets/on_boarding_splash.dart';
-import 'package:tadllal/pages/auth_pages/auth_pages.dart';
+import 'package:tedllal/config/config.dart';
+import 'package:tedllal/pages/app_starter_intro_screen/widgets/on_boarding_splash.dart';
+import 'package:tedllal/pages/auth_pages/auth_pages.dart';
 
 class AppStarterIntroScreen extends StatefulWidget {
   const AppStarterIntroScreen({super.key});
@@ -65,9 +65,9 @@ class _AppStarterIntroScreenState extends State<AppStarterIntroScreen> {
     setState(() {
       _screens = [
         const OnBoardingSplash(
-          title: "اكتشف أفضل مكان يقدم أفضل الأسعار",
+          title: "اكتشف أفضل مكان يقدم أفضل جودة وعروض حصرية",
           subTitle:
-              "نقدم أفضل الأسعار في عالم العقارات، بعيداً عن السماسرة والوسطاء",
+              "نقدم عروضًا حصرية في عالم العقارات, بعيدًا عن السماسرة والوسطاء",
           imagePath: 'assets/images/tour_1.png',
         ),
         const OnBoardingSplash(

@@ -1,4 +1,3 @@
-import myLogo from "@/images/applogo.png"
 import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
@@ -47,7 +46,12 @@ export default function Index() {
   return (
     <div className='flex flex-row items-center justify-center w-full h-screen md:flex-row md:h-screen'>
       <div className='flex items-center p-10 justify-center w-full md:w-1/2'>
-        <Image src={myLogo} alt='Login Image' width={400} height={400} />
+        <Image
+          src='/images/applogo.png'
+          alt='Login Image'
+          width={400}
+          height={400}
+        />
       </div>
 
       <div

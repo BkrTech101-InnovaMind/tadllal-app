@@ -1,4 +1,3 @@
-import Applogo from "@/images/applogo.png"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -36,7 +35,12 @@ export default function Sidebar({ mainServicesOpen, setMainServicesOpen }) {
         className='flex flex-row-reverse items-center gap-5 mb-16 align-middle justify-between'
       >
         <div dir='ltr' className='flex flex-row-reverse items-center gap-5 '>
-          <Image src={Applogo} alt='وصف الصورة' width={50} height={50} />
+          <Image
+            src='/images/applogo.png'
+            alt='وصف الصورة'
+            width={50}
+            height={50}
+          />
           <p className='font-bold text-4xl'>تدلل عقار</p>
         </div>
         <button

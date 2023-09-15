@@ -159,42 +159,25 @@ export default function EditRealty() {
         formDataForApi.append("state", formData.state)
       }
 
-
-      if (
-        formData.rooms &&
-        formData.rooms !== oldFormData.rooms
-      ) {
+      if (formData.rooms && formData.rooms !== oldFormData.rooms) {
         formDataForApi.append("rooms", formData.rooms)
       }
 
-      if (
-        formData.floors &&
-        formData.floors !== oldFormData.floors
-      ) {
+      if (formData.floors && formData.floors !== oldFormData.floors) {
         formDataForApi.append("floors", formData.floors)
       }
 
-      if (
-        formData.vision &&
-        formData.vision !== oldFormData.vision
-      ) {
+      if (formData.vision && formData.vision !== oldFormData.vision) {
         formDataForApi.append("vision", formData.vision)
       }
 
-      if (
-        formData.baptism &&
-        formData.baptism !== oldFormData.baptism
-      ) {
+      if (formData.baptism && formData.baptism !== oldFormData.baptism) {
         formDataForApi.append("baptism", formData.baptism)
       }
 
-      if (
-        formData.area &&
-        formData.area !== oldFormData.area
-      ) {
+      if (formData.area && formData.area !== oldFormData.area) {
         formDataForApi.append("area", formData.area)
       }
-
 
       if (formData.photo) {
         if (
@@ -339,7 +322,9 @@ export default function EditRealty() {
                   name='rooms'
                   placeholder='أدخل عدد الغرف'
                   value={formData.rooms}
-                  onChange={(e) => setFormData({ ...formData, rooms: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, rooms: e.target.value })
+                  }
                 />
 
                 <TextBox
@@ -349,7 +334,9 @@ export default function EditRealty() {
                   name='floors'
                   placeholder='أدخل عدد الأدوار'
                   value={formData.floors}
-                  onChange={(e) => setFormData({ ...formData, floors: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, floors: e.target.value })
+                  }
                 />
 
                 <TextBox
@@ -359,9 +346,10 @@ export default function EditRealty() {
                   name='area'
                   placeholder='أدخل المساحة بالمتر المربع'
                   value={formData.area}
-                  onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, area: e.target.value })
+                  }
                 />
-
 
                 <TextBox
                   type='text'
@@ -370,9 +358,10 @@ export default function EditRealty() {
                   name='vision'
                   placeholder='أدخل البصيرة'
                   value={formData.vision}
-                  onChange={(e) => setFormData({ ...formData, vision: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, vision: e.target.value })
+                  }
                 />
-
 
                 <TextBox
                   type='text'
@@ -381,9 +370,10 @@ export default function EditRealty() {
                   name='baptism'
                   placeholder='أدخل التعميد'
                   value={formData.baptism}
-                  onChange={(e) => setFormData({ ...formData, baptism: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, baptism: e.target.value })
+                  }
                 />
-
 
                 <div className='flex flex-col'>
                   <label className='text-right mb-2'>الصورة الرئيسية</label>

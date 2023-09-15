@@ -12,7 +12,8 @@ const String password = "password";
 // API endpoint URL
 // const String appApiUri = "https://tedllal.alqatta.com";
 // const String appApiUri = "http://192.168.0.169";
-const String appApiUri = "http://192.168.0.46:8080";
+// const String appApiUri = "http://192.168.0.46:8080";
+const String appApiUri = "http://192.168.1.103:8080";
 // const String appApiUri="http://192.168.0.221";
 
 //Hero Tags

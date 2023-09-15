@@ -4,11 +4,8 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
-
-const URL = process.env.NEXT_PUBLIC_API_LOGIN_URL;
-
+const URL = process.env.NEXT_PUBLIC_API_LOGIN_URL
 export default function Index() {
-
   const router = useRouter()
 
   const [email, setEmail] = useState("")

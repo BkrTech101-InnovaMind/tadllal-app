@@ -8,7 +8,6 @@ import { searchOrders } from "@/api/filtersData"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
-import Link from "next/link"
 import { useEffect, useState } from "react"
 import { BiHomeAlt } from "react-icons/bi"
 import { FaToolbox } from "react-icons/fa"
@@ -32,8 +31,6 @@ export default function Index() {
 
       const servicesOrdersData = await api.get("NewServicesOrders", authToken)
       setSevices(servicesOrdersData.orders)
-
-
     } catch (error) {
       console.error("Error fetching orders:", error)
     }
@@ -301,7 +298,12 @@ export default function Index() {
             <div className='text-base font-semibold whitespace-nowrap'>
               {item.service.attributes.name}
             </div>
-            <div className='font-normal text-gray-500'> {item.service.attributes.type == 1 ? "خدمات انشائية وصيانة" : "موارد بناء وتوريدات"}</div>
+            <div className='font-normal text-gray-500'>
+              {" "}
+              {item.service.attributes.type == 1
+                ? "خدمات انشائية وصيانة"
+                : "موارد بناء وتوريدات"}
+            </div>
           </div>
         </div>
       ),
@@ -412,8 +414,7 @@ export default function Index() {
                 </div>
                 <div className='flex justify-between border-t-2 pt-5'>
                   <div>
-
-                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
                   </div>
 
                   <div>

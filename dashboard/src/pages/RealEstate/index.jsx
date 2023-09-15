@@ -20,8 +20,8 @@ export default function Index() {
   const router = useRouter()
   const [realEstates, setRealEstates] = useState([])
   const [searchResults, setSearchResults] = useState([])
-  const [minPrice, setMinPrice] = useState(""); // حد الأدنى للسعر
-  const [maxPrice, setMaxPrice] = useState(""); // حد الأقصى للسعر
+  const [minPrice, setMinPrice] = useState("") // حد الأدنى للسعر
+  const [maxPrice, setMaxPrice] = useState("") // حد الأقصى للسعر
   const [typesOptions, setTypesOptions] = useState([])
   const [locationsOptions, setLocationsOptions] = useState([])
   const [statistics, setStatistics] = useState({
@@ -117,7 +117,7 @@ export default function Index() {
             className='w-10 h-10 rounded-full ml-2'
             src={
               item.attributes.photo.startsWith("storage")
-                ? `http://127.0.0.1:8000/${item.attributes.photo}`
+                ? `http://192.168.1.103:8080/${item.attributes.photo}`
                 : item.attributes.photo
             }
             alt='Jese image'
@@ -191,30 +191,6 @@ export default function Index() {
     },
   ]
 
-  const data = [
-    {
-      number: 1,
-      property: {
-        name: "بيت للبيع في شارع القصر",
-        imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
-        type: "بيت / بيع",
-      },
-      location: "عدن/ المنصورة / بلوك5",
-      price: "$2999",
-      status: "متاح",
-    },
-    {
-      number: 2,
-      property: {
-        name: "بيت للبيع في شارع القصر",
-        imageSrc: "https://via.placeholder.com/640x480.png/00ee11?text=ullam",
-        type: "بيت / بيع",
-      },
-      location: "عدن/ المنصورة / بلوك5",
-      price: "$2999",
-      status: "متاح",
-    },
-  ]
   const handleSearch = (searchTerm) => {
     const searchedField = "name" // تعيين الحقل الذي ترغب في البحث فيه
     const filteredResults = tableSearch(searchTerm, realEstates, searchedField)
@@ -222,11 +198,15 @@ export default function Index() {
   }
   const handleSearchByPrice = () => {
     // تطبيق الفلترة باستخدام الدالة الجديدة
-    const filteredResults = filterRealEstatesByPrice(minPrice, maxPrice, realEstates);
+    const filteredResults = filterRealEstatesByPrice(
+      minPrice,
+      maxPrice,
+      realEstates
+    )
 
     // قم بتحديث نتائج البحث
-    setSearchResults(filteredResults);
-  };
+    setSearchResults(filteredResults)
+  }
 
   const handleTypeSelect = (selectedType) => {
     const filterdField = "firstType"
@@ -295,7 +275,6 @@ export default function Index() {
       toast.error("خطأ أثناء حذف العقار")
     }
   }
-
 
   const handleView = (item) => {
     router.push({
@@ -377,18 +356,20 @@ export default function Index() {
                   />
                   <div>
                     <input
-                      type="text"
-                      placeholder="الحد الأدنى للسعر"
+                      type='text'
+                      placeholder='الحد الأدنى للسعر'
                       value={minPrice}
                       onChange={(e) => setMinPrice(e.target.value)}
                     />
                     <input
-                      type="text"
-                      placeholder="الحد الأقصى للسعر"
+                      type='text'
+                      placeholder='الحد الأقصى للسعر'
                       value={maxPrice}
                       onChange={(e) => setMaxPrice(e.target.value)}
                     />
-                    <button onClick={handleSearchByPrice}>ابحث بناءً عن الأسعار</button>
+                    <button onClick={handleSearchByPrice}>
+                      ابحث بناءً عن الأسعار
+                    </button>
                   </div>
                 </div>
                 <div className='flex justify-between border-t-2 pt-5'>
@@ -397,7 +378,7 @@ export default function Index() {
                     <Link href='/RealEstate/New'>
                       <PrimaryBt type='add' name='إضافة عقار جديد' />
                     </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
                   </div>
 
                   <div>

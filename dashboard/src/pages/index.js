@@ -49,7 +49,7 @@ export default function Home() {
             className='w-10 h-10 rounded-full ml-2'
             src={
               item.attributes.photo.startsWith("storage")
-                ? `http://127.0.0.1:8000/${item.attributes.photo}`
+                ? `http://192.168.1.103:8080/${item.attributes.photo}`
                 : item.attributes.photo
             }
             alt='Jese image'
@@ -150,8 +150,9 @@ export default function Home() {
               {item.service.attributes.name}
             </div>
             <div className='font-normal text-gray-500'>
-
-              {item.service.attributes.type == 1 ? "خدمات انشائية وصيانة" : "موارد بناء وتوريدات"}
+              {item.service.attributes.type == 1
+                ? "خدمات انشائية وصيانة"
+                : "موارد بناء وتوريدات"}
             </div>
           </div>
         </div>

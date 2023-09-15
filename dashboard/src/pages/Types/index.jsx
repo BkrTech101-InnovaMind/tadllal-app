@@ -46,7 +46,7 @@ export default function Index() {
             className='w-10 h-10 rounded-full ml-2'
             src={
               item.attributes.image.startsWith("storage")
-                ? `http://127.0.0.1:8000/${item.attributes.image}`
+                ? `http://192.168.1.103:8080/${item.attributes.image}`
                 : item.attributes.image
             }
             alt='Jese image'

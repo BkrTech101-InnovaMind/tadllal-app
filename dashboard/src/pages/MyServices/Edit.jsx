@@ -3,7 +3,7 @@ import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
 import TextErea from "@/Components/FormsComponents/Inputs/TextErea"
 import api from "@/api/api"
 import Layout from "@/layout/Layout"
-import LoadingIndicator from "@/utils/LoadingIndicator "
+import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -72,10 +72,7 @@ export default function EditService() {
         formDataForApi.append("description", formData.description)
       }
 
-      if (
-        formData.type &&
-        formData.type !== oldformData.type
-      ) {
+      if (formData.type && formData.type !== oldformData.type) {
         formDataForApi.append("type", formData.type)
       }
       if (formData.image) {
@@ -145,10 +142,7 @@ export default function EditService() {
                   title='الخدمة الرئيسية'
                   selectedValue={formData.type}
                   options={array.data}
-                  onSelect={(e) =>
-                    setFormData({ ...formData, type: e })
-                  }
-
+                  onSelect={(e) => setFormData({ ...formData, type: e })}
                 />
                 <TextBox
                   type='text'

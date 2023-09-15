@@ -10,7 +10,6 @@ import {
   tableSearch,
 } from "@/api/filtersData"
 import { usersFiltersArray } from "@/data/arrays"
-import avatar from "@/images/user.png"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
@@ -196,7 +195,7 @@ export default function Index() {
               width={50}
               height={50}
               className='w-10 h-10 rounded-full ml-2'
-              src={avatar}
+              src='/images/user.png'
               alt='Jese image'
             />
           ) : (

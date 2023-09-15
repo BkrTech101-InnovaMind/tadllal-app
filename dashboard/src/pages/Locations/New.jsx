@@ -30,11 +30,7 @@ export default function New() {
     }
     const authToken = localStorage.getItem("authToken")
     try {
-      const savedData = await api.post(
-        "locations/location/",
-        formData,
-        authToken
-      )
+      await api.post("locations/location/", formData, authToken)
       toast.success("تم حفظ البيانات بنجاح")
       router.push("/Locations")
     } catch (error) {

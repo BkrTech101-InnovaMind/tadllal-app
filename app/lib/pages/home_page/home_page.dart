@@ -292,7 +292,6 @@ class _HomePageState extends State<HomePage>
                     child: RefreshIndicator(
                       onRefresh: refresh,
                       child: ListView(
-                        physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         children: [
                           buildService(),

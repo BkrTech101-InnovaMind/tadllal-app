@@ -5,9 +5,14 @@ import 'package:tedllal/pages/real_estate_details_page/real_estate_details_page.
 import 'package:tedllal/services/api/dio_api.dart';
 import 'package:tedllal/widgets/loading_ui/loader2.dart';
 
-class AllNotification extends StatelessWidget {
+class AllNotification extends StatefulWidget {
   const AllNotification({super.key});
 
+  @override
+  State<AllNotification> createState() => _AllNotificationState();
+}
+
+class _AllNotificationState extends State<AllNotification> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,6 +65,9 @@ class AllNotification extends StatelessWidget {
               ),
             ),
           );
+          setState(() {
+            _setNotifications(notification.id);
+          });
         },
         title: Text(
           notification.realEstate.attributes!.name!,
@@ -92,6 +100,14 @@ class AllNotification extends StatelessWidget {
 
   Future<List<Notifications>> _getNotifications() async {
     var date = await DioApi().get("/notifications/all");
+    List<dynamic> notificationsData = date.data["data"];
+    return notificationsData
+        .map((data) => Notifications.fromJson(data))
+        .toList();
+  }
+
+  Future<List<Notifications>> _setNotifications(String id) async {
+    var date = await DioApi().get("/notifications/markAsRead/$id");
     List<dynamic> notificationsData = date.data["data"];
     return notificationsData
         .map((data) => Notifications.fromJson(data))

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tedllal/model/api_models/notifications.dart';
 import 'package:tedllal/pages/notification_page/widgets/all_notifications.dart';
 import 'package:tedllal/pages/notification_page/widgets/unread_notifications.dart';
 import 'package:tedllal/services/api/dio_api.dart';
@@ -32,6 +31,22 @@ class _NotificationPageState extends State<NotificationPage> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  _readAllNotifications() async {
+    await DioApi().get("/notifications/markAllAsRead");
+  }
+
+  onPressed() async {
+    await _readAllNotifications();
+    setState(() {});
+    _showSnackBar();
+  }
+
+  _showSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("تم التحديث بنجاح")),
+    );
   }
 
   @override
@@ -69,15 +84,7 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
             textColor: const Color(0xFF1F4C6B),
             padding: const EdgeInsets.all(16),
-            onPressed: () {
-              _getNotifications().then(
-                (value) => const ScaffoldMessenger(
-                  child: SnackBar(
-                    content: Text("تم التحديد بنجاح"),
-                  ),
-                ),
-              );
-            },
+            onPressed: onPressed,
             splashColor: const Color(0xFFF5F4F8),
             child: const Text(
               'تحديد الكل ك مقروء',
@@ -173,13 +180,5 @@ class _NotificationPageState extends State<NotificationPage> {
         children: _nestedPages,
       ),
     );
-  }
-
-  Future<List<Notifications>> _getNotifications() async {
-    var date = await DioApi().get("/notifications/markAllAsRead");
-    List<dynamic> notificationsData = date.data["data"];
-    return notificationsData
-        .map((data) => Notifications.fromJson(data))
-        .toList();
   }
 }

@@ -562,13 +562,13 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.all(4),
             ),
             onPressed: () {
+              setState(() => hasNotification = false);
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const NotificationPage(),
                 ),
               );
-              setState(() => hasNotification = false);
             },
             child: Stack(
               children: [

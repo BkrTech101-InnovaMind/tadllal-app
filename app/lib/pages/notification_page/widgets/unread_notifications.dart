@@ -13,12 +13,19 @@ class UnReadNotification extends StatefulWidget {
 }
 
 class _UnReadNotificationState extends State<UnReadNotification> {
+  Future<List<Notifications>>? _notificationsFuture;
+  @override
+  void initState() {
+    super.initState();
+    _notificationsFuture = _getUnreadNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 20),
       child: FutureBuilder<List<Notifications>>(
-        future: _getNotifications(),
+        future: _notificationsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const ColorLoader2();
@@ -88,7 +95,7 @@ class _UnReadNotificationState extends State<UnReadNotification> {
     );
   }
 
-  Future<List<Notifications>> _getNotifications() async {
+  Future<List<Notifications>> _getUnreadNotifications() async {
     var date = await DioApi().get("/notifications/unread");
     List<dynamic> notificationsData = date.data["data"];
     return notificationsData

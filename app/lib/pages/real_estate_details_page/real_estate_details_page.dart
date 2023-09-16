@@ -228,6 +228,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   Widget buildImagesSection({required RealEstate realEstate}) {
     return realEstate.attributes!.images!.isNotEmpty
         ? Container(
+            padding: const EdgeInsets.symmetric(vertical: 15),
             decoration: const BoxDecoration(
                 color: Colors.lightGreen,
                 borderRadius: BorderRadius.only(
@@ -243,10 +244,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
             child: CarouselSlider(
               options: CarouselOptions(
                 viewportFraction: 0.5,
-                autoPlay: true,
+                autoPlay: realEstate.attributes!.images!.length > 3,
                 autoPlayInterval: const Duration(seconds: 3),
                 enlargeCenterPage: true,
-                enableInfiniteScroll: true,
+                enableInfiniteScroll: realEstate.attributes!.images!.length > 3,
                 aspectRatio: 16 / 9,
               ),
               items: realEstate.attributes!.images!.map<Widget>(
@@ -845,7 +846,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     return CarouselSlider(
       options: CarouselOptions(
         viewportFraction: 0.5,
-        autoPlay: true,
+        autoPlay: linkedRealEstateList.length > 3,
         autoPlayInterval: const Duration(seconds: 3),
         enlargeCenterPage: true,
         enableInfiniteScroll: linkedRealEstateList.length > 3,
@@ -886,6 +887,8 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       child: CachedNetworkImage(
                         imageUrl: realEstate.attributes!.photo!,
+                        memCacheHeight: 150,
+                        memCacheWidth: 180,
                         placeholder: (context, url) => const Center(
                           child: CircularProgressIndicator(),
                         ),

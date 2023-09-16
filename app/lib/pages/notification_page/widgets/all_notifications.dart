@@ -13,12 +13,20 @@ class AllNotification extends StatefulWidget {
 }
 
 class _AllNotificationState extends State<AllNotification> {
+  Future<List<Notifications>>? _notificationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationsFuture = _getNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 20),
       child: FutureBuilder<List<Notifications>>(
-        future: _getNotifications(),
+        future: _notificationsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const ColorLoader2();

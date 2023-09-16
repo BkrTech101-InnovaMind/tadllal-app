@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tedllal/model/api_models/notifications.dart';
 import 'package:tedllal/pages/notification_page/widgets/all_notifications.dart';
 import 'package:tedllal/pages/notification_page/widgets/unread_notifications.dart';
 import 'package:tedllal/services/api/dio_api.dart';
@@ -16,6 +17,7 @@ class _NotificationPageState extends State<NotificationPage> {
   late PageController _pageController;
   int currentPage = 0;
   List<Widget> _nestedPages = [];
+  List<Notifications> unReadNotifications = [];
 
   @override
   void initState() {
@@ -38,15 +40,40 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   onPressed() async {
-    await _readAllNotifications();
-    setState(() {});
-    _showSnackBar();
+    if (unReadNotifications.isNotEmpty) {
+      await _readAllNotifications();
+      setState(
+        () {
+          _nestedPages = [
+            AllNotification(key: UniqueKey()),
+            UnReadNotification(key: UniqueKey()),
+          ];
+        },
+      );
+      _showSnackBar();
+    } else {
+      _showSnackBar();
+    }
   }
 
   _showSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("تم التحديث بنجاح")),
+      SnackBar(
+        content: Text(
+          unReadNotifications.isNotEmpty
+              ? "تم التحديث بنجاح"
+              : "لا يوجد اشعارات غير مقروئة ",
+        ),
+      ),
     );
+  }
+
+  Future<List<Notifications>> _getUnreadNotifications() async {
+    var date = await DioApi().get("/notifications/unread");
+    List<dynamic> notificationsData = date.data["data"];
+    return notificationsData
+        .map((data) => Notifications.fromJson(data))
+        .toList();
   }
 
   @override

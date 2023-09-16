@@ -75,7 +75,7 @@ class _SingleGeneralServicesPageState extends State<SingleGeneralServicesPage> {
               alignment: Alignment.center,
               child: Text(
                 widget.serviceId == "1"
-                    ? "جميع الخدمات العامة"
+                    ? "جميع الخدمات الإنشائية"
                     : "جميع الموارد",
                 style: const TextStyle(fontSize: 18, color: Color(0xFF1F4C6B)),
               ),

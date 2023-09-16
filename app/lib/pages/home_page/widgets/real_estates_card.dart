@@ -113,169 +113,59 @@ class _RealEstateCardState extends State<RealEstateCard> {
               child: Column(
                 children: [
                   CachedNetworkImage(
-                      imageBuilder: (context, imageProvider) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            height: 180,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        Positioned(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              toggleFavorite(
-                                                  index: index,
-                                                  appProvider: appProvider);
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                color: favoriteColor
-                                                    ? const Color(0xFF8BC83F)
-                                                    : Colors.white,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(100),
-                                                ),
-                                              ),
-                                              child: SvgPicture.asset(
-                                                "assets/icons/favorites-icon.svg",
-                                                width: 17,
-                                                colorFilter: ColorFilter.mode(
-                                                  favoriteColor
-                                                      ? Colors.white
-                                                      : const Color(0xFFFD5F4A),
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 8),
-                                      decoration: BoxDecoration(
-                                          color: backgroundColor,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(12))),
-                                      child: Text(
-                                        secondTypeText,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 8),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF234F68)
-                                        .withOpacity(0.7),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(8)),
-                                  ),
-                                  child: Text(
-                                    '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      imageUrl: appProvider
-                          .filteredRealEstateList[index].attributes!.photo!,
-                      placeholder: (context, url) => Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/images/shape.png"),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              height: 180,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          height: 180,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  Stack(
                                     children: [
-                                      Stack(
-                                        children: [
-                                          Positioned(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                toggleFavorite(
-                                                    index: index,
-                                                    appProvider: appProvider);
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(15),
-                                                decoration: BoxDecoration(
-                                                  color: favoriteColor
-                                                      ? const Color(0xFF8BC83F)
-                                                      : Colors.white,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(100),
-                                                  ),
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/favorites-icon.svg",
-                                                  width: 20,
-                                                  colorFilter: ColorFilter.mode(
-                                                    favoriteColor
-                                                        ? Colors.white
-                                                        : const Color(
-                                                            0xFFFD5F4A),
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                ),
+                                      Positioned(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            toggleFavorite(
+                                                index: index,
+                                                appProvider: appProvider);
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: favoriteColor
+                                                  ? const Color(0xFF8BC83F)
+                                                  : Colors.white,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(100),
+                                              ),
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/icons/favorites-icon.svg",
+                                              width: 17,
+                                              colorFilter: ColorFilter.mode(
+                                                favoriteColor
+                                                    ? Colors.white
+                                                    : const Color(0xFFFD5F4A),
+                                                BlendMode.srcIn,
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 8),
-                                        decoration: BoxDecoration(
-                                            color: backgroundColor,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(12))),
-                                        child: Text(
-                                          secondType,
-                                          style: const TextStyle(
-                                              color: Colors.white),
                                         ),
                                       ),
                                     ],
@@ -284,21 +174,49 @@ class _RealEstateCardState extends State<RealEstateCard> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 5, horizontal: 8),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF234F68)
-                                          .withOpacity(0.7),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(8)),
-                                    ),
+                                        color: backgroundColor,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(12))),
                                     child: Text(
-                                      '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                                      secondTypeText,
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          )),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 8),
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color(0xFF234F68).withOpacity(0.7),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(8)),
+                                ),
+                                child: Text(
+                                  '\$ ${appProvider.filteredRealEstateList[index].attributes!.price!}',
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    imageUrl: appProvider
+                        .filteredRealEstateList[index].attributes!.photo!,
+                    placeholder: (context, url) => SizedBox(
+                      height: MediaQuery.of(context).size.height / 4.5,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF234F68),
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 13),
                   Container(
                     padding: const EdgeInsets.all(5.5),

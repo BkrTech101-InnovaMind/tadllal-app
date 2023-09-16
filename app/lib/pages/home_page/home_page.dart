@@ -788,7 +788,9 @@ class _HomePageState extends State<HomePage>
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.horizontal,
-                            itemCount: 15,
+                            itemCount: snapshot.data!.length < 15
+                                ? snapshot.data!.length
+                                : 15,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return Container(
@@ -829,28 +831,31 @@ class _HomePageState extends State<HomePage>
                               );
                             },
                           ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(4),
-                              backgroundColor: const Color(0xFFF5F4F8),
-                              foregroundColor: const Color(0xFF234F68),
-                              fixedSize: const Size(double.infinity, 0),
-                            ),
-                            onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const MostRequestedServicesPage(),
+                          Visibility(
+                            visible: snapshot.data!.length > 10,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(4),
+                                backgroundColor: const Color(0xFFF5F4F8),
+                                foregroundColor: const Color(0xFF234F68),
+                                fixedSize: const Size(double.infinity, 0),
                               ),
-                            ),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.subdirectory_arrow_left_outlined),
-                                SizedBox(height: 5),
-                                Text("الكل"),
-                              ],
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MostRequestedServicesPage(),
+                                ),
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.subdirectory_arrow_left_outlined),
+                                  SizedBox(height: 5),
+                                  Text("الكل"),
+                                ],
+                              ),
                             ),
                           )
                         ],

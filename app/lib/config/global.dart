@@ -9,12 +9,13 @@ const String logInInfoKeyName = "USERNAME_PASSWORD";
 const String userName = "user_name";
 const String password = "password";
 
-// API endpoint URL
+// API endpoint URLs
 // const String appApiUri = "https://tedllal.alqatta.com";
 // const String appApiUri = "http://192.168.0.169";
 // const String appApiUri = "http://192.168.0.46:8080";
-const String appApiUri = "http://192.168.1.103:8080";
+// const String appApiUri = "http://192.168.1.103:8080";
 // const String appApiUri="http://192.168.0.221";
+const String appApiUri = "http://www.tedllal.com";
 
 //Hero Tags
 

@@ -1,6 +1,7 @@
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
 import TextErea from "@/Components/FormsComponents/Inputs/TextErea"
+import Spinner from "@/Components/Spinner"
 import api from "@/api/api"
 import { fetchLocations, fetchTypes } from "@/api/fetchData"
 import Layout from "@/layout/Layout"
@@ -8,6 +9,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 export default function New() {
+  const [isUpload, setIsUpload] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false)
   const [isFormSubmitted, setIsFormSubmitted] = useState(false)
   const router = useRouter()
@@ -83,6 +85,7 @@ export default function New() {
     }
     const authToken = localStorage.getItem("authToken")
     try {
+      setIsUpload(true);
       const formDataForApi = new FormData()
 
       formDataForApi.append("name", formData.name)
@@ -107,13 +110,15 @@ export default function New() {
       }
 
       const savedData = await api.post(
-        "realEstate/realty/",
+        "realEstate/realty",
         formDataForApi,
         authToken
       )
+      setIsUpload(false);
       toast.success("تم حفظ البيانات بنجاح")
       router.push("/RealEstate") // أعد توجيه المستخدم إلى الصفحة المطلوبة بعد الحفظ
     } catch (error) {
+      setIsUpload(false);
       console.error("Error saving data:", error)
       toast.error("حدث خطأ أثناء حفظ البيانات.")
     }
@@ -145,6 +150,7 @@ export default function New() {
   }
   return (
     <Layout>
+      {isUpload && <Spinner text="...جاري الرفع" />}
       <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
         <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
           <form className='w-full '>

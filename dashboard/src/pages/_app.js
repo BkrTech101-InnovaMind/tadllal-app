@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-const API_URL = "http://192.168.1.103:8080/api/"
+const API_URL = process.env.NEXT_PUBLIC_APP_API_URL;
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState(null)
   const router = useRouter()
@@ -44,7 +44,9 @@ export default function App({ Component, pageProps }) {
   //     router.push("/")
   //   }
 
+
   // }
+
 
   async function checkUserStatus() {
     const authToken = localStorage.getItem("authToken")
@@ -68,7 +70,7 @@ export default function App({ Component, pageProps }) {
         setUser(userData)
       } catch (error) {
         setUser(null)
-        if (error.response.data.message === "Unauthenticated.") {
+        if (error.response.data.message === 'Unauthenticated.') {
           // إذا كان المستخدم غير مصرح به، قم بتوجيهه مباشرة إلى صفحة الدخول.
           router.push("/Login")
         }

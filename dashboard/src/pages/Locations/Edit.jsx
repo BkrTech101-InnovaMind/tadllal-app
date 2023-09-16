@@ -9,9 +9,11 @@ import { toast } from "react-toastify"
 
 import LoadingIndicator from "@/utils/LoadingIndicator"
 import qs from "qs"
+import Spinner from "@/Components/Spinner"
 
 export default function Update() {
   const [loading, setLoading] = useState(false)
+  const [isUpload, setIsUpload] = useState(false);
   const router = useRouter()
   const { id } = router.query
 
@@ -25,6 +27,7 @@ export default function Update() {
   const handleUpdate = async () => {
     const authToken = localStorage.getItem("authToken")
     try {
+      setIsUpload(true);
       if (
         formData.name != "" &&
         formData.name &&
@@ -35,13 +38,16 @@ export default function Update() {
         }
         const encodedData = qs.stringify(formDataForApi)
         await api.put(`locations/location/${id}`, encodedData, authToken)
+        setIsUpload(false);
         toast.success("تم تحديث البيانات بنجاح")
         router.push("/Locations")
       } else {
+        setIsUpload(false);
         toast.warning("لم تقم بتعديل اي شيء")
         router.push("/Locations")
       }
     } catch (error) {
+      setIsUpload(false);
       console.error("Error updating data:", error)
       toast.error("حدث خطأ أثناء التحديث")
     }
@@ -72,6 +78,7 @@ export default function Update() {
         <LoadingIndicator />
       ) : (
         <Layout>
+          {isUpload && <Spinner text="...جاري حفظ التعديلات" />}
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
             <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
               <form className='w-full '>

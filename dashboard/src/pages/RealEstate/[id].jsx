@@ -5,7 +5,7 @@ import { useState } from "react"
 import { FaStar, FaStarHalfAlt } from "react-icons/fa"
 import RatingStars from "react-rating-stars-component"
 import "tailwindcss/tailwind.css"
-import defaultPhoto from "@/images/applogo.png"
+// import defaultPhoto from "@/images/applogo.png"
 function formatDate(dateString) {
   const date = new Date(dateString)
   const year = date.getFullYear()
@@ -125,7 +125,7 @@ export default function Details() {
                   <div className="flex flex-row justify-start mt-6 ">
 
                     <h1 className='text-1xl font-semibold whitespace-nowrap ml-1'>
-                      التعميد
+                      التعميد :
                     </h1>
                     <p>
                       {jsonData.attributes.baptism}
@@ -168,7 +168,7 @@ export default function Details() {
                     width={2000}
                     height={1000}
                     onError={(e) => {
-                      e.target.src = defaultPhoto;
+                      e.target.src = "/images/applogo.png";
                     }}
                   />
                 </div>
@@ -184,7 +184,7 @@ export default function Details() {
                         handleThumbnailClick(jsonData.attributes.photo)
                       }
                       onError={(e) => {
-                        e.target.src = defaultPhoto;
+                        e.target.src = "/images/applogo.png";
                       }}
                     />
                   </div>

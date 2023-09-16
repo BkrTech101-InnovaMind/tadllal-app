@@ -1,10 +1,12 @@
+import myLogo from "@/images/applogo.png"
 import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
-const URL = process.env.NEXT_PUBLIC_API_LOGIN_URL
+const URL = process.env.NEXT_PUBLIC_API_LOGIN_URL;
 export default function Index() {
+
   const router = useRouter()
 
   const [email, setEmail] = useState("")
@@ -33,7 +35,7 @@ export default function Index() {
       localStorage.setItem("UserName", response.data.data.admin.name)
       console.log(response)
       toast.success("تم تسجيل الدخول بنجاح!")
-      router.push("/")
+      router.replace("/")
     } catch (error) {
       if (error.response.data.message == "Credentials do not match") {
         toast.error("  المدخلات ليست صحيحة")
@@ -46,12 +48,7 @@ export default function Index() {
   return (
     <div className='flex flex-row items-center justify-center w-full h-screen md:flex-row md:h-screen'>
       <div className='flex items-center p-10 justify-center w-full md:w-1/2'>
-        <Image
-          src='/images/applogo.png'
-          alt='Login Image'
-          width={400}
-          height={400}
-        />
+        <Image src={myLogo} alt='Login Image' width={400} height={400} />
       </div>
 
       <div

@@ -1,5 +1,6 @@
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
+import Spinner from "@/Components/Spinner"
 import api from "@/api/api"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator"
@@ -10,6 +11,7 @@ export default function EditUser() {
   const router = useRouter()
   const { id } = router.query
   const [loading, setLoading] = useState(false)
+  const [isUpload, setIsUpload] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -54,6 +56,7 @@ export default function EditUser() {
   const handleUpdate = async () => {
     const authToken = localStorage.getItem("authToken")
     try {
+      setIsUpload(true);
       const formDataForApi = new FormData()
       if (formData.name !== oldFormData.name) {
         formDataForApi.append("name", formData.name)
@@ -66,6 +69,7 @@ export default function EditUser() {
       }
       if (formData.password) {
         if (formData.password !== formData.password_confirmation) {
+          setIsUpload(false);
           toast.warning("كلمة السر غير متطابقة")
           return
         } else {
@@ -87,6 +91,7 @@ export default function EditUser() {
           formData.role == oldFormData.role &&
           formData.password != formData.password_confirmation)
       ) {
+        setIsUpload(false);
         toast.warning("لم تقم بتعديل اي شيء")
         router.push("/Users")
       } else {
@@ -95,10 +100,12 @@ export default function EditUser() {
           formDataForApi,
           authToken
         )
+        setIsUpload(false);
         toast.success("تم تحديث البيانات بنجاح")
         router.push("/Users")
       }
     } catch (error) {
+      setIsUpload(false);
       console.error("Error updating user data:", error)
       toast.error("حدث خطأ أثناء تحديث البيانات.")
     }
@@ -119,6 +126,7 @@ export default function EditUser() {
         <LoadingIndicator />
       ) : (
         <Layout>
+          {isUpload && <Spinner text="...جاري حفظ التعديلات" />}
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
             <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
               <form className='w-full'>

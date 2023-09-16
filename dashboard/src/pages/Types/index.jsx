@@ -44,11 +44,7 @@ export default function Index() {
             width={50}
             height={50}
             className='w-10 h-10 rounded-full ml-2'
-            src={
-              item.attributes.image.startsWith("storage")
-                ? `http://192.168.1.103:8080/${item.attributes.image}`
-                : item.attributes.image
-            }
+            src={item.attributes.image}
             alt='Jese image'
           />
         </div>
@@ -85,7 +81,7 @@ export default function Index() {
       if (
         error.response &&
         error.response.data.data ===
-          "Cannot delete this type due to foreign key constraints"
+        "Cannot delete this type due to foreign key constraints"
       ) {
         console.log(error)
         toast.error(
@@ -128,7 +124,7 @@ export default function Index() {
                     <Link href='/Types/New'>
                       <PrimaryBt type='add' name='إضافة نوع جديد' />
                     </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>

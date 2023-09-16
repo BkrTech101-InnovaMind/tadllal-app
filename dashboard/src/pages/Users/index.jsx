@@ -10,6 +10,7 @@ import {
   tableSearch,
 } from "@/api/filtersData"
 import { usersFiltersArray } from "@/data/arrays"
+// import avatar from "@/images/user.png"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
@@ -20,8 +21,8 @@ import { useEffect, useState } from "react"
 import { AiFillBank } from "react-icons/ai"
 import { FaUserTie } from "react-icons/fa"
 import { FiCheckCircle, FiUsers } from "react-icons/fi"
-import Modal from "react-modal"
 import { toast } from "react-toastify"
+import Modal from "react-modal"
 export default function Index() {
   const router = useRouter()
   const [users, setUsers] = useState([])
@@ -39,7 +40,7 @@ export default function Index() {
     const authToken = localStorage.getItem("authToken")
 
     try {
-      const usersData = await api.get("users/users/", authToken)
+      const usersData = await api.get("users/users", authToken)
       setUsers(usersData)
     } catch (error) {
       console.error("Error fetching Users:", error)
@@ -147,6 +148,7 @@ export default function Index() {
     )
   }
   function handleView(item) {
+
     setCurrentUser(item)
     setModalIsOpen(true)
   }
@@ -195,7 +197,7 @@ export default function Index() {
               width={50}
               height={50}
               className='w-10 h-10 rounded-full ml-2'
-              src='/images/user.png'
+              src="/images/user.png"
               alt='Jese image'
             />
           ) : (
@@ -271,17 +273,19 @@ export default function Index() {
     {
       key: "realEstate",
       label: "العقار",
-      render: (item) => <div>{item.attributes.property}</div>,
+      render: (item) => (
+        <div>
+          {item.attributes.property}
+        </div>
+      ),
     },
     {
       key: "customer",
       label: "العميل",
-      render: (item) => (
-        <div className='flex flex-col'>
-          <div>{item.attributes.customer.name}</div>
-          <div>{item.attributes.customer.phone_number}</div>
-        </div>
-      ),
+      render: (item) => <div className='flex flex-col'>
+        <div>{item.attributes.customer.name}</div>
+        <div>{item.attributes.customer.phone_number}</div>
+      </div>,
     },
     {
       key: "location",
@@ -296,18 +300,17 @@ export default function Index() {
     {
       key: "budget",
       label: "الميزانية",
-      render: (item) => (
-        <div dir='ltr'>
-          {item.attributes.budget.from} - {item.attributes.budget.to}{" "}
-          {item.attributes.budget.currency}
-        </div>
-      ),
+      render: (item) => <div dir="ltr">{item.attributes.budget.from} - {item.attributes.budget.to} {item.attributes.budget.currency}</div>,
     },
     {
       key: "message",
       label: "تفاصيل الطلب ",
       render: (item) => <div>{item.attributes.other_details}</div>,
     },
+
+
+
+
   ]
   const data = [
     {
@@ -428,7 +431,7 @@ export default function Index() {
                     <Link href='/Users/New'>
                       <PrimaryBt type='add' name='إضافة مستخدم جديد' />
                     </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>
@@ -484,41 +487,43 @@ export default function Index() {
                   dir='rtl'
                 >
                   <h1 className='ml-2 font-semibold'>اسم المستخدم :</h1>
-                  <p className='font-medium'>{currentUser.attributes.name}</p>
-                </div>
-                <div className=' my-6 flex flex-row items-center' dir='rtl'>
-                  <h1 className='ml-2 font-semibold'>ايميل المستخدم :</h1>
-                  <p className='font-medium'>{currentUser.attributes.email}</p>
-                </div>
-                <div className=' my-6 flex flex-row items-center' dir='rtl'>
-                  <h1 className='ml-2 font-semibold'> رقم الهاتف :</h1>
-                  <p className='font-medium'>{currentUser.attributes.phone}</p>
-                </div>
-                <div className=' my-6 flex flex-row items-center' dir='rtl'>
-                  <h1 className='ml-2 font-semibold'> نوع المستخدم :</h1>
                   <p className='font-medium'>
-                    {currentUser.attributes.role == "admin"
-                      ? "مدير"
-                      : currentUser.attributes.role == "company"
-                      ? "شركة"
-                      : currentUser.attributes.role == "marketer"
-                      ? "مسوق"
-                      : "مستخدم"}
+                    {currentUser.attributes.name}
                   </p>
                 </div>
                 <div className=' my-6 flex flex-row items-center' dir='rtl'>
-                  <h1 className='ml-2 font-semibold'> عدد العملاء :</h1>
+                  <h1 className='ml-2 font-semibold'>ايميل المستخدم :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.email}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'> رقم الهاتف :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.phone}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'> نوع المستخدم  :</h1>
+                  <p className='font-medium'>
+                    {currentUser.attributes.role == "admin"
+                      ? "مدير" : currentUser.attributes.role == "company"
+                        ? "شركة" : currentUser.attributes.role == "marketer"
+                          ? "مسوق" : "مستخدم"}
+                  </p>
+                </div>
+                <div className=' my-6 flex flex-row items-center' dir='rtl'>
+                  <h1 className='ml-2 font-semibold'> عدد العملاء  :</h1>
                   <p className='font-medium'>
                     {currentUser.attributes.customers_count}
                   </p>
                 </div>
                 <div>
-                  {currentUser.attributes.customer_requests.length > 0 && (
-                    <CustomTable
-                      columns={columns2}
-                      data={currentUser.attributes.customer_requests}
-                    />
-                  )}
+                  {
+                    currentUser.attributes.customer_requests.length > 0 &&
+                    <CustomTable columns={columns2} data={currentUser.attributes.customer_requests} />
+                  }
+
                 </div>
               </div>
             )}

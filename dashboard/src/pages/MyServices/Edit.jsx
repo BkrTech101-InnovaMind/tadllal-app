@@ -1,6 +1,7 @@
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
 import TextErea from "@/Components/FormsComponents/Inputs/TextErea"
+import Spinner from "@/Components/Spinner"
 import api from "@/api/api"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator"
@@ -11,6 +12,7 @@ import { toast } from "react-toastify"
 
 export default function EditService() {
   const [loading, setLoading] = useState(false)
+  const [isUpload, setIsUpload] = useState(false);
   const router = useRouter()
   const { id } = router.query
   const [formData, setFormData] = useState({
@@ -61,6 +63,7 @@ export default function EditService() {
   const handleUpdate = async () => {
     const authToken = localStorage.getItem("authToken")
     try {
+      setIsUpload(true);
       const formDataForApi = new FormData()
       if (formData.name && formData.name !== oldformData.name) {
         formDataForApi.append("name", formData.name)
@@ -72,7 +75,10 @@ export default function EditService() {
         formDataForApi.append("description", formData.description)
       }
 
-      if (formData.type && formData.type !== oldformData.type) {
+      if (
+        formData.type &&
+        formData.type !== oldformData.type
+      ) {
         formDataForApi.append("type", formData.type)
       }
       if (formData.image) {
@@ -92,6 +98,7 @@ export default function EditService() {
           formData.type === oldformData.type &&
           formData.image === oldformData.image)
       ) {
+        setIsUpload(false);
         toast.warning("لم تقم بتعديل أي شيء")
         router.push("/MyServices")
       } else {
@@ -100,14 +107,17 @@ export default function EditService() {
           formDataForApi,
           authToken
         )
+        setIsUpload(false);
         toast.success("تم تحديث البيانات بنجاح")
         router.push("/MyServices")
       }
     } catch (error) {
       if (error.response.data.message === "Some specific error message") {
+        setIsUpload(false);
         console.error("Error updating Service:", error.response.data.message)
         toast.error("رسالة الخطأ الخاصة بك هنا")
       } else {
+        setIsUpload(false);
         console.error("Error updating Service:", error)
         toast.error("حدث خطأ أثناء تحديث البيانات.")
       }
@@ -135,6 +145,7 @@ export default function EditService() {
         <LoadingIndicator />
       ) : (
         <Layout>
+          {isUpload && <Spinner text="...جاري حفظ التعديلات" />}
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
             <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
               <form className='w-full'>
@@ -142,7 +153,10 @@ export default function EditService() {
                   title='الخدمة الرئيسية'
                   selectedValue={formData.type}
                   options={array.data}
-                  onSelect={(e) => setFormData({ ...formData, type: e })}
+                  onSelect={(e) =>
+                    setFormData({ ...formData, type: e })
+                  }
+
                 />
                 <TextBox
                   type='text'

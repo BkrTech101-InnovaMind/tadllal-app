@@ -21,7 +21,7 @@ const LogoutPage = () => {
       localStorage.removeItem("authToken")
       localStorage.removeItem("UserName")
       console.log("تم تسجيل الخروج بنجاح!")
-      router.push("/Login")
+      router.replace("/Login")
     } catch (error) {
       console.error("حدث خطأ أثناء تسجيل الخروج:", error)
     }

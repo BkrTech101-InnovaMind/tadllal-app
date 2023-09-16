@@ -82,7 +82,7 @@ export default function Index() {
       if (
         error.response &&
         error.response.data.data ===
-          "Cannot delete this location due to foreign key constraints"
+        "Cannot delete this location due to foreign key constraints"
       ) {
         console.log(error)
         toast.error(
@@ -125,7 +125,7 @@ export default function Index() {
                     <Link href='/Locations/New'>
                       <PrimaryBt type='add' name='إضافة موقع جديد' />
                     </Link>
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>

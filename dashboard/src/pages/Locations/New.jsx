@@ -1,4 +1,5 @@
 import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
+import Spinner from "@/Components/Spinner"
 import api from "@/api/api"
 import Layout from "@/layout/Layout"
 import { useRouter } from "next/router"
@@ -7,6 +8,7 @@ import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 export default function New() {
   const router = useRouter()
+  const [isUpload, setIsUpload] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
   })
@@ -30,16 +32,24 @@ export default function New() {
     }
     const authToken = localStorage.getItem("authToken")
     try {
-      await api.post("locations/location/", formData, authToken)
+      setIsUpload(true);
+      const savedData = await api.post(
+        "locations/location",
+        formData,
+        authToken
+      )
+      setIsUpload(false);
       toast.success("تم حفظ البيانات بنجاح")
       router.push("/Locations")
     } catch (error) {
+      setIsUpload(false);
       console.error("Error saving data:", error)
       toast.error("هذا الموقع تمت اضافتة سابقا استخدم موقع اخر")
     }
   }
   return (
     <Layout>
+      {isUpload && <Spinner text="...جاري الرفع" />}
       <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
         <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
           <form className='w-full '>

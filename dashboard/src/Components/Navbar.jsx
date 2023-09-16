@@ -1,3 +1,4 @@
+// import Avatar from "@/images/User.png"
 import Image from "next/image"
 import { useState } from "react"
 import { FaBars } from "react-icons/fa6"
@@ -21,10 +22,10 @@ const Nav = ({ mainServicesOpen, setMainServicesOpen }) => {
         <div className='relative flex flex-row items-center'>
           <div className='flex flex-row- items-center'>
             <Image
-              src='/images/user.png'
-              width={50}
-              height={50}
+              src="/images/user.png"
               alt='Admin'
+              width={500}
+              height={500}
               className='w-10 h-10 rounded-full cursor-pointer'
             />
             <p className='text-minueColor'>Admin</p>

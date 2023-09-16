@@ -107,7 +107,7 @@ export default function EditService() {
           formData.description === oldformData.description &&
           formData.image === oldformData.image &&
           formData.construction_service_id ===
-            oldformData.construction_service_id)
+          oldformData.construction_service_id)
       ) {
         toast.warning("لم تقم بتعديل أي شيء")
         router.push("/Services")

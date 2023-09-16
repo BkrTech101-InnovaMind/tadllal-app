@@ -1,6 +1,7 @@
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import TextBox from "@/Components/FormsComponents/Inputs/TextBox"
 import TextErea from "@/Components/FormsComponents/Inputs/TextErea"
+import Spinner from "@/Components/Spinner"
 import api from "@/api/api"
 import { fetchLocations, fetchTypes } from "@/api/fetchData"
 import Layout from "@/layout/Layout"
@@ -11,6 +12,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 export default function EditRealty() {
   const [loading, setLoading] = useState(false)
+  const [isUpload, setIsUpload] = useState(false);
   const router = useRouter()
   const { id } = router.query
 
@@ -122,6 +124,7 @@ export default function EditRealty() {
   const handleUpdate = async () => {
     const authToken = localStorage.getItem("authToken")
     try {
+      setIsUpload(true);
       const formDataForApi = new FormData()
 
       // Check and append fields for update if they have changed
@@ -159,25 +162,42 @@ export default function EditRealty() {
         formDataForApi.append("state", formData.state)
       }
 
-      if (formData.rooms && formData.rooms !== oldFormData.rooms) {
+
+      if (
+        formData.rooms &&
+        formData.rooms !== oldFormData.rooms
+      ) {
         formDataForApi.append("rooms", formData.rooms)
       }
 
-      if (formData.floors && formData.floors !== oldFormData.floors) {
+      if (
+        formData.floors &&
+        formData.floors !== oldFormData.floors
+      ) {
         formDataForApi.append("floors", formData.floors)
       }
 
-      if (formData.vision && formData.vision !== oldFormData.vision) {
+      if (
+        formData.vision &&
+        formData.vision !== oldFormData.vision
+      ) {
         formDataForApi.append("vision", formData.vision)
       }
 
-      if (formData.baptism && formData.baptism !== oldFormData.baptism) {
+      if (
+        formData.baptism &&
+        formData.baptism !== oldFormData.baptism
+      ) {
         formDataForApi.append("baptism", formData.baptism)
       }
 
-      if (formData.area && formData.area !== oldFormData.area) {
+      if (
+        formData.area &&
+        formData.area !== oldFormData.area
+      ) {
         formDataForApi.append("area", formData.area)
       }
+
 
       if (formData.photo) {
         if (
@@ -213,6 +233,7 @@ export default function EditRealty() {
         formDataForApi.getAll("baptism").length === 0 &&
         formDataForApi.getAll("area").length === 0
       ) {
+        setIsUpload(false);
         toast.warning("لم تقم بتعديل أي شيء")
         router.push("/RealEstate")
       } else {
@@ -221,10 +242,12 @@ export default function EditRealty() {
           formDataForApi,
           authToken
         )
+        setIsUpload(false);
         toast.success("تم تحديث البيانات بنجاح")
         router.push("/RealEstate")
       }
     } catch (error) {
+      setIsUpload(false);
       console.error("Error updating realty data:", error)
       toast.error("حدث خطأ أثناء تحديث البيانات.")
     }
@@ -250,6 +273,7 @@ export default function EditRealty() {
         <LoadingIndicator />
       ) : (
         <Layout>
+          {isUpload && <Spinner text="...جاري حفظ التعديلات" />}
           <div className='flex mt-5 flex-col w-full items-center justify-between pb-4 bg-white dark:bg-white rounded-md text-black'>
             <div className='flex items-center space-x-4 w-full p-4' dir='rtl'>
               <form className='w-full'>
@@ -322,9 +346,7 @@ export default function EditRealty() {
                   name='rooms'
                   placeholder='أدخل عدد الغرف'
                   value={formData.rooms}
-                  onChange={(e) =>
-                    setFormData({ ...formData, rooms: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, rooms: e.target.value })}
                 />
 
                 <TextBox
@@ -334,9 +356,7 @@ export default function EditRealty() {
                   name='floors'
                   placeholder='أدخل عدد الأدوار'
                   value={formData.floors}
-                  onChange={(e) =>
-                    setFormData({ ...formData, floors: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, floors: e.target.value })}
                 />
 
                 <TextBox
@@ -346,10 +366,9 @@ export default function EditRealty() {
                   name='area'
                   placeholder='أدخل المساحة بالمتر المربع'
                   value={formData.area}
-                  onChange={(e) =>
-                    setFormData({ ...formData, area: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                 />
+
 
                 <TextBox
                   type='text'
@@ -358,10 +377,9 @@ export default function EditRealty() {
                   name='vision'
                   placeholder='أدخل البصيرة'
                   value={formData.vision}
-                  onChange={(e) =>
-                    setFormData({ ...formData, vision: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, vision: e.target.value })}
                 />
+
 
                 <TextBox
                   type='text'
@@ -370,10 +388,9 @@ export default function EditRealty() {
                   name='baptism'
                   placeholder='أدخل التعميد'
                   value={formData.baptism}
-                  onChange={(e) =>
-                    setFormData({ ...formData, baptism: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, baptism: e.target.value })}
                 />
+
 
                 <div className='flex flex-col'>
                   <label className='text-right mb-2'>الصورة الرئيسية</label>

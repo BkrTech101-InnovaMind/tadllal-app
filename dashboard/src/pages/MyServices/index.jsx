@@ -4,11 +4,8 @@ import PrimaryBt from "@/Components/FormsComponents/Buttons/PrimaryBt"
 import DropDownList from "@/Components/FormsComponents/Inputs/DropDownList"
 import Search from "@/Components/FormsComponents/Inputs/Search"
 import api from "@/api/api"
-import {
-  countMatchingItems,
-  tableFilters,
-  tableSearch,
-} from "@/api/filtersData"
+import { fetchSubServices } from "@/api/fetchData"
+import { countMatchingItems, tableFilters, tableSearch } from "@/api/filtersData"
 import Layout from "@/layout/Layout"
 import LoadingIndicator from "@/utils/LoadingIndicator"
 import Image from "next/image"
@@ -17,8 +14,10 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { BsCardChecklist } from "react-icons/bs"
 import { FaCogs, FaToolbox } from "react-icons/fa"
+import Modal from "react-modal"
 import { toast } from "react-toastify"
 export default function Index() {
+
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const [services, setServices] = useState([])
@@ -29,28 +28,41 @@ export default function Index() {
   })
   const [searchResults, setSearchResults] = useState([])
 
+
   async function myStatistics() {
     const type = "type"
     setStatistics({
       ...statistics,
       totalservices: services.length,
-      services1: countMatchingItems(1, services, type, true),
-      services2: countMatchingItems(2, services, type, true),
+      services1: countMatchingItems(
+        1,
+        services,
+        type,
+        true
+      ),
+      services2: countMatchingItems(
+        2,
+        services,
+        type,
+        true
+      ),
     })
   }
+
 
   async function fetchData() {
     const authToken = localStorage.getItem("authToken")
 
     try {
-      const servicesData = await api.get("NewServices/services", authToken)
+      const servicesData = await api.get('NewServices/services', authToken)
       setServices(servicesData)
-      console.log(servicesData)
+      console.log(servicesData);
     } catch (error) {
       console.error("Error fetching Types:", error)
     }
     setLoading(true)
   }
+
 
   useEffect(() => {
     fetchData()
@@ -59,15 +71,10 @@ export default function Index() {
     myStatistics()
   }, [services])
   const handleOptionSelect = (selectedId) => {
-    const filterField = "type"
-    const filteredResults = tableFilters(
-      selectedId,
-      services,
-      filterField,
-      true
-    )
+    const filterField = "type";
+    const filteredResults = tableFilters(selectedId, services, filterField, true);
 
-    setSearchResults(filteredResults)
+    setSearchResults(filteredResults);
   }
   const array = {
     data: [
@@ -97,23 +104,14 @@ export default function Index() {
             width={50}
             height={50}
             className='w-10 h-10 rounded-full ml-2'
-            src={
-              item.attributes.image.startsWith("storage")
-                ? `http://192.168.1.103:8080/${item.attributes.image}`
-                : item.attributes.image
-            }
+            src={item.attributes.image}
             alt='Jese image'
           />
           <div className='pl-3'>
             <div className='text-base font-semibold whitespace-nowrap'>
               {item.attributes.name}
             </div>
-            <div className='font-normal text-gray-500'>
-              {" "}
-              {item.attributes.type == 1
-                ? "خدمات انشائية وصيانة"
-                : "موارد بناء وتوريدات"}
-            </div>
+            <div className='font-normal text-gray-500'> {item.attributes.type == 1 ? "خدمات انشائية وصيانة" : "موارد بناء وتوريدات"}</div>
           </div>
         </div>
       ),
@@ -123,6 +121,7 @@ export default function Index() {
       label: "وصف الخدمة",
       render: (item) => <div>{item.attributes.description}</div>,
     },
+
   ]
 
   const handleSearch = (searchTerm) => {
@@ -132,7 +131,9 @@ export default function Index() {
   }
 
   const handleEdit = (item) => {
+
     router.push(`MyServices/Edit?id=${item.id}`)
+
   }
 
   const handleDelete = async (item) => {
@@ -141,9 +142,7 @@ export default function Index() {
     try {
       await api.deleteFunc(`NewServices/services/${item.id}`, authToken)
 
-      const updatedServices = services.filter(
-        (service) => service.id !== item.id
-      )
+      const updatedServices = services.filter((service) => service.id !== item.id)
 
       setServices(updatedServices)
 
@@ -153,6 +152,9 @@ export default function Index() {
       toast.error("خطأ أثناء حذف الخدمة")
     }
   }
+
+
+
 
   return (
     <>
@@ -217,7 +219,7 @@ export default function Index() {
                       <PrimaryBt type='add' name='إضافة خدمة جديدة' />
                     </Link>
 
-                    <PrimaryBt type='export' name='تصدير' onClick={() => {}} />
+                    <PrimaryBt type='export' name='تصدير' onClick={() => { }} />
                   </div>
 
                   <div>
@@ -233,8 +235,11 @@ export default function Index() {
               data={searchResults.length > 0 ? searchResults : services}
               onEdit={handleEdit}
               onDelete={handleDelete}
+
             />
+
           </div>
+
         </Layout>
       )}
     </>

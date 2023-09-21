@@ -52,7 +52,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     });
   }
 
-  void _showRatingDialog() {
+  void _showCommentDialog() {
     showDialog(
       context: context,
       builder: (_) => CommentDialog(
@@ -63,6 +63,58 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
         syncData: _syncData,
       ),
     );
+  }
+
+  void _deleteDialog(realEstate, index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("هل متأكد من حذف التعليق ؟"),
+          actions: [
+            MaterialButton(
+              height: 30.0,
+              minWidth: 50.0,
+              color: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              textColor: Colors.white,
+              onPressed: () => Navigator.of(context).pop(),
+              splashColor: Colors.redAccent,
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+            MaterialButton(
+              height: 30.0,
+              minWidth: 50.0,
+              color: const Color(0xFF8BC83F),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              textColor: Colors.white,
+              onPressed: () => _deletePressed(realEstate, index),
+              splashColor: const Color(0xFF8BC83F),
+              child: const Text(
+                'تأكيد',
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editPressed(realEstate, index) {
+    () {
+      commentId = realEstate.attributes!.comments![index].id!;
+      _commentController.text =
+          realEstate.attributes!.comments![index].attributes!.comment!;
+      _showCommentDialog();
+    };
   }
 
   Future<RealEstate> _getRealEstateData() async {
@@ -92,7 +144,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     return realEstate;
   }
 
-  void _onPressed() {
+  void _requestPressed() {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -101,6 +153,26 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
         orderId: int.parse(widget.realEstate.id!),
       ),
     );
+  }
+
+  void _deletePressed(realEstate, index) {
+    dioApi
+        .delete(
+            "/comments/comment/${realEstate.attributes!.comments![index].id!}",
+            myData: {"comment": _commentController.text.trim()})
+        .then((value) {
+          _syncData();
+        })
+        .then((value) => Navigator.pop(context))
+        .then(
+          (value) => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "تم الحذف بنجاح",
+              ),
+            ),
+          ),
+        );
   }
 
   @override
@@ -128,7 +200,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     ),
                     textColor: const Color(0xFF1F4C6B),
                     padding: const EdgeInsets.all(16),
-                    onPressed: _onPressed,
+                    onPressed: () => _requestPressed(),
                     splashColor: const Color(0xFFF5F4F8),
                     child: const Text(
                       'طلب العقار',
@@ -215,7 +287,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _showRatingDialog(),
+          onPressed: () => _showCommentDialog(),
           backgroundColor: const Color(0xFFF5F4F8),
           foregroundColor: const Color(0xFF1F4C6B),
           child: const Icon(Icons.add_comment_outlined),
@@ -1036,77 +1108,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     Row(
                       children: [
                         TextButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title:
-                                        const Text("هل متأكد من حذف التعليق ؟"),
-                                    actions: [
-                                      MaterialButton(
-                                        height: 30.0,
-                                        minWidth: 50.0,
-                                        color: Colors.redAccent,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        textColor: Colors.white,
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        splashColor: Colors.redAccent,
-                                        child: const Text(
-                                          'إلغاء',
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ),
-                                      MaterialButton(
-                                        height: 30.0,
-                                        minWidth: 50.0,
-                                        color: const Color(0xFF8BC83F),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        textColor: Colors.white,
-                                        onPressed: () {
-                                          dioApi
-                                              .delete(
-                                                  "/comments/comment/${realEstate.attributes!.comments![index].id!}",
-                                                  myData: {
-                                                    "comment":
-                                                        _commentController.text
-                                                            .trim()
-                                                  })
-                                              .then((value) {
-                                                _syncData();
-                                              })
-                                              .then((value) =>
-                                                  Navigator.pop(context))
-                                              .then(
-                                                (value) => ScaffoldMessenger.of(
-                                                        context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                      "تم الحذف بنجاح",
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                        },
-                                        splashColor: const Color(0xFF8BC83F),
-                                        child: const Text(
-                                          'تأكيد',
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
+                          onPressed: () => _deleteDialog(realEstate, index),
                           child: const Icon(
                             FontAwesomeIcons.trash,
                             size: 15.0,
@@ -1114,13 +1116,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            commentId =
-                                realEstate.attributes!.comments![index].id!;
-                            _commentController.text = realEstate.attributes!
-                                .comments![index].attributes!.comment!;
-                            _showRatingDialog();
-                          },
+                          onPressed: () => _editPressed(realEstate, index),
                           child: const Icon(
                             FontAwesomeIcons.marker,
                             size: 15.0,

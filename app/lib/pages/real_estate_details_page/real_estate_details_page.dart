@@ -65,7 +65,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-  void _deleteDialog(realEstate, index) {
+  void _deleteDialog(
+    realEstate,
+    index,
+  ) {
     showDialog(
       context: context,
       builder: (context) {
@@ -108,7 +111,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-  void _editPressed(realEstate, index) {
+  void _editPressed(
+    realEstate,
+    index,
+  ) {
     () {
       commentId = realEstate.attributes!.comments![index].id!;
       _commentController.text =
@@ -155,7 +161,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-  void _deletePressed(realEstate, index) {
+  void _deletePressed(
+    realEstate,
+    index,
+  ) {
     dioApi
         .delete(
             "/comments/comment/${realEstate.attributes!.comments![index].id!}",
@@ -175,8 +184,62 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
         );
   }
 
+  void _showSingleImage(
+    realEstate,
+    image,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(realEstate.attributes!.name!),
+              backgroundColor: Colors.transparent,
+            ),
+            body: Center(
+              child: PhotoView(
+                loadingBuilder: (context, event) => Center(
+                  child: SizedBox(
+                    width: 30.0,
+                    height: 30.0,
+                    child: CircularProgressIndicator(
+                      backgroundColor: const Color(0xFFE0A410),
+                      value: event == null
+                          ? 0
+                          : event.cumulativeBytesLoaded /
+                              event.expectedTotalBytes!,
+                    ),
+                  ),
+                ),
+                imageProvider: CachedNetworkImageProvider(image),
+                minScale: PhotoViewComputedScale.contained * 0.8,
+                maxScale: PhotoViewComputedScale.contained * 2,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _navigateToDetailsPage(
+    realEstate,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RealEstateDetailsPage(
+          realEstate: realEstate,
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -212,77 +275,78 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
             ),
             Expanded(
               child: FutureBuilder<RealEstate>(
-                  future: realEstateData,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<RealEstate> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData && snapshot.hasError == false) {
-                        return ListView(
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          children: [
-                            buildImagesSection(realEstate: snapshot.data!),
-                            buildDetailsSection(realEstate: snapshot.data!),
-                            buildSameType(
-                              linkedRealEstateFuture:
-                                  _getLinkedRealEstateDataList(
-                                      mainRealEstate: snapshot.data!),
-                            ),
-                            buildCommentsSection(realEstate: snapshot.data!),
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                            child: Padding(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Text(errorWhileGetData),
-                        ));
-                      } else {
-                        return const Center(
-                            child: Padding(
-                          padding: EdgeInsets.only(top: 16),
-                          child: Text(noData),
-                        ));
-                      }
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: ColorLoader1(),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 16),
-                              child: Text(loadingDataFromServer),
-                            )
-                          ],
-                        ),
+                future: realEstateData,
+                builder:
+                    (BuildContext context, AsyncSnapshot<RealEstate> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData && snapshot.hasError == false) {
+                      return ListView(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          buildImagesSection(realEstate: snapshot.data!),
+                          buildDetailsSection(realEstate: snapshot.data!),
+                          buildSameType(
+                            linkedRealEstateFuture:
+                                _getLinkedRealEstateDataList(
+                                    mainRealEstate: snapshot.data!),
+                          ),
+                          buildCommentsSection(realEstate: snapshot.data!),
+                        ],
                       );
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                          child: Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text(errorWhileGetData),
+                      ));
                     } else {
                       return const Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: CircularProgressIndicator(),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 16),
-                              child: Text(loadingDataFromServer),
-                            )
-                          ],
-                        ),
-                      );
+                          child: Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text(noData),
+                      ));
                     }
-                  }),
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: ColorLoader1(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text(loadingDataFromServer),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: CircularProgressIndicator(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text(loadingDataFromServer),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -297,7 +361,9 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   }
 
   // Images section
-  Widget buildImagesSection({required RealEstate realEstate}) {
+  Widget buildImagesSection({
+    required RealEstate realEstate,
+  }) {
     return realEstate.attributes!.images!.isNotEmpty
         ? Container(
             padding: const EdgeInsets.symmetric(vertical: 15),
@@ -325,45 +391,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               items: realEstate.attributes!.images!.map<Widget>(
                 (image) {
                   return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) {
-                            return Scaffold(
-                              appBar: AppBar(
-                                title: Text(realEstate.attributes!.name!),
-                                backgroundColor: Colors.transparent,
-                              ),
-                              body: Center(
-                                child: PhotoView(
-                                  loadingBuilder: (context, event) => Center(
-                                    child: SizedBox(
-                                      width: 30.0,
-                                      height: 30.0,
-                                      child: CircularProgressIndicator(
-                                        backgroundColor:
-                                            const Color(0xFFE0A410),
-                                        value: event == null
-                                            ? 0
-                                            : event.cumulativeBytesLoaded /
-                                                event.expectedTotalBytes!,
-                                      ),
-                                    ),
-                                  ),
-                                  imageProvider:
-                                      CachedNetworkImageProvider(image),
-                                  minScale:
-                                      PhotoViewComputedScale.contained * 0.8,
-                                  maxScale:
-                                      PhotoViewComputedScale.contained * 2,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
+                    onTap: () => _showSingleImage(realEstate, image),
                     child: CachedNetworkImage(
                       imageUrl: image,
                       fit: BoxFit.contain,
@@ -411,7 +439,9 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   }
 
   // Details section
-  Widget buildDetailsSection({required RealEstate realEstate}) {
+  Widget buildDetailsSection({
+    required RealEstate realEstate,
+  }) {
     String state = realEstate.attributes!.secondType!;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -436,7 +466,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                       maxWidth: MediaQuery.of(context).size.width / 1.5,
                     ),
                     child: Text(
-                      realEstate.attributes!.name!,
+                      "${realEstate.attributes!.name}",
                       maxLines: 1,
                       style: const TextStyle(
                         fontSize: 30,
@@ -454,6 +484,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ],
           ),
+
           // Details Text
           const SizedBox(height: 25),
           const Text(
@@ -463,6 +494,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
+
           // Description Text
           const SizedBox(height: 15),
           ListTile(
@@ -497,6 +529,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ),
           ),
+
           // Type & Rating Texts
           const SizedBox(height: 15),
           Row(
@@ -573,6 +606,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ],
           ),
+
           // Price & state Texts
           const SizedBox(height: 15),
           Row(
@@ -656,6 +690,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ],
           ),
+
           // Area & Rooms Texts
           const SizedBox(height: 15),
           Row(
@@ -732,9 +767,9 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 15),
+
           // Location Text
-          const SizedBox(height: 15),
+          const SizedBox(height: 30),
           ListTile(
             contentPadding: const EdgeInsets.all(0),
             title: const Text(
@@ -767,6 +802,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
               ),
             ),
           ),
+
           const SizedBox(height: 15),
           buildMoreDetails(realEstate)
         ],
@@ -774,8 +810,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-  // More Details
-  Widget buildMoreDetails(RealEstate realEstate) {
+  // More Details Section
+  Widget buildMoreDetails(
+    RealEstate realEstate,
+  ) {
     return Visibility(
       visible: realEstate.attributes!.vision! != "" ||
           realEstate.attributes!.baptism! != "",
@@ -862,9 +900,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-  // Same Type
-  Widget buildSameType(
-      {required Future<List<RealEstate>> linkedRealEstateFuture}) {
+  // Same Type Section
+  Widget buildSameType({
+    required Future<List<RealEstate>> linkedRealEstateFuture,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -913,6 +952,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
+// Same Type Builder
   Widget _buildSameTypeCarousel(
       {required List<RealEstate> linkedRealEstateList}) {
     return CarouselSlider(
@@ -927,16 +967,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
       items: linkedRealEstateList
           .map<Widget>(
             (realEstate) => GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RealEstateDetailsPage(
-                      realEstate: realEstate,
-                    ),
-                  ),
-                );
-              },
+              onTap: () => _navigateToDetailsPage(realEstate),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -958,7 +989,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                     ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       child: CachedNetworkImage(
-                        imageUrl: realEstate.attributes!.photo!,
+                        imageUrl: "${realEstate.attributes!.photo}",
                         memCacheHeight: 150,
                         memCacheWidth: 180,
                         placeholder: (context, url) => const Center(
@@ -968,6 +999,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                             const Icon(Icons.error),
                       ),
                     ),
+
                     // Real Estate Details
                     Expanded(
                       child: ListTile(
@@ -981,7 +1013,7 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                           ),
                         ),
                         subtitle: Text(
-                          realEstate.attributes!.name!,
+                          "${realEstate.attributes!.name}",
                           textScaleFactor: 1.2,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -992,6 +1024,8 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                         ),
                       ),
                     ),
+
+                    // Real Estate Rating
                     Text.rich(
                       style: const TextStyle(
                         fontSize: 15,
@@ -1016,7 +1050,9 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
   }
 
 // Comments Section
-  Widget buildCommentsSection({required RealEstate realEstate}) {
+  Widget buildCommentsSection({
+    required RealEstate realEstate,
+  }) {
     return Container(
       margin: const EdgeInsets.all(15),
       child: Column(
@@ -1030,7 +1066,10 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
     );
   }
 
-  Widget _buildComment(RealEstate realEstate) {
+// Comment Builder
+  Widget _buildComment(
+    RealEstate realEstate,
+  ) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -1086,17 +1125,18 @@ class _RealEstateDetailsPageState extends State<RealEstateDetailsPage> {
                 ),
               ),
               title: Text(
-                  realEstate.attributes!.comments![index].attributes!.userName!,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                "${realEstate.attributes!.comments![index].attributes!.userName}",
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    realEstate
-                        .attributes!.comments![index].attributes!.comment!,
+                    "${realEstate.attributes!.comments![index].attributes!.comment}",
                     style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w300,
